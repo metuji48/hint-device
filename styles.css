@@ -1,0 +1,148 @@
+body {
+    font-family: 'Times New Roman', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: #fff;
+}
+
+h1, h2, h3 {
+    text-align: center;
+    font-family: 'Times New Roman', serif;
+}
+
+button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+button.answer-button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.notebook {
+    width: 80%;
+    max-width: 800px;
+    height: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    color: #333;
+    border: 2px solid #000;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+}
+
+.notebook.closed {
+    background-color: #000;
+    color: white;
+    text-align: center;
+    justify-content: center;
+}
+
+.notebook.open::before {
+    content: '';
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    width: 1px;
+    height: calc(100% - 100px);
+    background-color: #999;
+}
+
+.notebook.open .left, .notebook.open .right {
+    width: 45%;
+}
+
+.hidden {
+    display: none;
+}
+
+.timer-score {
+    text-align: center;
+    background-color: #f5f5f5;
+    color: #333;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.sticky-note {
+    background-color: yellow;
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid #ccc;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.hint-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.hint-navigation button {
+    font-size: 1.2em;
+    padding: 5px;
+    margin: 0 10px;
+}
+
+.hint-navigation span {
+    margin-right: 10px;
+    font-size: 1.2em;
+}
+
+.centered-select, .centered-slider {
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+    width: 60%;
+}
+
+@keyframes flipHalf {
+    0% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(-90deg);
+    }
+}
+
+@keyframes flipFinal {
+    0% {
+        transform: perspective(1000px) rotateY(90deg);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(0deg);
+    }
+}
+
+.notebook.flip {
+    animation: flipHalf 0.4s forwards;
+}
+
+.notebook.flip-final {
+    animation: flipFinal 0.4s forwards;
+}
