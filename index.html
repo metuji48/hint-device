@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ヒントデバイス - 嫌われ者の事件帖</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- 待機シーン -->
+<div class="notebook closed" id="waitingScreen">
+    <h1 class="title">嫌われ者の事件帖</h1>
+    <button id="startButton">スタート</button>
+</div>
+
+<!-- メインシーン -->
+<div class="notebook open hidden" id="mainScreen">
+    <div class="left">
+        <h1 class="title">嫌われ者の事件帖</h1>
+        <div class="timer-score">
+            <p>残り時間: <span id="remainingTime">20:00</span></p>
+            <p>ヒント使用回数: <span id="hintCount">0</span></p>
+        </div>
+        <h2>犯人を解答する</h2>
+        <button id="goToAnswer" class="answer-button">解答する</button>
+        <div id="errorMessage" class="error-message hidden">1分間解答できません。</div>
+    </div>
+    <div class="right">
+        <h2>ヒントを選択してください</h2>
+        <select id="hintSelect">
+            <option value="" disabled selected>ヒントを選択</option>
+            <option value="足跡">手がかり: 足跡</option>
+            <option value="カーテン">手がかり: カーテン</option>
+            <option value="棚">手がかり: 棚</option>
+            <option value="ナイフ">手がかり: ナイフ</option>
+            <option value="時計">手がかり: 時計</option>
+            <option value="血痕">手がかり: 血痕</option>
+        </select>
+        <button id="confirmHint">ヒントを確認する</button>
+        <div id="hintDisplay" class="sticky-note">ヒントはまだ確認されていません</div>
+        <div id="hintNavigation" class="hint-navigation hidden">
+            <span id="hintCounter">1/1</span>
+            <button id="prevHint">&larr;</button>
+            <button id="nextHint">&rarr;</button>
+        </div>
+    </div>
+</div>
+
+<!-- 解答シーン -->
+<div class="notebook open hidden" id="answerScreen">
+    <div class="left">
+        <h1 class="title">嫌われ者の事件帖</h1>
+        <div class="timer-score">
+            <p>残り時間: <span id="remainingTimeAnswer">20:00</span></p>
+            <p>ヒント使用回数: <span id="hintCountAnswer">0</span></p>
+        </div>
+    </div>
+    <div class="right">
+        <h2>犯人を選択してください</h2>
+        <select id="culpritSelect" class="centered-select">
+            <option value="犯人1">犯人1</option>
+            <option value="犯人2">犯人2</option>
+            <option value="犯人3">犯人3</option>
+        </select>
+        <h3>犯行時刻を選択してください</h3>
+        <div class="centered-slider">
+            <input type="range" id="crimeHour" class="slider" min="0" max="23" value="0">
+            <span id="hourDisplay">0</span>時
+        </div>
+        <div class="centered-slider">
+            <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
+            <span id="minuteDisplay">00</span>分
+        </div>
+        <button id="submitAnswer">解答する</button>
+    </div>
+</div>
+
+<!-- 結果シーン -->
+<div class="notebook open hidden" id="resultScreen">
+    <div class="left">
+        <h2>結果</h2>
+        <p id="finalTime">残り時間: 時間切れ</p>
+        <p>ヒント使用回数: <span id="finalHintCount">0</span></p>
+        <p>不正解回数: <span id="wrongAnswerCount">0</span></p>
+        <p>スコア: <span id="finalScore">0</span></p>
+    </div>
+    <div class="right">
+        <h2>プレイありがとうございました。</h2>
+        <button id="endButton">終了</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
