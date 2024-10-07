@@ -47,8 +47,8 @@ function flipPage(fromScreen, toScreen) {
         toScreen.classList.add('flip-final');
         setTimeout(() => {
             toScreen.classList.remove('flip-final');
-        }, 400);
-    }, 400); // 半回転の時間に合わせる
+        }, 300);
+    }, 300); // 半回転の時間に合わせる
 }
 
 // タイマー開始
@@ -56,7 +56,7 @@ function startTimer() {
     timer = setInterval(() => {
         const now = new Date().getTime();
         const elapsed = Math.floor((now - startTime) / 1000);
-        remainingTime = 1200 - elapsed;
+        remainingTime = 12 - elapsed;
 
         const minutes = Math.floor(remainingTime / 60);
         const seconds = remainingTime % 60;
@@ -111,13 +111,14 @@ document.getElementById('confirmHint').addEventListener('click', () => {
                     hintMessage = 'ヒントが見つかりません。';
             }
 
-            hints.push(hintMessage); // 個別ヒントを配列に追加
+            hints.push(`${hintValue}: ${hintMessage}`); // 個別ヒントを配列に追加
             currentHintIndex = hints.length - 1;
             updateHintDisplay();
             hintCount++;
             hintCountDisplay.textContent = hintCount;
             hintCountAnswerDisplay.textContent = hintCount;
             selectedHint.options[selectedHint.selectedIndex].disabled = true; // 一度選んだヒントを無効化
+            selectedHint.value = '';
             if (hints.length > 1) {
                 hintNavigation.classList.remove('hidden');
             }
@@ -135,7 +136,7 @@ function updateHintDisplay() {
     }
 }
 
-// ヒントを前後に切り替える処理
+// 表示するヒントの選択ボタン
 document.getElementById('prevHint').addEventListener('click', () => {
     if (currentHintIndex > 0) {
         currentHintIndex--;
@@ -159,19 +160,15 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     const selectedMinute = crimeMinute.value;
 
     if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
-        if (checkAnswer(selectedCulprit, selectedHour, selectedMinute)) {
-            alert("正解！");
+        if (selectedCulprit === '犯人2' && selectedHour === '14' && selectedMinute === '30') {
             showResult(true); // 正解時
         } else {
             wrongAnswerCount++;
             answerDisabled = true;
-            lockoutAnswer();
-            alert("残念！");
+            alert("不正解･･･ 1分間は解答が出来なくなります。");
+            flipPage(answerScreen, mainScreen);
             errorMessage.classList.remove('hidden');
-            setTimeout(() => {
-                errorMessage.classList.add('hidden');
-                answerDisabled = false;
-            }, 60000); // 1分間解答不可
+            lockoutAnswer();
         }
     }
 });
@@ -180,39 +177,18 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
 function lockoutAnswer() {
     answerDisabled = true;
     let remainingLockout = 60;
-    document.getElementById('goToAnswerMain').style.backgroundColor = "#888";
+    document.getElementById('goToAnswer').classList.add('disabled');
     errorMessage.classList.remove('hidden');
     lockoutTimer = setInterval(() => {
         remainingLockout--;
-        lockoutTimeDisplay.textContent = remainingLockout;
+        errorMessage.textContent = `1分間解答できません。（残り ${remainingLockout} 秒）`;
         if (remainingLockout <= 0) {
             clearInterval(lockoutTimer);
             answerDisabled = false;
-            document.getElementById('goToAnswerMain').style.backgroundColor = "#333";
+            document.getElementById('goToAnswer').classList.remove('disabled');
             errorMessage.classList.add('hidden');
         }
     }, 1000);
-}
-
-
-// 表示するヒントの選択ボタン
-document.getElementById('prevHint').addEventListener('click', () => {
-    if(currentHintIndex > 0) {
-        currentHintIndex--;
-        updateHintDisplay();
-    }
-});
-document.getElementById('nextHint').addEventListener('click', () => {
-    if(currentHintIndex < hints.length-1) {
-        currentHintIndex++;
-        updateHintDisplay();
-    }
-});
-
-// 解答のチェック
-function checkAnswer(culprit, hour, minute) {
-    // 仮の正解: 犯人2, 14時30分
-    return culprit === '犯人2' && hour === '14' && minute === '30';
 }
 
 // 結果表示
@@ -226,13 +202,14 @@ function showResult(isCorrect) {
     const score = Math.max(0, remainingTime - (hintCount * 100)); // スコア計算
     finalScore.textContent = score;
 
-    if(score>=1000){
-        rank="Aランク"
-    } else if(score>=700) {
-        rank="Bランク"
-    } else{
-        rank="Cランク"
+    if (score >= 1000) {
+        rank = "Aランク"
+    } else if (score >= 700) {
+        rank = "Bランク"
+    } else {
+        rank = "Cランク"
     }
+
     finalScore.textContent += ` (${rank})`;
 }
 document.getElementById('endButton').addEventListener('click', () => {
@@ -253,5 +230,7 @@ document.getElementById('goToHint').addEventListener('click', () => {
 
 // 「解答する」ボタン
 document.getElementById('goToAnswer').addEventListener('click', () => {
-    flipPage(mainScreen, answerScreen);
+    if (!answerDisabled) {
+        flipPage(mainScreen, answerScreen);
+    }
 });
