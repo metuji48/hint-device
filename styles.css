@@ -101,6 +101,7 @@ button.answer-button.disabled {
 
 .sticky-note {
     background-color: yellow;
+    height: 200px;
     padding: 10px;
     margin-top: 20px;
     border: 1px solid #ccc;
@@ -114,13 +115,15 @@ button.answer-button.disabled {
 
 .hint-navigation {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end;
+    align-items: flex-end;
     margin-top: 10px;
 }
 
 .hint-navigation button {
     font-size: 1em;
+    color: #333;
+    background-color: #ddd;
     padding: 5px;
     margin: 0 10px;
 }
