@@ -157,7 +157,14 @@ function showResult(isCorrect) {
     const score = Math.max(0, remainingTime - (hintCount * 100));
     finalScore.textContent = score;
 }
+// シークバーの値が変わるたびに表示を更新するイベントリスナーを追加
+crimeHour.addEventListener('input', () => {
+    hourDisplay.textContent = crimeHour.value;
+});
 
+crimeMinute.addEventListener('input', () => {
+    minuteDisplay.textContent = crimeMinute.value.padStart(2, '0');
+});
 // 終了ボタンの処理
 document.getElementById('endButton').addEventListener('click', () => {
     const password = prompt("スタッフ専用パスワードを入力してください:");
