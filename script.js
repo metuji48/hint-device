@@ -64,7 +64,14 @@ function startTimer() {
         }
     }, 1000);
 }
+//シークバーの更新
+crimeHour.addEventListener('input', () => {
+    hourDisplay.textContent = crimeHour.value;
+});
 
+crimeMinute.addEventListener('input', () => {
+    minuteDisplay.textContent = crimeMinute.value.padStart(2, '0');
+});
 // ヒント確認
 document.getElementById('confirmHint').addEventListener('click', () => {
     const selectedHint = document.getElementById('hintSelect');
