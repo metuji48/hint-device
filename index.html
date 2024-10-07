@@ -27,7 +27,7 @@
             </div>
             <button id="goToAnswer" class="button answer-button">解答する</button>
             <button class="button hint-button disabled">ヒントを求める</button>
-            <div id="errorMessage" class="error-message hidden">1分間解答できません。</div>
+            <div id="errorMessage" class="error-message hidden">10秒間解答できません。</div>
         </div>
         <div class="right">
             <div id="hintBox" class="hint-box">
@@ -88,18 +88,38 @@
     </div>
 
     <!-- 結果シーン -->
-    <div class="notebook open hidden" id="resultScreen">
-        <div class="left">
-            <h2>結果</h2>
-            <p id="finalTime">残り時間: 時間切れ</p>
-            <p>ヒント使用回数: <span id="finalHintCount">0</span></p>
-            <p>不正解回数: <span id="wrongAnswerCount">0</span></p>
-            <p>スコア: <span id="finalScore">0</span></p>
-        </div>
-        <div class="right">
-            <h2>プレイありがとうございました。</h2>
-            <button id="endButton">終了</button>
-        </div>
+    <div class="notebook closed hidden" id="resultScreen">
+        <h2>結果</h2>
+        <table cellpadding="10px">
+            <tr>
+                <th>項目</th>
+                <th>結果</th>
+                <th>スコア</th>
+            </tr>
+            <tr>
+                <td>残り時間</td>
+                <td id="finalTime">時間切れ</td>
+                <td id="finalTimeScore">0</td>
+            </tr>
+            <tr>
+                <td>ヒント使用回数</td>
+                <td id="finalHintCount">0</td>
+                <td id="finalHintCountScore">0</td>
+            </tr>
+            <tr>
+                <td>不正解回数</td>
+                <td id="wrongAnswerCount">0</td>
+                <td id="wrongAnswerCountScore">0</td>
+            </tr>
+            <tr>
+                <td>スコア</td>
+                <td></td>
+                <td id="finalScore">0</td>
+            </tr>
+        </table>
+        <h2>プレイありがとうございました。</h2>
+        <p>QRコードはこちら</p>
+        <button id="endButton">終了</button>
     </div>
 
     <script src="script.js"></script>
