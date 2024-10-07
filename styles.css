@@ -4,13 +4,17 @@ body {
     font-family: 'Times New Roman', serif;
     margin: 0;
     padding: 0;
-    background-color: #000;
+    background-color: #ccc;
     color: #fff;
+}
+
+h1 {
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999;
 }
 
 h1, h2, h3 {
     text-align: center;
-    font-family: 'Times New Roman', serif;
 }
 
 button {
@@ -24,6 +28,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    transition: all 0.3s ease-out 0s;
 }
 
 button:hover {
@@ -33,6 +38,18 @@ button:hover {
 button.answer-button.disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+select {
+    margin: auto;
+    padding: 10px 20px;
+    background-color: #ddd;
+    color: black;
+    height: fit-content;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 
@@ -55,7 +72,7 @@ button.answer-button.disabled {
     color: #333;
     border: 2px solid #000;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     justify-content: space-between;
     position: relative;
     overflow: hidden;
@@ -86,13 +103,17 @@ button.answer-button.disabled {
     width: 45%;
 }
 
+.notebook.open .right {
+    padding-top: 50px;
+}
+
 .select-label {
     display: inline;
 }
 
 .timer-score {
     text-align: center;
-    background-color: #f5f5f5;
+    background-color: #eee;
     color: #333;
     border-radius: 5px;
     padding: 10px;
@@ -101,10 +122,11 @@ button.answer-button.disabled {
 
 .sticky-note {
     background-color: yellow;
-    height: 200px;
+    height: 150px;
     padding: 10px;
     margin-top: 20px;
     border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
 .error-message {
@@ -144,20 +166,20 @@ button.answer-button.disabled {
 
 @keyframes flipHalf {
     0% {
-        transform: perspective(1000px) rotateY(0deg);
         animation-timing-function: ease-in;
+        clip-path: inset(0);
     }
     100% {
-        transform: perspective(1000px) rotateY(-90deg);
+        clip-path: inset(0 100% 0 0);
     }
 }
 
 @keyframes flipFinal {
     0% {
-        transform: perspective(1000px) rotateY(90deg);
+        clip-path: inset(0 0 0 100%);
     }
     100% {
-        transform: perspective(1000px) rotateY(0deg);
+        clip-path: inset(0);
         animation-timing-function: ease-out;
     }
 }
