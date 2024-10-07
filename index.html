@@ -1,131 +1,267 @@
-<!DOCTYPE html>
-<html lang="ja">
+let startTime;
+let hintCount = 0;
+let remainingTime = 1200; // 20分 (1200秒)
+let wrongAnswerCount = 0;
+let timer;
+let hints = [];
+let currentHintIndex = 0;
+let answerDisabled = false;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ヒントデバイス - 嫌われ者の事件帖</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+const startButton = document.getElementById('startButton');
+const waitingScreen = document.getElementById('waitingScreen');
+const mainScreen = document.getElementById('mainScreen');
+const answerScreen = document.getElementById('answerScreen');
+const resultScreen = document.getElementById('resultScreen');
+const remainingTimeDisplay = document.getElementById('remainingTime');
+const remainingTimeAnswerDisplay = document.getElementById('remainingTimeAnswer');
+const hintCountDisplay = document.getElementById('hintCount');
+const hintCountAnswerDisplay = document.getElementById('hintCountAnswer');
+const hintDisplay = document.getElementById('hintDisplay');
+const hintNavigation = document.getElementById('hintNavigation');
+const errorMessage = document.getElementById('errorMessage');
 
-<body>
+const finalTime = document.getElementById('finalTime');
+const finalHintCount = document.getElementById('finalHintCount');
+const wrongAnswerCountDisplay = document.getElementById('wrongAnswerCount');
 
-    <!-- 待機シーン -->
-    <div class="notebook closed" id="waitingScreen">
-        <h1 class="title">嫌われ者の事件帖</h1>
-        <h2 class="subtitle">1-1 HR</h2>
-        <button id="startButton">スタート</button>
-    </div>
+const finalTimeScore = document.getElementById('finalTimeScore');
+const finalHintCountScore = document.getElementById('finalHintCountScore');
+const wrongAnswerCountDisplayScore = document.getElementById('wrongAnswerCountScore');
 
-    <!-- メインシーン -->
-    <div class="notebook open hidden" id="mainScreen">
-        <div class="left">
-            <h1 class="title">嫌われ者の事件帖</h1>
-            <div class="timer-score">
-                <p>残り時間: <span id="remainingTime">20:00</span></p>
-                <p>ヒント使用回数: <span id="hintCount">0</span></p>
-            </div>
-            <button id="goToAnswer" class="button answer-button">解答する</button>
-            <button class="button hint-button disabled">ヒントを求める</button>
-            <div id="errorMessage" class="error-message hidden">10秒間解答できません。</div>
-        </div>
-        <div class="right">
-            <div id="hintBox" class="hint-box">
-                <h2>ヒントを求める</h2>
-                <div id="hintLabel" class="select-label">手がかり：</div>
-                <select id="hintSelect">
-                    <option value="" disabled selected>ヒントを選択</option>
-                    <option value="足跡">足跡</option>
-                    <option value="カーテン">カーテン</option>
-                    <option value="棚">棚</option>
-                    <option value="ナイフ">ナイフ</option>
-                    <option value="時計">時計</option>
-                    <option value="血痕">血痕</option>
-                </select>
-            </div>
-            <button id="confirmHint">ヒントを確認</button>
-            <div id="hintDisplay" class="sticky-note">
-                <p id=""></p>
-                ヒントはまだ確認されていません
-            </div>
-            <div id="hintNavigation" class="hint-navigation hidden">
-                <span id="hintCounter">1/1</span>
-                <button id="prevHint">&larr;</button>
-                <button id="nextHint">&rarr;</button>
-            </div>
-        </div>
-    </div>
+const finalScore = document.getElementById('finalScore');
+const finalRank = document.getElementById('finalRank');
 
-    <!-- 解答シーン -->
-    <div class="notebook open hidden" id="answerScreen">
-        <div class="left">
-            <h1 class="title">嫌われ者の事件帖</h1>
-            <div class="timer-score">
-                <p>残り時間: <span id="remainingTimeAnswer">20:00</span></p>
-                <p>ヒント使用回数: <span id="hintCountAnswer">0</span></p>
-            </div>
-            <button class="button answer-button disabled">解答する</button>
-            <button id="goToHint" class="button hint-button">ヒントを求める</button>
-        </div>
-        <div class="right">
-            <h2>犯人を選択</h2>
-            <select id="culpritSelect" class="centered-select">
-                <option value="犯人1">宮路 凛人</option>
-                <option value="犯人2">楠木 実</option>
-                <option value="犯人3">矢場 丈則</option>
-                <option value="犯人4">河伊 健二郎</option>
-                <option value="犯人5">Temp</option>
-            </select>
-            <h3>犯行時刻を選択</h3>
-            <div class="centered-slider">
-                <input type="range" id="crimeHour" class="slider" min="0" max="23" value="0">
-                <span id="hourDisplay">0</span>時
-            </div>
-            <div class="centered-slider">
-                <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
-                <span id="minuteDisplay">00</span>分
-            </div>
-            <button id="submitAnswer" class="center-button">解答する</button>
-        </div>
-    </div>
+const crimeHour = document.getElementById('crimeHour');
+const hourDisplay = document.getElementById('hourDisplay');
+const crimeMinute = document.getElementById('crimeMinute');
+const minuteDisplay = document.getElementById('minuteDisplay');
+const endButton = document.getElementById('endButton');
 
-    <!-- 結果シーン -->
-    <div class="notebook closed hidden" id="resultScreen">
-        <h2>結果</h2>
-        <table cellpadding="10px">
-            <tr>
-                <th>項目</th>
-                <th>結果</th>
-                <th>スコア</th>
-            </tr>
-            <tr>
-                <td>残り時間</td>
-                <td id="finalTime">時間切れ</td>
-                <td id="finalTimeScore">0</td>
-            </tr>
-            <tr>
-                <td>ヒント使用回数</td>
-                <td id="finalHintCount">0</td>
-                <td id="finalHintCountScore">0</td>
-            </tr>
-            <tr>
-                <td>不正解回数</td>
-                <td id="wrongAnswerCount">0</td>
-                <td id="wrongAnswerCountScore">0</td>
-            </tr>
-            <tr>
-                <td>スコア</td>
-                <td id="finalRank"></td>
-                <td id="finalScore">0</td>
-            </tr>
-        </table>
-        <h2>プレイありがとうございました。</h2>
-        <p>QRコードはこちら</p>
-        <button id="endButton">終了</button>
-    </div>
+let currentScreen = waitingScreen;
 
-    <script src="script.js"></script>
+// スタートボタンの処理
+startButton.addEventListener('click', () => {
+    startTime = new Date().getTime();
+    localStorage.setItem('startTime', startTime); // 開始時間をLocalStorageに保存
+    flipPage(mainScreen);
+    startTimer();
+});
 
-</body>
+// ノートめくるアニメーション
+function flipPage(toScreen) {
+    currentScreen.classList.add('flip');
+    setTimeout(() => {
+        currentScreen.classList.add('hidden');
+        currentScreen.classList.remove('flip');
+        toScreen.classList.remove('hidden');
+        toScreen.classList.add('flip-final');
 
-</html>
+        currentScreen = toScreen;
+
+        setTimeout(() => {
+            toScreen.classList.remove('flip-final');
+        }, 300);
+    }, 300); // 半回転の時間に合わせる
+}
+
+// タイマー開始
+function startTimer() {
+    timer = setInterval(() => {
+        const now = new Date().getTime();
+        const elapsed = Math.floor((now - startTime) / 1000);
+        remainingTime = 1200 - elapsed;
+
+        const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
+        const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
+        remainingTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        remainingTimeAnswerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        if (remainingTime <= 0) {
+            clearInterval(timer);
+            showResult(false);
+        }
+    }, 1000);
+}
+
+// シークバーの値が変わるたびに表示を更新
+crimeHour.addEventListener('input', () => {
+    hourDisplay.textContent = crimeHour.value;
+});
+
+crimeMinute.addEventListener('input', () => {
+    minuteDisplay.textContent = crimeMinute.value.padStart(2, '0');
+});
+
+// ヒント確認
+document.getElementById('confirmHint').addEventListener('click', () => {
+    const selectedHint = document.getElementById('hintSelect');
+    const hintValue = selectedHint.value;
+    const hintText = selectedHint.options[selectedHint.selectedIndex].text;
+
+    if (hintValue && !selectedHint.options[selectedHint.selectedIndex].disabled) { // 無効化チェック
+        if (confirm(`ヒント: ${hintText}を確認しますか？`)) {
+            let hintMessage = '';
+            switch (hintValue) {
+                case '足跡':
+                    hintMessage = '足跡は事件現場の近くにあります。';
+                    break;
+                case 'カーテン':
+                    hintMessage = 'カーテンの裏に何か隠されているかもしれません。';
+                    break;
+                case '棚':
+                    hintMessage = '棚の上には何かが置かれているようです。';
+                    break;
+                case 'ナイフ':
+                    hintMessage = 'ナイフは重要な証拠です。';
+                    break;
+                case '時計':
+                    hintMessage = '時計が止まっています。';
+                    break;
+                case '血痕':
+                    hintMessage = '血痕が見つかりました。';
+                    break;
+                default:
+                    hintMessage = 'ヒントが見つかりません。';
+            }
+
+            hints.push(`${hintValue}: ${hintMessage}`); // 個別ヒントを配列に追加
+            currentHintIndex = hints.length - 1;
+            updateHintDisplay();
+            hintCount++;
+            hintCountDisplay.textContent = hintCount;
+            hintCountAnswerDisplay.textContent = hintCount;
+            selectedHint.options[selectedHint.selectedIndex].disabled = true; // 一度選んだヒントを無効化
+            selectedHint.value = '';
+            if (hints.length > 1) {
+                hintNavigation.classList.remove('hidden');
+            }
+        }
+    } else {
+        alert('ヒントを選択してください。');
+    }
+});
+
+// ヒントの表示を更新
+function updateHintDisplay() {
+    if (hints.length > 0) {
+        hintDisplay.textContent = hints[currentHintIndex];
+        document.getElementById('hintCounter').textContent = `${currentHintIndex + 1}/${hints.length}`;
+    }
+}
+
+// 表示するヒントの選択ボタン
+document.getElementById('prevHint').addEventListener('click', () => {
+    if (currentHintIndex > 0) {
+        currentHintIndex--;
+        updateHintDisplay();
+    }
+});
+
+document.getElementById('nextHint').addEventListener('click', () => {
+    if (currentHintIndex < hints.length - 1) {
+        currentHintIndex++;
+        updateHintDisplay();
+    }
+});
+
+// 解答の送信
+document.getElementById('submitAnswer').addEventListener('click', () => {
+    if (answerDisabled) return; // 1分間解答不可
+
+    const selectedCulprit = document.getElementById('culpritSelect').value;
+    const selectedHour = crimeHour.value;
+    const selectedMinute = crimeMinute.value;
+
+    if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
+        if (selectedCulprit === '宮路 凛人' && selectedHour === '0' && selectedMinute === '30') {
+            showResult(true); // 正解時
+        } else {
+            wrongAnswerCount++;
+            answerDisabled = true;
+            alert("不正解･･･");
+            flipPage(mainScreen);
+            errorMessage.classList.remove('hidden');
+            lockoutAnswer();
+        }
+    }
+});
+
+// 解答ロック
+function lockoutAnswer() {
+    answerDisabled = true;
+    let remainingLockout = 10;
+    document.getElementById('goToAnswer').classList.add('disabled');
+    errorMessage.classList.remove('hidden');
+    lockoutTimer = setInterval(() => {
+        remainingLockout--;
+        errorMessage.textContent = `10秒解答できません（残り ${remainingLockout} 秒）`;
+        if (remainingLockout <= 0) {
+            clearInterval(lockoutTimer);
+            answerDisabled = false;
+            document.getElementById('goToAnswer').classList.remove('disabled');
+            errorMessage.classList.add('hidden');
+        }
+    }, 1000);
+}
+
+// 結果表示
+function showResult(isCorrect) {
+    clearInterval(timer);
+    flipPage(resultScreen);
+
+    
+    finalTime.textContent = remainingTime > 0 ? `${Math.floor(remainingTime / 60)}:${(remainingTime % 60).toString().padStart(2, '0')}` : "時間切れ";
+    finalTimeScore.textContent = Math.max(0, remainingTime);
+
+    finalHintCount.textContent = hintCount;
+    finalHintCountScore.textContent = hintCount * -100;
+
+    wrongAnswerCountDisplay.textContent = wrongAnswerCount;
+    wrongAnswerCountDisplayScore.textContent = wrongAnswerCount * -50;
+
+    const score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50); // スコア計算
+    finalScore.textContent = score;
+
+    if (score >= 800) {
+        rank = "シャーロックホームズ級"
+    } else if(score=777){
+        rank = "ラマヌジャン級"
+    }
+    else if (score >= 600) {
+        rank = "レジェンド級"
+    }  else if (score >= 500) {
+        rank = "ウルトラ級"
+    } else if (score >= 400) {
+        rank = "ハイパー級"
+    } else if (score >= 300) {
+        rank = "スーパー級"
+    } else if (score >= 200) {
+        rank = "ノーマル級"
+    }else {
+        rank = "ミジンコ級"
+    }
+
+    finalRank.textContent = rank;
+}
+document.getElementById('endButton').addEventListener('click', () => {
+    const password = prompt("スタッフ専用パスワードを入力してください:");
+    if (password === "1234") {
+        resultScreen.classList.add('hidden');
+        waitingScreen.classList.remove('hidden');
+        location.reload();
+    } else {
+        alert("パスワードが間違っています。");
+    }
+});
+
+// 「ヒントを求める」ボタン
+document.getElementById('goToHint').addEventListener('click', () => {
+    flipPage(mainScreen);
+});
+
+// 「解答する」ボタン
+document.getElementById('goToAnswer').addEventListener('click', () => {
+    if (!answerDisabled) {
+        flipPage(answerScreen);
+    }
+});
