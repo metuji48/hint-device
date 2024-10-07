@@ -23,6 +23,10 @@ const finalTime = document.getElementById('finalTime');
 const finalHintCount = document.getElementById('finalHintCount');
 const wrongAnswerCountDisplay = document.getElementById('wrongAnswerCount');
 const finalScore = document.getElementById('finalScore');
+const crimeHour = document.getElementById('crimeHour');
+const hourDisplay = document.getElementById('hourDisplay');
+const crimeMinute = document.getElementById('crimeMinute');
+const minuteDisplay = document.getElementById('minuteDisplay');
 
 // スタートボタンの処理
 startButton.addEventListener('click', () => {
@@ -65,15 +69,49 @@ function startTimer() {
     }, 1000);
 }
 
+// シークバーの値が変わるたびに表示を更新
+crimeHour.addEventListener('input', () => {
+    hourDisplay.textContent = crimeHour.value;
+});
+
+crimeMinute.addEventListener('input', () => {
+    minuteDisplay.textContent = crimeMinute.value.padStart(2, '0');
+});
+
 // ヒント確認
 document.getElementById('confirmHint').addEventListener('click', () => {
     const selectedHint = document.getElementById('hintSelect');
     const hintValue = selectedHint.value;
     const hintText = selectedHint.options[selectedHint.selectedIndex].text;
-    
-    if (hintValue && !selectedHint.disabled) {
+
+    if (hintValue && !selectedHint.options[selectedHint.selectedIndex].disabled) { // 無効化チェック
         if (confirm(`ヒント: ${hintText}を確認しますか？`)) {
-            hints.push(hintText);
+            // ヒント内容を設定
+            let hintMessage = '';
+            switch (hintValue) {
+                case '足跡':
+                    hintMessage = '足跡は事件現場の近くにあります。';
+                    break;
+                case 'カーテン':
+                    hintMessage = 'カーテンの裏に何か隠されているかもしれません。';
+                    break;
+                case '棚':
+                    hintMessage = '棚の上には何かが置かれているようです。';
+                    break;
+                case 'ナイフ':
+                    hintMessage = 'ナイフは重要な証拠です。';
+                    break;
+                case '時計':
+                    hintMessage = '時計が止まっています。';
+                    break;
+                case '血痕':
+                    hintMessage = '血痕が見つかりました。';
+                    break;
+                default:
+                    hintMessage = 'ヒントが見つかりません。';
+            }
+
+            hints.push(hintMessage); // 個別ヒントを配列に追加
             currentHintIndex = hints.length - 1;
             updateHintDisplay();
             hintCount++;
@@ -89,62 +127,38 @@ document.getElementById('confirmHint').addEventListener('click', () => {
     }
 });
 
-// ヒント表示を更新
+// ヒントの表示を更新
 function updateHintDisplay() {
-    hintDisplay.textContent = hints[currentHintIndex];
-    document.getElementById('hintCounter').textContent = `${currentHintIndex + 1}/${hints.length}`;
+    if (hints.length > 0) {
+        hintDisplay.textContent = hints[currentHintIndex];
+        document.getElementById('hintCounter').textContent = `${currentHintIndex + 1}/${hints.length}`;
+    }
 }
 
-// 左右の矢印でヒントを切り替え
-document.getElementById('prevHint').addEventListener('click', () => {
-    if (currentHintIndex > 0) {
-        currentHintIndex--;
-        updateHintDisplay();
-    }
-});
-
-document.getElementById('nextHint').addEventListener('click', () => {
-    if (currentHintIndex < hints.length - 1) {
-        currentHintIndex++;
-        updateHintDisplay();
-    }
-});
-
-// 解答シーンへ移動
-document.getElementById('goToAnswer').addEventListener('click', () => {
-    if (!answerDisabled) {
-        flipPage(mainScreen, answerScreen);
-    } else {
-        errorMessage.classList.remove('hidden');
-    }
-});
-
-// 解答ボタンの処理
+// 解答の送信
 document.getElementById('submitAnswer').addEventListener('click', () => {
     const selectedCulprit = document.getElementById('culpritSelect').value;
-    const selectedHour = document.getElementById('crimeHour').value;
-    const selectedMinute = document.getElementById('crimeMinute').value;
+    const selectedHour = crimeHour.value;
+    const selectedMinute = crimeMinute.value;
 
-    const confirmation = confirm(`犯人: ${selectedCulprit}, 犯行時刻: ${selectedHour}:${selectedMinute.padStart(2, '0')} でよろしいですか？`);
-    if (confirmation) {
-        if (selectedCulprit === "犯人1" && selectedHour === "12" && selectedMinute === "00") {
-            showResult(true);
-        } else {
-            wrongAnswerCount++;
-            remainingTime -= 60; // 間違った場合、1分減らす
-            answerDisabled = true;
-            errorMessage.classList.remove('hidden');
-            flipPage(answerScreen, mainScreen);
-            document.getElementById('goToAnswer').classList.add('disabled');
-            setTimeout(() => {
-                answerDisabled = false;
-                errorMessage.classList.add('hidden');
-                document.getElementById('goToAnswer').classList.remove('disabled');
-            }, 60000); // 1分間無効化
-            alert("不正解です。1分減少しました。");
-        }
+    if (checkAnswer(selectedCulprit, selectedHour, selectedMinute)) {
+        showResult(true); // 正解時
+    } else {
+        wrongAnswerCount++;
+        answerDisabled = true;
+        errorMessage.classList.remove('hidden');
+        setTimeout(() => {
+            errorMessage.classList.add('hidden');
+            answerDisabled = false;
+        }, 60000); // 1分間解答不可
     }
 });
+
+// 解答のチェック
+function checkAnswer(culprit, hour, minute) {
+    // 仮の正解: 犯人2, 14時30分
+    return culprit === '犯人2' && hour === '14' && minute === '30';
+}
 
 // 結果表示
 function showResult(isCorrect) {
@@ -153,25 +167,12 @@ function showResult(isCorrect) {
 
     finalHintCount.textContent = hintCount;
     wrongAnswerCountDisplay.textContent = wrongAnswerCount;
-    finalTime.textContent = remainingTime > 0 ? `残り時間: ${Math.floor(remainingTime / 60)}:${remainingTime % 60}` : "時間切れ";
-    const score = Math.max(0, remainingTime - (hintCount * 100));
+    finalTime.textContent = remainingTime > 0 ? `残り時間: ${Math.floor(remainingTime / 60)}:${(remainingTime % 60).toString().padStart(2, '0')}` : "時間切れ";
+    const score = Math.max(0, remainingTime - (hintCount * 100)); // スコア計算
     finalScore.textContent = score;
 }
-// シークバーの値が変わるたびに表示を更新するイベントリスナーを追加
-crimeHour.addEventListener('input', () => {
-    hourDisplay.textContent = crimeHour.value;
-});
 
-crimeMinute.addEventListener('input', () => {
-    minuteDisplay.textContent = crimeMinute.value.padStart(2, '0');
-});
-// 終了ボタンの処理
-document.getElementById('endButton').addEventListener('click', () => {
-    const password = prompt("スタッフ専用パスワードを入力してください:");
-    if (password === "1234") {
-        flipPage(resultScreen, waitingScreen);
-        location.reload();
-    } else {
-        alert("パスワードが間違っています。");
-    }
+// ヒントを求めるボタンの処理
+document.getElementById('goToHint').addEventListener('click', () => {
+    flipPage(mainScreen, answerScreen);
 });
