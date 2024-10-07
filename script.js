@@ -19,32 +19,45 @@ const hintCountAnswerDisplay = document.getElementById('hintCountAnswer');
 const hintDisplay = document.getElementById('hintDisplay');
 const hintNavigation = document.getElementById('hintNavigation');
 const errorMessage = document.getElementById('errorMessage');
+
 const finalTime = document.getElementById('finalTime');
 const finalHintCount = document.getElementById('finalHintCount');
 const wrongAnswerCountDisplay = document.getElementById('wrongAnswerCount');
+
+const finalTimeScore = document.getElementById('finalTimeScore');
+const finalHintCountScore = document.getElementById('finalHintCountScore');
+const wrongAnswerCountDisplayScore = document.getElementById('wrongAnswerCountScore');
+
 const finalScore = document.getElementById('finalScore');
+const finalRank = document.getElementById('finalRank');
+
 const crimeHour = document.getElementById('crimeHour');
 const hourDisplay = document.getElementById('hourDisplay');
 const crimeMinute = document.getElementById('crimeMinute');
 const minuteDisplay = document.getElementById('minuteDisplay');
 const endButton = document.getElementById('endButton');
 
+let currentScreen = waitingScreen;
+
 // スタートボタンの処理
 startButton.addEventListener('click', () => {
     startTime = new Date().getTime();
     localStorage.setItem('startTime', startTime); // 開始時間をLocalStorageに保存
-    flipPage(waitingScreen, mainScreen);
+    flipPage(mainScreen);
     startTimer();
 });
 
 // ノートめくるアニメーション
-function flipPage(fromScreen, toScreen) {
-    fromScreen.classList.add('flip');
+function flipPage(toScreen) {
+    currentScreen.classList.add('flip');
     setTimeout(() => {
-        fromScreen.classList.add('hidden');
-        fromScreen.classList.remove('flip');
+        currentScreen.classList.add('hidden');
+        currentScreen.classList.remove('flip');
         toScreen.classList.remove('hidden');
         toScreen.classList.add('flip-final');
+
+        currentScreen = toScreen;
+
         setTimeout(() => {
             toScreen.classList.remove('flip-final');
         }, 300);
@@ -56,7 +69,7 @@ function startTimer() {
     timer = setInterval(() => {
         const now = new Date().getTime();
         const elapsed = Math.floor((now - startTime) / 1000);
-        remainingTime = 3 - elapsed;
+        remainingTime = 10 - elapsed;
 
         const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
         const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
@@ -165,8 +178,8 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         } else {
             wrongAnswerCount++;
             answerDisabled = true;
-            alert("不正解･･･ 1分間は解答が出来なくなります。");
-            flipPage(answerScreen, mainScreen);
+            alert("不正解･･･");
+            flipPage(mainScreen);
             errorMessage.classList.remove('hidden');
             lockoutAnswer();
         }
@@ -176,12 +189,12 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
 // 解答ロック
 function lockoutAnswer() {
     answerDisabled = true;
-    let remainingLockout = 60;
+    let remainingLockout = 10;
     document.getElementById('goToAnswer').classList.add('disabled');
     errorMessage.classList.remove('hidden');
     lockoutTimer = setInterval(() => {
         remainingLockout--;
-        errorMessage.textContent = `1分間解答できません。（残り ${remainingLockout} 秒）`;
+        errorMessage.textContent = `10秒解答できません（残り ${remainingLockout} 秒）`;
         if (remainingLockout <= 0) {
             clearInterval(lockoutTimer);
             answerDisabled = false;
@@ -194,12 +207,19 @@ function lockoutAnswer() {
 // 結果表示
 function showResult(isCorrect) {
     clearInterval(timer);
-    flipPage(isCorrect ? answerScreen : mainScreen, resultScreen);
+    flipPage(resultScreen);
+
+    
+    finalTime.textContent = remainingTime > 0 ? `${Math.floor(remainingTime / 60)}:${(remainingTime % 60).toString().padStart(2, '0')}` : "時間切れ";
+    finalTimeScore.textContent = Math.max(0, remainingTime);
 
     finalHintCount.textContent = hintCount;
+    finalHintCountScore.textContent = hintCount * -100;
+
     wrongAnswerCountDisplay.textContent = wrongAnswerCount;
-    finalTime.textContent = remainingTime > 0 ? `残り時間: ${Math.floor(remainingTime / 60)}:${(remainingTime % 60).toString().padStart(2, '0')}` : "時間切れ";
-    const score = Math.max(0, remainingTime - (hintCount * 100)); // スコア計算
+    wrongAnswerCountDisplayScore.textContent = wrongAnswerCount * -50;
+
+    const score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50); // スコア計算
     finalScore.textContent = score;
 
     if (score >= 1000) {
@@ -210,7 +230,7 @@ function showResult(isCorrect) {
         rank = "Cランク"
     }
 
-    finalScore.textContent += ` (${rank})`;
+    finalRank.textContent = rank;
 }
 document.getElementById('endButton').addEventListener('click', () => {
     const password = prompt("スタッフ専用パスワードを入力してください:");
@@ -225,12 +245,12 @@ document.getElementById('endButton').addEventListener('click', () => {
 
 // 「ヒントを求める」ボタン
 document.getElementById('goToHint').addEventListener('click', () => {
-    flipPage(answerScreen, mainScreen);
+    flipPage(mainScreen);
 });
 
 // 「解答する」ボタン
 document.getElementById('goToAnswer').addEventListener('click', () => {
     if (!answerDisabled) {
-        flipPage(mainScreen, answerScreen);
+        flipPage(answerScreen);
     }
 });
