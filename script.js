@@ -226,7 +226,13 @@ function showResult(isCorrect) {
     const score = Math.max(0, remainingTime - (hintCount * 100)); // スコア計算
     finalScore.textContent = score;
 
-    const rank = score >= 1000 ? 'Aランク' : 'Bランク'; // ランク計算
+    if(score>=1000){
+        rank="Aランク"
+    } else if(score>=700) {
+        rank="Bランク"
+    } else{
+        rank="Cランク"
+    }
     finalScore.textContent += ` (${rank})`;
 }
 document.getElementById('endButton').addEventListener('click', () => {
