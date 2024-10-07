@@ -11,6 +11,7 @@
 <!-- 待機シーン -->
 <div class="notebook closed" id="waitingScreen">
     <h1 class="title">嫌われ者の事件帖</h1>
+    <h2 class="subtitle">1-1 HR</h2>
     <button id="startButton">スタート</button>
 </div>
 
@@ -22,12 +23,15 @@
             <p>残り時間: <span id="remainingTime">20:00</span></p>
             <p>ヒント使用回数: <span id="hintCount">0</span></p>
         </div>
-        <h2>犯人を解答する</h2>
-        <button id="goToAnswer" class="answer-button">解答する</button>
+        <button id="goToAnswer" class="button answer-button">解答する</button>
+        <button id="goToHint" class="button hint-button disabled">ヒントを求める</button>
         <div id="errorMessage" class="error-message hidden">1分間解答できません。</div>
     </div>
-    <div class="right">
-        <h2>ヒントを選択してください</h2>
+    <div class="right smartphone-design">
+        <div id="chatBox" class="chat-box">
+            <div class="chat-message user-message">ヒントを求めます</div>
+            <div class="chat-message hint-response">ヒント: ここが重要です。</div>
+        </div>
         <select id="hintSelect">
             <option value="" disabled selected>ヒントを選択</option>
             <option value="足跡">手がかり: 足跡</option>
@@ -55,8 +59,10 @@
             <p>残り時間: <span id="remainingTimeAnswer">20:00</span></p>
             <p>ヒント使用回数: <span id="hintCountAnswer">0</span></p>
         </div>
+        <button id="goToHint" class="button hint-button">ヒントを求める</button>
+        <button id="goToAnswer" class="button answer-button disabled">解答する</button>
     </div>
-    <div class="right">
+    <div class="right smartphone-design">
         <h2>犯人を選択してください</h2>
         <select id="culpritSelect" class="centered-select">
             <option value="犯人1">犯人1</option>
@@ -72,7 +78,7 @@
             <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
             <span id="minuteDisplay">00</span>分
         </div>
-        <button id="submitAnswer">解答する</button>
+        <button id="submitAnswer" class="center-button">解答する</button>
     </div>
 </div>
 
