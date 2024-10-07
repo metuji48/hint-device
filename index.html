@@ -43,9 +43,9 @@
                     <option value="血痕">血痕</option>
                 </select>
             </div>
-            <button id="confirmHint">ヒントを確認する</button>
+            <button id="confirmHint">ヒントを確認</button>
             <div id="hintDisplay" class="sticky-note">ヒントはまだ確認されていません</div>
-            <div id="hintNavigation" class="hint-navigation hidden">
+            <div id="hintNavigation" class="hint-navigation">
                 <span id="hintCounter">1/1</span>
                 <button id="prevHint">&larr;</button>
                 <button id="nextHint">&rarr;</button>
@@ -65,13 +65,13 @@
             <button id="goToAnswer" class="button answer-button disabled">解答する</button>
         </div>
         <div class="right">
-            <h2>犯人を選択してください</h2>
+            <h2>犯人を選択</h2>
             <select id="culpritSelect" class="centered-select">
                 <option value="犯人1">犯人1</option>
                 <option value="犯人2">犯人2</option>
                 <option value="犯人3">犯人3</option>
             </select>
-            <h3>犯行時刻を選択してください</h3>
+            <h3>犯行時刻を選択</h3>
             <div class="centered-slider">
                 <input type="range" id="crimeHour" class="slider" min="0" max="23" value="0">
                 <span id="hourDisplay">0</span>時
