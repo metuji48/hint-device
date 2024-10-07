@@ -69,7 +69,7 @@ function startTimer() {
     timer = setInterval(() => {
         const now = new Date().getTime();
         const elapsed = Math.floor((now - startTime) / 1000);
-        remainingTime = 10 - elapsed;
+        remainingTime = 1200 - elapsed;
 
         const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
         const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
@@ -173,7 +173,7 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     const selectedMinute = crimeMinute.value;
 
     if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
-        if (selectedCulprit === '犯人2' && selectedHour === '14' && selectedMinute === '30') {
+        if (selectedCulprit === '宮路 凛人' && selectedHour === '0' && selectedMinute === '30') {
             showResult(true); // 正解時
         } else {
             wrongAnswerCount++;
@@ -222,12 +222,23 @@ function showResult(isCorrect) {
     const score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50); // スコア計算
     finalScore.textContent = score;
 
-    if (score >= 1000) {
-        rank = "Aランク"
-    } else if (score >= 700) {
-        rank = "Bランク"
-    } else {
-        rank = "Cランク"
+    if (score >= 800) {
+        rank = "シャーロックホームズ級"
+    } else if(score=777){
+        rank = "ラマヌジャン級"
+    }
+    else if (score >= 600) {
+        rank = "レジェンド級"
+    }  else if (score >= 500) {
+        rank = "ウルトラ級"
+    } else if (score >= 400) {
+        rank = "ハイパー級"
+    } else if (score >= 300) {
+        rank = "スーパー級"
+    } else if (score >= 200) {
+        rank = "ノーマル級"
+    }else {
+        rank = "ミジンコ級"
     }
 
     finalRank.textContent = rank;
