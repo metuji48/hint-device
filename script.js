@@ -56,10 +56,10 @@ function startTimer() {
     timer = setInterval(() => {
         const now = new Date().getTime();
         const elapsed = Math.floor((now - startTime) / 1000);
-        remainingTime = 12 - elapsed;
+        remainingTime = 3 - elapsed;
 
-        const minutes = Math.floor(remainingTime / 60);
-        const seconds = remainingTime % 60;
+        const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
+        const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
         remainingTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         remainingTimeAnswerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
@@ -194,7 +194,7 @@ function lockoutAnswer() {
 // 結果表示
 function showResult(isCorrect) {
     clearInterval(timer);
-    flipPage(answerScreen, resultScreen);
+    flipPage(isCorrect ? answerScreen : mainScreen, resultScreen);
 
     finalHintCount.textContent = hintCount;
     wrongAnswerCountDisplay.textContent = wrongAnswerCount;
