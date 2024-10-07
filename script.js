@@ -165,6 +165,7 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         } else {
             wrongAnswerCount++;
             answerDisabled = true;
+            lockoutAnswer();
             alert("残念！");
             errorMessage.classList.remove('hidden');
             setTimeout(() => {
@@ -174,6 +175,24 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         }
     }
 });
+
+// 解答ロック
+function lockoutAnswer() {
+    answerDisabled = true;
+    let remainingLockout = 60;
+    document.getElementById('goToAnswerMain').style.backgroundColor = "#888";
+    errorMessage.classList.remove('hidden');
+    lockoutTimer = setInterval(() => {
+        remainingLockout--;
+        lockoutTimeDisplay.textContent = remainingLockout;
+        if (remainingLockout <= 0) {
+            clearInterval(lockoutTimer);
+            answerDisabled = false;
+            document.getElementById('goToAnswerMain').style.backgroundColor = "#333";
+            errorMessage.classList.add('hidden');
+        }
+    }, 1000);
+}
 
 
 // 表示するヒントの選択ボタン
@@ -189,6 +208,7 @@ document.getElementById('nextHint').addEventListener('click', () => {
         updateHintDisplay();
     }
 });
+
 // 解答のチェック
 function checkAnswer(culprit, hour, minute) {
     // 仮の正解: 犯人2, 14時30分
@@ -220,9 +240,12 @@ document.getElementById('endButton').addEventListener('click', () => {
     }
 });
 
-// 「ヒントを求める」ボタンの有効化/無効化
+// 「ヒントを求める」ボタン
 document.getElementById('goToHint').addEventListener('click', () => {
-    
-        flipPage(mainScreen, answerScreen);
-    
+    flipPage(answerScreen, mainScreen);
+});
+
+// 「解答する」ボタン
+document.getElementById('goToAnswer').addEventListener('click', () => {
+    flipPage(mainScreen, answerScreen);
 });
