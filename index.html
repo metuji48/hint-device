@@ -12,8 +12,11 @@
 
     <!-- 待機シーン -->
     <div class="notebook closed" id="waitingScreen">
-        <h1 class="title">嫌われ者の事件帖</h1>
-        <h2 class="subtitle">1-1 HR</h2>
+        <div>
+            <img src ="1-1_logo2.png" width="70%">
+        </div>
+        <br>
+        <h1 class="subtitle">1-1 HR</h1>
         <button id="startButton">スタート</button>
     </div>
 
@@ -35,12 +38,14 @@
                 <div id="hintLabel" class="select-label">手がかり：</div>
                 <select id="hintSelect">
                     <option value="" disabled selected>ヒントを選択</option>
-                    <option value="足跡">足跡</option>
-                    <option value="カーテン">カーテン</option>
-                    <option value="棚">棚</option>
-                    <option value="ナイフ">ナイフ</option>
-                    <option value="時計">時計</option>
-                    <option value="血痕">血痕</option>
+                    <option value="懐中電灯">懐中電灯</option>
+                    <option value="包丁">包丁</option>
+                    <option value="ロープ">ローブ</option>
+                    <option value="タバコ">タバコ</option>
+                    <option value="雑誌">雑誌</option>
+                    <option value="布団">布団</option>
+                    <option value="座布団">座布団</option>
+                    <option value="卒アル">卒アル</option>
                 </select>
             </div>
             <button id="confirmHint">ヒントを確認</button>
@@ -91,6 +96,7 @@
 
     <!-- 結果シーン -->
     <div class="notebook closed hidden" id="resultScreen">
+        
         <h2>結果</h2>
         <table cellpadding="10px">
             <tr>
@@ -123,6 +129,10 @@
         <p>QRコードはこちら</p>
         <button id="endButton">終了</button>
     </div>
+ 
+
+
+
 
     <script src="script.js"></script>
 
