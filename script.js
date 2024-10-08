@@ -223,23 +223,23 @@ function showResult(isCorrect) {
     finalScore.textContent = score;
 
     if (score >= 800) {
-        rank = "シャーロックホームズ級"
+        rank = "シャーロックホームズ級";
     }else if(score===777){
-        rank = "ラマヌジャン級"
+        rank = "ラマヌジャン級";
     }else if (score >= 600) {
-        rank = "レジェンド級"
+        rank = "レジェンド級";
     }else if (score >= 500) {
-        rank = "ウルトラ級"
+        rank = "ウルトラ級";
     }else if (score >= 400) {
-        rank = "ハイパー級"
+        rank = "ハイパー級";
     }else if (score >= 300) {
-        rank = "スーパー級"
+        rank = "スーパー級";
     }else if (score >= 200) {
-        rank = "ノーマル級"
+        rank = "ノーマル級";
     }else if(score===77){
-        rank = "ラマヌジャン級"
+        rank = "ラマヌジャン級";
     }else {
-        rank = "ミジンコ級"
+        rank = "ミジンコ級";
     };
 
     finalRank.textContent = rank;
@@ -266,3 +266,9 @@ document.getElementById('goToAnswer').addEventListener('click', () => {
         flipPage(answerScreen);
     }
 });
+
+
+  window.addEventListener('beforeunload', (e) => {
+    e.preventDefault();
+    return message;
+  })
