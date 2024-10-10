@@ -29,12 +29,12 @@
                 <p>ヒント使用回数: <span id="hintCount">0</span></p>
             </div>
             <button id="goToAnswer" class="button answer-button">解答する</button>
-            <button class="button hint-button disabled">ヒントを求める</button>
+            <button class="button hint-button disabled">ヒントを見る</button>
             <div id="errorMessage" class="error-message hidden">10秒間解答できません。</div>
         </div>
         <div class="right">
             <div id="hintBox" class="hint-box">
-                <h2>ヒントを求める</h2>
+                <h2>ヒントを見る</h2>
                 <div id="hintLabel" class="select-label">手がかり：</div>
                 <select id="hintSelect">
                     <option value="" disabled selected>ヒントを選択</option>
@@ -49,11 +49,10 @@
                 </select>
             </div>
             <button id="confirmHint">ヒントを確認</button>
-            <div id="hintDisplay" class="sticky-note">
-                <p id=""></p>
-                ヒントはまだ確認されていません
+            <div id="hintDisplay" class="sticky-note" >
+                <p>ヒントは未選択です</p>
             </div>
-            <div id="hintNavigation" class="hint-navigation hidden">
+            <div id="hintNavigation" class="hint-navigation hidden" >
                 <span id="hintCounter">1/1</span>
                 <button id="prevHint">&larr;</button>
                 <button id="nextHint">&rarr;</button>
