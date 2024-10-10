@@ -13,12 +13,16 @@ h1 {
     border-bottom: 1px solid #999;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     text-align: center;
 }
-.titleLogo{
+
+.titleLogo {
     margin-top: 40px;
 }
+
 button {
     display: block;
     margin: 20px auto;
@@ -47,7 +51,7 @@ button.disabled {
     justify-content: center;
     align-items: center;
     width: 250px;
-    margin:0 auto;
+    margin: 0 auto;
     padding: .9em 2em;
     border: none;
     border-radius: 10px;
@@ -74,6 +78,40 @@ button.disabled {
     border-right: 2px solid #fff;
     content: '';
     transition: transform 0.05s ease;
+}
+
+.side-bar {
+    margin-top: 50px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+
+.side-bar-button {
+    margin: 5px 0;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #333;
+    height: fit-content;
+    width: 60%;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.1s ease-out 0s;
+}
+
+.side-bar-button.abled {
+    background-color: #eee;
+}
+
+.side-bar-button.abled:hover {
+    background-color: #f8f8f8;
+}
+
+.side-bar-button.disabled {
+    border-top: 5px solid #2589d0;
+    background-color: transparent;
 }
 
 select {
@@ -140,12 +178,9 @@ table {
     background-color: #999;
 }
 
-.notebook.open .left, .notebook.open .right {
-    width: 45%;
-}
-
+.notebook.open .left,
 .notebook.open .right {
-    padding-top: 50px;
+    width: 45%;
 }
 
 .select-label {
@@ -170,7 +205,7 @@ table {
     border: 1px solid #ccc;
     border-radius: 10px;
     position: relative;
-    line-height:30px;
+    line-height: 30px;
     overflow-y: auto;
 }
 
@@ -213,14 +248,16 @@ table {
     font-size: 1.2em;
 }
 
-.centered-select, .centered-slider {
+.centered-select,
+.centered-slider {
     text-align: center;
     margin: 0 auto;
     display: block;
     width: 60%;
 }
 
-#remainingTime, #remainingTimeAnswer {
+#remainingTime,
+#remainingTimeAnswer {
     display: block;
     font-size: 2.2em;
 }
@@ -232,6 +269,7 @@ table {
         animation-timing-function: ease-in;
         clip-path: inset(0);
     }
+
     100% {
         clip-path: inset(0 100% 0 0);
     }
@@ -241,6 +279,7 @@ table {
     0% {
         clip-path: inset(0 0 0 100%);
     }
+
     100% {
         clip-path: inset(0);
         animation-timing-function: ease-out;
@@ -260,4 +299,53 @@ table {
 
 .hidden {
     display: none;
+}
+
+/* アッペン */
+
+.side-tab {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+}
+
+.side-tab>label {
+    flex: none;
+    padding: .7em 1em;
+    border-right: 1px solid #f0f0f0;
+    border-radius: 0;
+    background-color: #e9f0f6;
+    color: #535353;
+    font-size: .9em;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+.side-tab>label:hover {
+    opacity: .8;
+}
+
+.side-tab input {
+    display: none;
+}
+
+.side-tab>div {
+    display: none;
+    width: 100%;
+    padding: 1.5em 1em;
+    background-color: #fff;
+}
+
+.side-tab label:has(:checked) {
+    background-color: #fff;
+    border-color: #2589d0 #fff #f0f0f0;
+    border-style: solid;
+    border-width: 1px 1px 1px 4px;
+    border-radius: 5px;
+    color: #333333;
+}
+
+.side-tab label:has(:checked)+div {
+    display: block;
 }
