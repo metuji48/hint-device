@@ -215,7 +215,7 @@ function showResult(isCorrect) {
     clearInterval(timer);
     flipPage(resultScreen);
 
-    
+
     finalTime.textContent = remainingTime > 0 ? `${Math.floor(remainingTime / 60)}:${(remainingTime % 60).toString().padStart(2, '0')}` : "時間切れ";
     finalTimeScore.textContent = Math.max(0, remainingTime);
 
@@ -230,28 +230,28 @@ function showResult(isCorrect) {
 
     if (score >= 800) {
         rank = "シャーロック・ホームズ級";
-    }else if(score===777){
+    } else if (score === 777) {
         rank = "ラマヌジャン級";
-    }else if (score >= 600) {
+    } else if (score >= 600) {
         rank = "レジェンド";
-    }else if (score >= 500) {
+    } else if (score >= 500) {
         rank = "ウルトラ";
-    }else if (score >= 400) {
+    } else if (score >= 400) {
         rank = "ハイパー";
-    }else if (score >= 300) {
+    } else if (score >= 300) {
         rank = "スーパー";
-    }else if (score >= 200) {
+    } else if (score >= 200) {
         rank = "ノーマル";
-    }else if(score===77){
+    } else if (score === 77) {
         rank = "ラマヌジャン級";
-    }else if(score>=100){
+    } else if (score >= 100) {
         rank = "ミジンコ級";
-    }else{
+    } else {
         rank = "似非"
     }
     ;
 
-    finalRank.textContent = rank+"探偵";
+    finalRank.textContent = rank + "探偵";
 }
 document.getElementById('endButton').addEventListener('click', () => {
     const password = prompt("リロード用:");
@@ -277,8 +277,7 @@ document.getElementById('goToAnswer').addEventListener('click', () => {
 });
 
 // ウィンドウを離れるときに警告をだす
-  window.addEventListener('beforeunload', (e) => {
+window.addEventListener('beforeunload', (e) => {
     e.preventDefault();
     return message;
-  })
-  
+});
