@@ -103,28 +103,28 @@ document.getElementById('confirmHint').addEventListener('click', () => {
             let hintMessage = '';
             switch (hintValue) {
                 case '懐中電灯':
-                    hintMessage = '「懐中電灯は落ちてたやつなんだけど、中に電池が入ってなかったから、通常の使用目的ではなさそうなんだ」\n「調べてみたら何かわかるかもしれないな」';
+                    hintMessage = '「懐中電灯は落ちてたやつなんだけど、中に電池が入ってなかったから、通常の使用目的ではなさそうなんだ」<br>「調べてみたら何かわかるかもしれないな」';
                     break;
                 case '包丁':
-                    hintMessage = '「包丁はおそらく千田を殺すための凶器で使われたやつなんだがな」\n「なんか妙なんだよな」\n「とりあえず、調べてみてくれよ」';
+                    hintMessage = '「包丁はおそらく千田を殺すための凶器で使われたやつなんだがな」<br>「なんか妙なんだよな」<br>「とりあえず、調べてみてくれよ」';
                     break;
                 case 'ロープ':
-                    hintMessage = '「あぁ、このロープか」\n「ロープは天井の留め具につながるほうと奈賀岡の首に絡まっている方に千切れていたんだ」\n「奈賀岡の死因は首元部分の圧迫死だったから、このロープで首を吊って死んだことにほぼ間違いないんだがな」';
+                    hintMessage = '「あぁ、このロープか」<br>「ロープは天井の留め具につながるほうと奈賀岡の首に絡まっている方に千切れていたんだ」<br>「奈賀岡の死因は首元部分の圧迫死だったから、このロープで首を吊って死んだことにほぼ間違いないんだがな」';
                     break;
                 case 'タバコ':
-                    hintMessage = '「窓際に落ちてたやつだな」\n「一応補足しておくと、発見されたタバコは人の手によって火が消されたわけじゃなくて、勝手に燃えて火が消えたようなんだ」\n「おそらくこのタバコを吸ってる最中に殺されたんだろうな」';
+                    hintMessage = '「窓際に落ちてたやつだな」<br>「一応補足しておくと、発見されたタバコは人の手によって火が消されたわけじゃなくて、勝手に燃えて火が消えたようなんだ」<br>「おそらくこのタバコを吸ってる最中に殺されたんだろうな」';
                     break;
                 case '布団':
-                    hintMessage = '「敷きっぱなしになっている布団は、まあこれも当たり前だが奈賀岡のものだ」\n「千田が来るというのに布団すら畳まないなんてな、まったく……」\n「話がそれちまったな、布団にはおそらく何もないだろう」';
+                    hintMessage = '「敷きっぱなしになっている布団は、まあこれも当たり前だが奈賀岡のものだ」<br>「千田が来るというのに布団すら畳まないなんてな、まったく……」<br>「話がそれちまったな、布団にはおそらく何もないだろう」';
                     break;
                 case '座布団':
-                    hintMessage = '「座布団には何もなかったよ...見たらわかるだろう？」\n「探偵さんの推理力も衰えちまったか？」';
+                    hintMessage = '「座布団には何もなかったよ...見たらわかるだろう？」<br>「探偵さんの推理力も衰えちまったか？」';
                     break;
                 case '雑誌':
-                    hintMessage = '「棚に置いてあった雑誌は、奈賀岡が購入したもので間違いないだろう、クローゼットから同一シリーズの雑誌が多数出てきた」\n「これはおそらく、何ら事件と関係はないだろうね」\n「探偵さん、しっかりしてくれよな」';
+                    hintMessage = '「棚に置いてあった雑誌は、奈賀岡が購入したもので間違いないだろう、クローゼットから同一シリーズの雑誌が多数出てきた」<br>「これはおそらく、何ら事件と関係はないだろうね」<br>「探偵さん、しっかりしてくれよな」';
                     break;
                 case '卒アル':
-                    hintMessage = '「この奈賀岡と千田は君の母校と同じ高校に通っていたようでね、だからいくらか見覚えがあるんじゃあないかな」 \n「爆破予告といい卒業生の死といい、この高校はろくなことがないな」\n「ああ、ごめん、君のことを言ったわけじゃないんだ」「とりあえず、この卒アルの内容は詳しく見てないからわからないが、後で調べてみてもいいと思うぞ」';
+                    hintMessage = '「この奈賀岡と千田は君の母校と同じ高校に通っていたようでね、だからいくらか見覚えがあるんじゃあないかな」 <br>「爆破予告といい卒業生の死といい、この高校はろくなことがないな」<br>「ああ、ごめん、君のことを言ったわけじゃないんだ」<br>「とりあえず、この卒アルの内容は詳しく見てないからわからないが、後で調べてみてもいいと思うぞ」';
                     break;
                 default:
                     hintMessage = 'ヒントが見つかりません。';
@@ -150,8 +150,8 @@ document.getElementById('confirmHint').addEventListener('click', () => {
 // ヒントの表示を更新
 function updateHintDisplay() {
     if (hints.length > 0) {
-        hintDisplay.textContent = hints[currentHintIndex];
-        document.getElementById('hintCounter').textContent = `${currentHintIndex + 1}/${hints.length}`;
+        hintDisplay.innerHTML = hints[currentHintIndex];
+        document.getElementById('hintCounter').innerText = `${currentHintIndex + 1}/${hints.length}`;
     }
 }
 
@@ -215,7 +215,7 @@ function showResult(isCorrect) {
     clearInterval(timer);
     flipPage(resultScreen);
 
-    
+
     finalTime.textContent = remainingTime > 0 ? `${Math.floor(remainingTime / 60)}:${(remainingTime % 60).toString().padStart(2, '0')}` : "時間切れ";
     finalTimeScore.textContent = Math.max(0, remainingTime);
 
@@ -230,28 +230,28 @@ function showResult(isCorrect) {
 
     if (score >= 800) {
         rank = "シャーロック・ホームズ級";
-    }else if(score===777){
+    } else if (score === 777) {
         rank = "ラマヌジャン級";
-    }else if (score >= 600) {
+    } else if (score >= 600) {
         rank = "レジェンド";
-    }else if (score >= 500) {
+    } else if (score >= 500) {
         rank = "ウルトラ";
-    }else if (score >= 400) {
+    } else if (score >= 400) {
         rank = "ハイパー";
-    }else if (score >= 300) {
+    } else if (score >= 300) {
         rank = "スーパー";
-    }else if (score >= 200) {
+    } else if (score >= 200) {
         rank = "ノーマル";
-    }else if(score===77){
+    } else if (score === 77) {
         rank = "ラマヌジャン級";
-    }else if(score>=100){
+    } else if (score >= 100) {
         rank = "ミジンコ級";
-    }else{
+    } else {
         rank = "似非"
     }
     ;
 
-    finalRank.textContent = rank+"探偵";
+    finalRank.textContent = rank + "探偵";
 }
 document.getElementById('endButton').addEventListener('click', () => {
     const password = prompt("リロード用:");
@@ -277,8 +277,7 @@ document.getElementById('goToAnswer').addEventListener('click', () => {
 });
 
 // ウィンドウを離れるときに警告をだす
-  window.addEventListener('beforeunload', (e) => {
+window.addEventListener('beforeunload', (e) => {
     e.preventDefault();
     return message;
-  })
-  
+});
