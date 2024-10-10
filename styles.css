@@ -16,7 +16,9 @@ h1 {
 h1, h2, h3 {
     text-align: center;
 }
-
+.titleLogo{
+    margin-top: 40px;
+}
 button {
     display: block;
     margin: 20px auto;
@@ -38,6 +40,40 @@ button:hover {
 button.disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+#startButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    margin:0 auto;
+    padding: .9em 2em;
+    border: none;
+    border-radius: 10px;
+    background-color: #ff503c;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1em;
+}
+
+#startButton:hover {
+    background-color: #ff7464;
+
+    #startButtonArrow {
+        transform: translateX(15px) rotate(45deg);
+    }
+}
+
+#startButtonArrow {
+    transform: rotate(45deg);
+    width: 8px;
+    height: 8px;
+    margin-left: 10px;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
+    content: '';
+    transition: transform 0.05s ease;
 }
 
 select {
@@ -134,9 +170,11 @@ table {
     border: 1px solid #ccc;
     border-radius: 10px;
     position: relative;
+    line-height:30px;
+    overflow-y: auto;
 }
 
-.sticky-note::before {
+/*.sticky-note::before {
     position: absolute;
     bottom: -5px;
     right: 7px;
@@ -147,7 +185,7 @@ table {
     background-color: #ddd;
     content: '';
     filter: blur(4px);
-}
+}*/
 
 .error-message {
     color: red;
