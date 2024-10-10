@@ -229,35 +229,38 @@ function showResult(isCorrect) {
     finalScore.textContent = score;
 
     if (score >= 800) {
-        rank = "シャーロックホームズ級";
+        rank = "シャーロック・ホームズ級";
     }else if(score===777){
         rank = "ラマヌジャン級";
     }else if (score >= 600) {
-        rank = "レジェンド級";
+        rank = "レジェンド";
     }else if (score >= 500) {
-        rank = "ウルトラ級";
+        rank = "ウルトラ";
     }else if (score >= 400) {
-        rank = "ハイパー級";
+        rank = "ハイパー";
     }else if (score >= 300) {
-        rank = "スーパー級";
+        rank = "スーパー";
     }else if (score >= 200) {
-        rank = "ノーマル級";
+        rank = "ノーマル";
     }else if(score===77){
         rank = "ラマヌジャン級";
-    }else {
+    }else if(score>=100){
         rank = "ミジンコ級";
-    };
+    }else{
+        rank = "似非"
+    }
+    ;
 
-    finalRank.textContent = rank;
+    finalRank.textContent = rank+"探偵";
 }
 document.getElementById('endButton').addEventListener('click', () => {
-    const password = prompt("スタッフ専用パスワードを入力してください:");
+    const password = prompt("リロード用:");
     if (password === "1234") {
         resultScreen.classList.add('hidden');
         waitingScreen.classList.remove('hidden');
         location.reload();
     } else {
-        alert("パスワードが間違っています。");
+        alert("ちゃんとスタッフに返してね💛");
     }
 });
 
