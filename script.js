@@ -60,8 +60,8 @@ function flipPage(toScreen) {
 
         setTimeout(() => {
             toScreen.classList.remove('flip-final');
-        }, 300);
-    }, 300); // 半回転の時間に合わせる
+        }, 1);
+    }, 1); // 半回転の時間に合わせる
 }
 
 // タイマー開始
@@ -178,17 +178,22 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     const selectedHour = crimeHour.value;
     const selectedMinute = crimeMinute.value;
 
-    if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
-        if (selectedCulprit === '宮路 凛人' && selectedHour === '0' && selectedMinute === '30') {
-            showResult(true); // 正解時
-        } else {
-            wrongAnswerCount++;
-            answerDisabled = true;
-            alert("不正解･･･");
-            flipPage(mainScreen);
-            errorMessage.classList.remove('hidden');
-            lockoutAnswer();
+
+    if (selectedCulprit) { // 無効化チェック
+        if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
+            if (selectedCulprit === '宮路 凛人' && selectedHour === '0' && selectedMinute === '30') {
+                showResult(true); // 正解時
+            } else {
+                wrongAnswerCount++;
+                answerDisabled = true;
+                alert("不正解･･･");
+                flipPage(mainScreen);
+                errorMessage.classList.remove('hidden');
+                lockoutAnswer();
+            }
         }
+    }else {
+        alert('犯人を選択してください。');
     }
 });
 
@@ -260,7 +265,7 @@ document.getElementById('endButton').addEventListener('click', () => {
         waitingScreen.classList.remove('hidden');
         location.reload();
     } else {
-        alert("ちゃんとスタッフに返してね💛");
+        alert("ちゃんとスタッフに返してね");
     }
 });
 
