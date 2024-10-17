@@ -41,10 +41,12 @@ let currentScreen = waitingScreen;
 
 // スタートボタンの処理
 startButton.addEventListener('click', () => {
-    startTime = new Date().getTime();
-    localStorage.setItem('startTime', startTime); // 開始時間をLocalStorageに保存
-    flipPage(mainScreen);
-    startTimer();
+    if (confirm("ヒントデバイスの使用を開始しますか?\n（スタートした時点でタイマーがスタートします。）")) {
+        startTime = new Date().getTime();
+        localStorage.setItem('startTime', startTime); // 開始時間をLocalStorageに保存
+        flipPage(mainScreen);
+        startTimer();
+    }
 });
 
 // ノートめくるアニメーション
@@ -182,6 +184,11 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     if (selectedCulprit) { // 無効化チェック
         if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
             if (selectedCulprit === '宮路 凛人' && selectedHour === '0' && selectedMinute === '30') {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
                 showResult(true); // 正解時
             } else {
                 wrongAnswerCount++;
@@ -192,7 +199,7 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
                 lockoutAnswer();
             }
         }
-    }else {
+    } else {
         alert('犯人を選択してください。');
     }
 });
@@ -231,7 +238,7 @@ function showResult(isCorrect) {
     wrongAnswerCountDisplayScore.textContent = wrongAnswerCount * -50;
 
     const score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50); // スコア計算
-    finalScore.textContent = score;
+    finalScore.textContent = "スコア: " + score;
 
     if (score >= 800) {
         rank = "シャーロック・ホームズ級";
@@ -286,3 +293,5 @@ window.addEventListener('beforeunload', (e) => {
     e.preventDefault();
     return message;
 });
+
+
