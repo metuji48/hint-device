@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ヒントデバイス - 嫌われ者の事件帖</title>
     <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
@@ -20,7 +21,7 @@
         </div>
         <br>
         <h3 class="subtitle">ヒントデバイス　/　1-1 HR</h1>
-        <button id="startButton">スタート<span id="startButtonArrow"></span></button>
+            <button id="startButton">スタート<span id="startButtonArrow"></span></button>
     </div>
 
     <!-- メインシーン -->
@@ -84,7 +85,7 @@
             </div>
             <h2>犯人を特定する</h2>
             <select id="culpritSelect" class="centered-select">
-                <option value=""disabled selected>犯人を選択</option>
+                <option value="" disabled selected>犯人を選択</option>
                 <option value="宮路 凛人">宮路 凛人</option>
                 <option value="楠木 実">楠木 実</option>
                 <option value="矢場 丈則">矢場 丈則</option>
@@ -105,39 +106,41 @@
     </div>
 
     <!-- 結果シーン -->
-    <div class="notebook closed hidden" id="resultScreen">
-
-        <h2>結果</h2>
-        <table cellpadding="10px">
-            <tr>
-                <th>項目</th>
-                <th>結果</th>
-                <th>スコア</th>
-            </tr>
-            <tr>
-                <td>残り時間</td>
-                <td id="finalTime">時間切れ</td>
-                <td id="finalTimeScore">0</td>
-            </tr>
-            <tr>
-                <td>ヒント使用回数</td>
-                <td id="finalHintCount">0</td>
-                <td id="finalHintCountScore">0</td>
-            </tr>
-            <tr>
-                <td>不正解回数</td>
-                <td id="wrongAnswerCount">0</td>
-                <td id="wrongAnswerCountScore">0</td>
-            </tr>
-            <tr>
-                <td>スコア</td>
-                <td id="finalRank"></td>
-                <td id="finalScore">0</td>
-            </tr>
-        </table>
-        <h2>プレイありがとうございました。</h2>
-        <p>QRコードはこちら</p>
-        <button id="endButton">スタッフ用ボタン</button>
+    <div class="notebook open hidden" id="resultScreen">
+        <div class="left">
+            <h2>結果</h2>
+            <table cellpadding="10px">
+                <tr>
+                    <th>項目</th>
+                    <th>結果</th>
+                    <th>スコア</th>
+                </tr>
+                <tr>
+                    <td>残り時間</td>
+                    <td id="finalTime">時間切れ</td>
+                    <td id="finalTimeScore">0</td>
+                </tr>
+                <tr>
+                    <td>ヒント使用回数</td>
+                    <td id="finalHintCount">0</td>
+                    <td id="finalHintCountScore">0</td>
+                </tr>
+                <tr>
+                    <td>不正解回数</td>
+                    <td id="wrongAnswerCount">0</td>
+                    <td id="wrongAnswerCountScore">0</td>
+                </tr>
+            </table>
+            <h3 id="finalScore"></h3>
+            <h2 id="finalRank" class="finalRank"></h2>
+        </div>
+        <div class="right">
+            <h3>プレイありがとうございました。</h3>
+            <p class="qr-code">早く終わった方へ：<br>
+                この後は他の参加者の方々が終わり次第、EDムービーを見ていただく流れになります。その際、もしお時間がないようでしたら以下のQRコードから先にEDムービーをご覧いただき、退出することも可能です。</p>
+            <img class="qr-code-img" src="qr-code.png" width="60%">
+            <button id="endButton">スタッフ用ボタン</button>
+        </div>
     </div>
 
 
