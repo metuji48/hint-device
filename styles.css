@@ -4,7 +4,7 @@ body {
     font-family: 'Times New Roman', serif;
     margin: 0;
     padding: 0;
-    background-color: #ccc;
+    background-color: #000;
     color: #fff;
 }
 
@@ -266,6 +266,29 @@ table {
     font-size: 2.5em;
 }
 
+.finalRank {
+    background-color: #fff700;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.qr-code {
+    font-size: 0.8em;
+    color: #444;
+}
+
+.qr-code-img {
+    margin: auto;
+}
+
+#endButton {
+    background-color: #666;
+    margin-right: 0;
+    font-size: 0.8em;
+}
+
+
 /* アニメーション */
 
 @keyframes flipHalf {
@@ -362,7 +385,7 @@ input[type="range"] {
     /* outline: none を指定 */
     cursor: pointer;
     width: 100%;
-    background: #58585787;
+    background: #999;
     height: 8px;
     border-radius: 8px;
 }
