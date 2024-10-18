@@ -279,15 +279,17 @@ table {
 }
 
 .qr-code-img {
-    margin: auto;
+    margin: 0 auto;
+    max-height: 100px;
+    float: left;
 }
 
 #endButton {
     background-color: #666;
     margin-right: 0;
+    padding: 5px 10px;
     font-size: 0.8em;
 }
-
 
 /* アニメーション */
 
