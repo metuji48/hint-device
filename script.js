@@ -132,7 +132,7 @@ document.getElementById('confirmHint').addEventListener('click', () => {
                     hintMessage = 'ヒントが見つかりません。';
             }
 
-            hints.push(`${hintValue}: ${hintMessage}`); // 個別ヒントを配列に追加
+            hints.push(`${hintValue}: <br>${hintMessage}`); // 個別ヒントを配列に追加
             currentHintIndex = hints.length - 1;
             updateHintDisplay();
             hintCount++;
