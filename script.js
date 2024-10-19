@@ -184,16 +184,19 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     if (selectedCulprit) { // 無効化チェック
         if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
             if (selectedCulprit === '宮路 凛人' && selectedHour === '0' && selectedMinute === '30') {
-                confetti({
-                    particleCount: 200,
-                    spread: 200,
-                    origin: { y: 0.6 }
-                });
-                confetti({
-                    particleCount: 300,
-                    spread: 80,
-                    origin: { y: 0.6 }
-                });
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 200,
+                        spread: 200,
+                        origin: { y: 0.6 }
+                    });
+                    confetti({
+                        particleCount: 300,
+                        spread: 80,
+                        origin: { y: 0.6 }
+                    });
+                },1000)
+                
                 showResult(true); // 正解時
             } else {
                 wrongAnswerCount++;
@@ -298,5 +301,4 @@ window.addEventListener('beforeunload', (e) => {
     e.preventDefault();
     return message;
 });
-
 
