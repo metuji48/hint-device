@@ -185,8 +185,13 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
             if (selectedCulprit === '宮路 凛人' && selectedHour === '0' && selectedMinute === '30') {
                 confetti({
-                    particleCount: 100,
-                    spread: 70,
+                    particleCount: 200,
+                    spread: 200,
+                    origin: { y: 0.6 }
+                });
+                confetti({
+                    particleCount: 300,
+                    spread: 80,
                     origin: { y: 0.6 }
                 });
                 showResult(true); // 正解時
