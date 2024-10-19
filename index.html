@@ -107,34 +107,35 @@
 
     <!-- 結果シーン -->
     <div class="notebook open hidden" id="resultScreen">
+        
         <div class="left">
             <h2>結果</h2>
             <table cellpadding="10px">
-                <tr>
+                <tr class = "slidein">
                     <th>項目</th>
                     <th>結果</th>
                     <th>スコア</th>
                 </tr>
-                <tr>
+                <tr class = "slidein">
                     <td>残り時間</td>
                     <td id="finalTime">時間切れ</td>
                     <td id="finalTimeScore">0</td>
                 </tr>
-                <tr>
+                <tr class = "slidein">
                     <td>ヒント使用回数</td>
                     <td id="finalHintCount">0</td>
                     <td id="finalHintCountScore">0</td>
                 </tr>
-                <tr>
+                <tr class = "slidein">
                     <td>不正解回数</td>
                     <td id="wrongAnswerCount">0</td>
                     <td id="wrongAnswerCountScore">0</td>
                 </tr>
             </table>
-            <h3 id="finalScore"></h3>
-            <h2 id="finalRank" class="finalRank"></h2>
+            <h3 id="finalScore" class = "den"></h3>
+            <h2 id="finalRank" class="finalRank den" ></h2>
         </div>
-        <div class="right">
+        <div class="right den">
             <h3>プレイありがとうございました!</h3>
             <p>この後は他の参加者の方々が終わり次第、EDムービーを見ていただく流れになります。</p>
             <p class="qr-code">早く終わった方へ：<br>
@@ -142,6 +143,7 @@
             <img class="qr-code-img" src="qr-code.png">
             <button id="endButton">スタッフ用ボタン</button>
         </div>
+        <div class ="denden">正解！</div>
     </div>
 
 
