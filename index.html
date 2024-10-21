@@ -83,23 +83,27 @@
                 <hr>
                 <button id="goToHint" class="button hint-button side-bar-button abled">ヒントを求める</button>
             </div>
-            <h2>犯人を特定する</h2>
-            <select id="culpritSelect" class="centered-select">
-                <option value="" disabled selected>犯人を選択</option>
-                <option value="宮路 凛人">宮路 凛人</option>
-                <option value="楠木 実">楠木 実</option>
-                <option value="矢場 丈則">矢場 丈則</option>
-                <option value="河伊 健二郎">河伊 健二郎</option>
-                <option value="Tenp">Temp</option>
-            </select>
-            <h3>犯行時刻を選択</h3>
-            <div class="centered-slider">
-                <input type="range" id="crimeHour" class="slider" min="0" max="23" value="0">
-                <span id="hourDisplay">0</span>時
+            <div class="answer-first">
+                <h2>犯人を特定する</h2>
+                <select id="culpritSelect" class="centered-select">
+                    <option value="" disabled selected>犯人を選択</option>
+                    <option value="宮路 凛人">宮路 凛人</option>
+                    <option value="楠木 実">楠木 実</option>
+                    <option value="矢場 丈則">矢場 丈則</option>
+                    <option value="河伊 健二郎">河伊 健二郎</option>
+                    <option value="Tenp">Temp</option>
+                </select>
             </div>
-            <div class="centered-slider">
-                <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
-                <span id="minuteDisplay">00</span>分
+            <div class="answer-second hidden">
+                <h2>犯行時刻を選択</h2>
+                <div class="centered-slider">
+                    <input type="range" id="crimeHour" class="slider" min="0" max="23" value="0">
+                    <span id="hourDisplay">0</span>時
+                </div>
+                <div class="centered-slider">
+                    <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
+                    <span id="minuteDisplay">00</span>分
+                </div>
             </div>
             <button id="submitAnswer" class="center-button">解答する</button>
         </div>
@@ -107,33 +111,33 @@
 
     <!-- 結果シーン -->
     <div class="notebook open hidden" id="resultScreen">
-        
+
         <div class="left">
             <h2>結果</h2>
             <table cellpadding="10px">
-                <tr class = "slidein">
+                <tr class="slidein">
                     <th>項目</th>
                     <th>結果</th>
                     <th>スコア</th>
                 </tr>
-                <tr class = "slidein">
+                <tr class="slidein">
                     <td>残り時間</td>
                     <td id="finalTime">時間切れ</td>
                     <td id="finalTimeScore">0</td>
                 </tr>
-                <tr class = "slidein">
+                <tr class="slidein">
                     <td>ヒント使用回数</td>
                     <td id="finalHintCount">0</td>
                     <td id="finalHintCountScore">0</td>
                 </tr>
-                <tr class = "slidein">
+                <tr class="slidein">
                     <td>不正解回数</td>
                     <td id="wrongAnswerCount">0</td>
                     <td id="wrongAnswerCountScore">0</td>
                 </tr>
             </table>
-            <h3 id="finalScore" class = "den"></h3>
-            <h2 id="finalRank" class="finalRank den" ></h2>
+            <h3 id="finalScore" class="den"></h3>
+            <h2 id="finalRank" class="finalRank den"></h2>
         </div>
         <div class="right den">
             <h3>プレイありがとうございました!</h3>
@@ -143,7 +147,7 @@
             <img class="qr-code-img" src="qr-code.png">
             <button id="endButton">スタッフ用ボタン</button>
         </div>
-        <div class ="denden">正解！</div>
+        <div class="denden">正解！</div>
     </div>
 
 
