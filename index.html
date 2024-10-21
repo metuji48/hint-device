@@ -104,6 +104,8 @@
                     <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
                     <span id="minuteDisplay">00</span>分
                 </div>
+                <button class="special-hint-button">特別ヒントを見る</button>
+                <p class="special-hint hidden">ここに特別ヒントを書きます。</p>
             </div>
             <button id="submitAnswer" class="center-button">解答する</button>
         </div>
@@ -113,7 +115,7 @@
     <div class="notebook open hidden" id="resultScreen">
 
         <div class="left">
-            <h2>結果</h2>
+            <h1 class="correct-label">正解！</h1>
             <table cellpadding="10px">
                 <tr class="slidein">
                     <th>項目</th>
@@ -136,10 +138,10 @@
                     <td id="wrongAnswerCountScore">0</td>
                 </tr>
             </table>
-            <h3 id="finalScore" class="den"></h3>
-            <h2 id="finalRank" class="finalRank den"></h2>
+            <h3 id="finalScore" class="fade-in-opacity"></h3>
+            <h2 id="finalRank" class="finalRank fade-in-opacity"></h2>
         </div>
-        <div class="right den">
+        <div class="right fade-in-opacity">
             <h3>プレイありがとうございました!</h3>
             <p>この後は他の参加者の方々が終わり次第、EDムービーを見ていただく流れになります。</p>
             <p class="qr-code">早く終わった方へ：<br>
@@ -147,7 +149,6 @@
             <img class="qr-code-img" src="qr-code.png">
             <button id="endButton">スタッフ用ボタン</button>
         </div>
-        <div class="denden">正解！</div>
     </div>
 
 
