@@ -333,3 +333,18 @@ window.addEventListener('beforeunload', (e) => {
 });
 
 
+/* アラート */
+// 要素の取得
+const alertBox = document.getElementById('alertBox');
+const alertBtn = document.getElementById('alertBtn');
+const closeBtn = document.getElementById('closeBtn');
+
+// ボタンをクリックしたときにアラートを表示
+alertBtn.addEventListener('click', function() {
+    alertBox.style.display = 'flex';
+});
+
+// 閉じるボタンをクリックしたときにアラートを非表示
+closeBtn.addEventListener('click', function() {
+    alertBox.style.display = 'none';
+});
