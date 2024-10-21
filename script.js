@@ -172,6 +172,8 @@ document.getElementById('nextHint').addEventListener('click', () => {
     }
 });
 
+let answerStage = 0;
+
 // 解答の送信
 document.getElementById('submitAnswer').addEventListener('click', () => {
     if (answerDisabled) return; // 1分間解答不可
@@ -180,23 +182,46 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     const selectedHour = crimeHour.value;
     const selectedMinute = crimeMinute.value;
 
+    if(answerStage === 0) {
+        if (selectedCulprit) { // 無効化チェック
+        
+            if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}`)) {
+                if (selectedCulprit === '宮路 凛人') {
+                    answerStage = 1;
+                    alert("正解!!\n次に、犯行時刻を選択してください。");
+                    document.querySelector(".answer-first").classList.add("hidden");
+                    document.querySelector(".answer-second").classList.remove("hidden");
 
-    if (selectedCulprit) { // 無効化チェック
-        if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}\n時刻: ${selectedHour}時${selectedMinute}分`)) {
-            if (selectedCulprit === '宮路 凛人' && selectedHour === '0' && selectedMinute === '30') {
-                setTimeout(() => {
                     confetti({
-                        particleCount: 200,
-                        spread: 200,
-                        origin: { y: 0.6 }
-                    });
-                    confetti({
-                        particleCount: 300,
+                        particleCount: 100,
                         spread: 80,
-                        origin: { y: 0.6 }
+                        origin: { x: 0.6, y: 0.6 }
                     });
-                },1000)
-                
+                } else {
+                    wrongAnswerCount++;
+                    answerDisabled = true;
+                    alert("不正解･･･");
+                    flipPage(mainScreen);
+                    errorMessage.classList.remove('hidden');
+                    lockoutAnswer();
+                }
+            }
+        } else {
+            alert('犯人を選択してください。');
+        }
+    }else {
+        if (confirm(`本当にこの解答でよろしいですか？\n時刻: ${selectedHour}時${selectedMinute}分`)) {
+            if (selectedHour === '0' && selectedMinute === '30') {
+                confetti({
+                    particleCount: 200,
+                    spread: 200,
+                    origin: { y: 0.6 }
+                });
+                confetti({
+                    particleCount: 300,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
                 showResult(true); // 正解時
             } else {
                 wrongAnswerCount++;
@@ -207,9 +232,8 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
                 lockoutAnswer();
             }
         }
-    } else {
-        alert('犯人を選択してください。');
     }
+    
 });
 
 // 解答ロック
@@ -301,4 +325,5 @@ window.addEventListener('beforeunload', (e) => {
     e.preventDefault();
     return message;
 });
+
 
