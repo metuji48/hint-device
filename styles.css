@@ -20,7 +20,8 @@ h3 {
 }
 
 .titleLogo {
-    margin-top: 40px;
+    width: 100%;
+    margin: 40px 30px;
 }
 
 button {
@@ -181,7 +182,11 @@ table {
 
 .notebook.open .left,
 .notebook.open .right {
-    width: 45%;
+    width: 50%;
+}
+
+.notebook.open .left {
+    margin-right: 40px;
 }
 
 .select-label {
@@ -189,7 +194,7 @@ table {
 }
 
 .timer-score {
-    font-size: 1.2em;
+    font-size: 1.6em;
     text-align: center;
     background-color: #eee;
     color: #333;
@@ -199,8 +204,8 @@ table {
 }
 
 .sticky-note {
-    background-color: #ffb700;
-    height: 150px;
+    background-color: #ffe600;
+    height: 200px;
     padding: 10px;
     margin-top: 20px;
     border: 1px solid #ccc;
@@ -209,7 +214,7 @@ table {
     line-height: 30px;
 
     overflow-y: auto;
-    scrollbar-color: #fff #ffb700;
+    scrollbar-color: #fff #ffe600;
 }
 
 /*
@@ -258,12 +263,12 @@ table {
     margin: 10px auto;
     border-radius: 5px;
     color: #000;
-    background-color: #fff700;
+    background-color: #ffe600;
     padding: 10px 20px;
 }
 
 .special-hint-button:hover {
-    background-color: #c7c102;
+    background-color: #e4ce00;
 }
 
 .centered-select,
@@ -293,8 +298,11 @@ table {
     color: #444;
 }
 
+img {
+    margin: 0;
+}
+
 .qr-code-img {
-    margin: 0 auto;
     max-height: 100px;
     float: left;
 }
@@ -563,4 +571,12 @@ input[type="range"]:focus::-moz-range-thumb {
     font-size: 24px;
     cursor: pointer;
     color: red;
+}
+
+#confirmHint {
+    display: inline;
+}
+
+.align-right {
+    text-align: right;
 }
