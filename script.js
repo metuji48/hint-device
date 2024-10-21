@@ -36,7 +36,7 @@ const hourDisplay = document.getElementById('hourDisplay');
 const crimeMinute = document.getElementById('crimeMinute');
 const minuteDisplay = document.getElementById('minuteDisplay');
 const endButton = document.getElementById('endButton');
-
+const specialHintButton = document.querySelector(".special-hint-button");
 let currentScreen = waitingScreen;
 
 // スタートボタンの処理
@@ -193,7 +193,7 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
                     document.querySelector(".answer-second").classList.remove("hidden");
 
                     confetti({
-                        particleCount: 100,
+                        particleCount: 50,
                         spread: 80,
                         origin: { x: 0.6, y: 0.6 }
                     });
@@ -235,6 +235,12 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     }
     
 });
+
+// 犯人正解者用の特別ヒント
+specialHintButton.addEventListener("click", () => {
+    specialHintButton.classList.add("hidden");
+    document.querySelector(".special-hint").classList.remove("hidden");
+})
 
 // 解答ロック
 function lockoutAnswer() {
