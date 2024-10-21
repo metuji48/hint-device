@@ -211,6 +211,7 @@ table {
     overflow-y: auto;
     scrollbar-color: #fff #ffb700;
 }
+
 /*
 .sticky-note::before {
     position: absolute;
@@ -252,6 +253,19 @@ table {
     font-size: 1.2em;
 }
 
+.special-hint, .special-hint-button {
+    width: 80%;
+    margin: 10px auto;
+    border-radius: 5px;
+    color: #000;
+    background-color: #fff700;
+    padding: 10px 20px;
+}
+
+.special-hint-button:hover {
+    background-color: #c7c102;
+}
+
 .centered-select,
 .centered-slider {
     text-align: center;
@@ -271,6 +285,7 @@ table {
     padding: 10px;
     margin-top: 20px;
     border-radius: 10px;
+    font-size: 1.5em;
 }
 
 .qr-code {
@@ -314,32 +329,38 @@ table {
         animation-timing-function: ease-out;
     }
 }
+
 .slidein {
     opacity: 0;
-    transform: translateX(100%); /* 初期位置は右側の画面外 */
+    transform: translateX(100%);
+    /* 初期位置は右側の画面外 */
     animation: slide-in 1s ease forwards;
 }
+
 @keyframes slide-in {
     to {
         opacity: 1;
-        transform: translateX(0); /* スライドイン後の位置 */
+        transform: translateX(0);
+        /* スライドイン後の位置 */
     }
 }
- /* 各行に異なる遅延を与える */
- 
- .slidein:nth-child(1) {
-    animation-delay: 3.5s;
+
+/* 各行に異なる遅延を与える */
+
+.slidein:nth-child(1) {
+    animation-delay: 1s;
 }
+
 .slidein:nth-child(2) {
-    animation-delay: 4s;
+    animation-delay: 1.3s;
 }
 
 .slidein:nth-child(3) {
-    animation-delay: 4.5s;
+    animation-delay: 1.6s;
 }
 
 .slidein:nth-child(4) {
-    animation-delay: 5s;
+    animation-delay: 1.9s;
 }
 
 
@@ -351,55 +372,54 @@ table {
     animation: flipFinal 0.3s forwards;
 }
 
-.den {
+.fade-in-opacity {
+    filter: blur(5px);
     opacity: 0;
     animation: fade-in 1s ease forwards;
 }
 
 /* フェードインのアニメーション定義 */
+
 @keyframes fade-in {
     to {
-        opacity: 1; /* フェードイン後、完全に表示 */
+        filter: blur(0px);
+        opacity: 1;
+        /* フェードイン後、完全に表示 */
     }
 }
-.denden {
-    font-size: 0px;
-    color: red;
-    position: absolute;
-    transform:translate(50%,50%);
-    animation: show-and-disappear 3s ease forwards;
-    font-weight: bold;
+
+.correct-label {
+    font-size: 1.5em;
+    animation: fade-in-down 0.75s ease-out forwards;
 }
 
-@keyframes show-and-disappear {
+/* フェードインのアニメーション定義 */
+
+@keyframes fade-in-down {
     0% {
         opacity: 0;
-        font-size: 0;
+        transform: translateY(-100px);
+    }
+
+    100% {
+        font-size: 2em;
+        opacity: 1;
         transform: translateY(0);
     }
-    20% {
-        opacity: 1;
-        font-size: 100px;
-    }
-    60% {
-        font-size: 150px;
-    }
-    100% {
-        opacity: 0;
-        font-size: 50px;
-        transform: translateY(-200px);
-    }
-}
-/* 各行に異なる遅延を与える */
-.den:nth-child(2) {
-    animation-delay: 8s;
-}
-.den:nth-child(3) {
-    animation-delay: 6s;
 }
 
-.den:nth-child(4) {
-    animation-delay: 6.75s;
+/* 各行に異なる遅延を与える */
+
+.fade-in-opacity:nth-child(2) {
+    animation-delay: 4s;
+}
+
+.fade-in-opacity:nth-child(3) {
+    animation-delay: 2.5s;
+}
+
+.fade-in-opacity:nth-child(4) {
+    animation-delay: 3s;
 }
 
 /* 表示設定用 */
