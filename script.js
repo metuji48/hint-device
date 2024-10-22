@@ -41,6 +41,7 @@ let currentScreen = waitingScreen;
 
 // スタートボタンの処理
 startButton.addEventListener('click', () => {
+    alert("den");
     if(displayConfirmAlert("ヒントデバイスの使用を開始しますか?\n（スタートした時点でタイマーがスタートします。）", () => {
         startTime = new Date().getTime();
         localStorage.setItem('startTime', startTime); // 開始時間をLocalStorageに保存
@@ -112,8 +113,9 @@ document.getElementById('confirmHint').addEventListener('click', () => {
     const hintText = selectedHint.options[selectedHint.selectedIndex].text;
 
     if (hintValue && !selectedHint.options[selectedHint.selectedIndex].disabled) { // 無効化チェック
-        if(displayConfirmAlert(`${hintText} についてのヒントでよろしいですか？`), () => {
+        displayConfirmAlert(`${hintText} についてのヒントでよろしいですか？`, () => {
             let hintMessage = '';
+            
             switch (hintValue) {
                 case '懐中電灯':
                     hintMessage = '「懐中電灯は落ちてたやつなんだけど、中に電池が入ってなかったから、通常の使用目的ではなさそうなんだ」<br>「調べてみたら何かわかるかもしれないな」';
