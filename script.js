@@ -41,17 +41,19 @@ let currentScreen = waitingScreen;
 
 // スタートボタンの処理
 startButton.addEventListener('click', () => {
-    if (confirm("ヒントデバイスの使用を開始しますか?\n（スタートした時点でタイマーがスタートします。）")) {
+    if(displayConfirmAlert("ヒントデバイスの使用を開始しますか?\n（スタートした時点でタイマーがスタートします。）", () => {
         startTime = new Date().getTime();
         localStorage.setItem('startTime', startTime); // 開始時間をLocalStorageに保存
         flipPage(mainScreen);
         startTimer();
-    }
+    }));
 });
 
 // ノートめくるアニメーション
 function flipPage(toScreen) {
+    /*
     currentScreen.classList.add('flip');
+
     setTimeout(() => {
         currentScreen.classList.add('hidden');
         currentScreen.classList.remove('flip');
@@ -62,8 +64,14 @@ function flipPage(toScreen) {
 
         setTimeout(() => {
             toScreen.classList.remove('flip-final');
-        }, 1);
-    }, 1); // 半回転の時間に合わせる
+        }, 1000);
+    }, 1000);
+    */
+
+    
+    currentScreen.classList.add('hidden');
+    toScreen.classList.remove('hidden');
+    currentScreen = toScreen;
 }
 
 // タイマー開始
@@ -77,6 +85,9 @@ function startTimer() {
         const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
         remainingTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         remainingTimeAnswerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        document.querySelector("#timeBar").value = remainingTime;
+        document.querySelector("#timeBarAnswer").value = remainingTime;
 
         if (remainingTime <= 0) {
             clearInterval(timer);
@@ -101,7 +112,7 @@ document.getElementById('confirmHint').addEventListener('click', () => {
     const hintText = selectedHint.options[selectedHint.selectedIndex].text;
 
     if (hintValue && !selectedHint.options[selectedHint.selectedIndex].disabled) { // 無効化チェック
-        if (confirm(`ヒント: ${hintText}でよろしいですか？`)) {
+        if(displayConfirmAlert(`${hintText} についてのヒントでよろしいですか？`), () => {
             let hintMessage = '';
             switch (hintValue) {
                 case '懐中電灯':
@@ -143,7 +154,8 @@ document.getElementById('confirmHint').addEventListener('click', () => {
             if (hints.length > 1) {
                 hintNavigation.classList.remove('hidden');
             }
-        }
+           alert("hin");
+        });
     } else {
         alert('ヒントを選択してください。');
     }
@@ -262,6 +274,10 @@ function lockoutAnswer() {
 
 // 結果表示
 function showResult(isCorrect) {
+    if(!isCorrect) {
+        document.querySelector(".correct-label").textContent = "時間切れ…";
+    }
+
     clearInterval(timer);
     flipPage(resultScreen);
 
@@ -334,17 +350,21 @@ window.addEventListener('beforeunload', (e) => {
 
 
 /* アラート */
-// 要素の取得
-const alertBox = document.getElementById('alertBox');
-const alertBtn = document.getElementById('alertBtn');
-const closeBtn = document.getElementById('closeBtn');
 
-// ボタンをクリックしたときにアラートを表示
-alertBtn.addEventListener('click', function() {
-    alertBox.style.display = 'flex';
+document.querySelectorAll(".alert-box").forEach((alertBox) => {
+    alertBox.querySelectorAll(".alert-btn").forEach((e) => {
+        e.addEventListener('click', () => {
+            alertBox.style.display = 'none';
+        });
+    });
 });
 
-// 閉じるボタンをクリックしたときにアラートを非表示
-closeBtn.addEventListener('click', function() {
-    alertBox.style.display = 'none';
-});
+const confirmAlert = document.querySelector('#confirmAlert');
+const confirmContent = document.querySelector('#confirmContent');
+const confirmAlertClose = document.querySelector('#confirmAlertClose');
+
+function displayConfirmAlert(content, yesFunction) {
+    confirmAlert.style.display = 'block';
+    confirmAlert.querySelector("p").textContent = content;
+    confirmAlert.querySelector(".yes-btn").onclick = yesFunction;
+}
