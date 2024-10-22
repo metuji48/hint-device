@@ -348,7 +348,7 @@ button {
 
 .qr-code {
     font-size: 0.8em;
-    color: #444;
+    color: #ddd;
 }
 
 .qr-code-img {
@@ -697,4 +697,28 @@ input[type="range"]:focus::-webkit-slider-thumb {
     bottom: 0;
     left: 0;
     z-index: -100;
+}
+#resultScreen {
+    background-image: url("image/bg-2.jpg");
+    background-size: cover;
+    background-position: center;
+    z-index: -99;
+    color: #ffffff;
+}
+#resultScreen::after {
+    content: "";
+    background: rgba(2, 2, 2, 0.5);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -100;
+
+}
+#finalRank{
+    color: #000;
+}
+.komoku{
+    color: #ccc;
 }
