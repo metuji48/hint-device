@@ -7,6 +7,8 @@ let hints = [];
 let currentHintIndex = 0;
 let answerDisabled = false;
 
+const allContent = document.querySelector('.all-content');
+
 const startButton = document.getElementById('startButton');
 const waitingScreen = document.getElementById('waitingScreen');
 const mainScreen = document.getElementById('mainScreen');
@@ -41,10 +43,9 @@ let currentScreen = waitingScreen;
 
 // スタートボタンの処理
 startButton.addEventListener('click', () => {
-    alert("den");
     if(displayConfirmAlert("ヒントデバイスの使用を開始しますか?\n（スタートした時点でタイマーがスタートします。）", () => {
         startTime = new Date().getTime();
-        localStorage.setItem('startTime', startTime); // 開始時間をLocalStorageに保存
+        localStorage.setItem('startTime', startTime);
         flipPage(mainScreen);
         startTimer();
     }));
@@ -156,10 +157,9 @@ document.getElementById('confirmHint').addEventListener('click', () => {
             if (hints.length > 1) {
                 hintNavigation.classList.remove('hidden');
             }
-           alert("hin");
         });
     } else {
-        alert('ヒントを選択してください。');
+        displayAlert('ヒントを選択してください。');
     }
 });
 
@@ -190,7 +190,7 @@ let answerStage = 0;
 
 // 解答の送信
 document.getElementById('submitAnswer').addEventListener('click', () => {
-    if (answerDisabled) return; // 1分間解答不可
+    //if (answerDisabled) return; // 1分間解答不可
 
     const selectedCulprit = document.getElementById('culpritSelect').value;
     const selectedHour = crimeHour.value;
@@ -199,10 +199,10 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     if(answerStage === 0) {
         if (selectedCulprit) { // 無効化チェック
         
-            if (confirm(`本当にこの解答でよろしいですか？\n犯人: ${selectedCulprit}`)) {
+            displayConfirmAlert(`本当にこの解答でよろしいですか？<br>犯人: ${selectedCulprit}`, () => {
                 if (selectedCulprit === '宮路 凛人') {
                     answerStage = 1;
-                    alert("正解!!\n次に、犯行時刻を選択してください。");
+                    displayAlert("正解!!<br>次に、犯行時刻を選択してください。");
                     document.querySelector(".answer-first").classList.add("hidden");
                     document.querySelector(".answer-second").classList.remove("hidden");
 
@@ -214,17 +214,17 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
                 } else {
                     wrongAnswerCount++;
                     answerDisabled = true;
-                    alert("不正解･･･");
+                    displayAlert("不正解･･･");
                     flipPage(mainScreen);
                     errorMessage.classList.remove('hidden');
                     lockoutAnswer();
                 }
-            }
+            });
         } else {
-            alert('犯人を選択してください。');
+            displayAlert('犯人を選択してください。');
         }
     }else {
-        if (confirm(`本当にこの解答でよろしいですか？\n時刻: ${selectedHour}時${selectedMinute}分`)) {
+        displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${selectedHour}時${selectedMinute}分`, () => {
             if (selectedHour === '0' && selectedMinute === '30') {
                 confetti({
                     particleCount: 200,
@@ -240,12 +240,12 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
             } else {
                 wrongAnswerCount++;
                 answerDisabled = true;
-                alert("不正解･･･");
+                displayAlert("不正解･･･");
                 flipPage(mainScreen);
                 errorMessage.classList.remove('hidden');
                 lockoutAnswer();
             }
-        }
+        });
     }
     
 });
@@ -260,15 +260,18 @@ specialHintButton.addEventListener("click", () => {
 function lockoutAnswer() {
     answerDisabled = true;
     let remainingLockout = 10;
-    document.getElementById('goToAnswer').classList.add('disabled');
+    document.getElementById('submitAnswer').classList.add('disabled');
     errorMessage.classList.remove('hidden');
+
+    errorMessage.textContent = `10秒解答できません（残り 10 秒）`;
+
     lockoutTimer = setInterval(() => {
         remainingLockout--;
         errorMessage.textContent = `10秒解答できません（残り ${remainingLockout} 秒）`;
         if (remainingLockout <= 0) {
             clearInterval(lockoutTimer);
             answerDisabled = false;
-            document.getElementById('goToAnswer').classList.remove('disabled');
+            document.getElementById('submitAnswer').classList.remove('disabled');
             errorMessage.classList.add('hidden');
         }
     }, 1000);
@@ -328,7 +331,7 @@ document.getElementById('endButton').addEventListener('click', () => {
         waitingScreen.classList.remove('hidden');
         location.reload();
     } else {
-        alert("ちゃんとスタッフに返してね");
+        displayAlert("ちゃんとスタッフに返してね");
     }
 });
 
@@ -339,9 +342,7 @@ document.getElementById('goToHint').addEventListener('click', () => {
 
 // 「解答する」ボタン
 document.getElementById('goToAnswer').addEventListener('click', () => {
-    if (!answerDisabled) {
-        flipPage(answerScreen);
-    }
+    flipPage(answerScreen);
 });
 
 // ウィンドウを離れるときに警告をだす
@@ -357,16 +358,24 @@ document.querySelectorAll(".alert-box").forEach((alertBox) => {
     alertBox.querySelectorAll(".alert-btn").forEach((e) => {
         e.addEventListener('click', () => {
             alertBox.style.display = 'none';
+            allContent.style.filter = 'brightness(100%)';
         });
     });
 });
 
 const confirmAlert = document.querySelector('#confirmAlert');
-const confirmContent = document.querySelector('#confirmContent');
-const confirmAlertClose = document.querySelector('#confirmAlertClose');
-
 function displayConfirmAlert(content, yesFunction) {
+    allContent.style.filter = 'brightness(50%)';
     confirmAlert.style.display = 'block';
-    confirmAlert.querySelector("p").textContent = content;
+    confirmAlert.querySelector("p").innerHTML = content;
     confirmAlert.querySelector(".yes-btn").onclick = yesFunction;
+}
+
+
+const alertAlert = document.querySelector('#alertAlert');
+function displayAlert(content) {
+    allContent.style.filter = 'brightness(50%)';
+    alertAlert.style.display = 'block';
+    alertAlert.style.transform = 'translateY(100px)';
+    alertAlert.querySelector("p").innerHTML = content;
 }
