@@ -1,6 +1,6 @@
 let startTime;
 let hintCount = 0;
-let remainingTime = 1200; // 20分 (1200秒)
+let remainingTime = 1200, maxTime = remainingTime; // 20分 (1200秒)
 let wrongAnswerCount = 0;
 let timer;
 let hints = [];
@@ -80,7 +80,7 @@ function flipPage(toScreen) {
 function startTimer() {
     timer = setInterval(() => {
         const now = new Date().getTime();
-        const elapsed = Math.floor((now - startTime) / 1000);
+        const elapsed = Math.floor((now - startTime) / 1000) ;
         remainingTime = 1200 - elapsed;
 
         const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
@@ -88,8 +88,8 @@ function startTimer() {
         remainingTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         remainingTimeAnswerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-        document.querySelector("#timeBar").value = remainingTime;
-        document.querySelector("#timeBarAnswer").value = remainingTime;
+        updateProgressBarColor();
+
 
         if (remainingTime <= 0) {
             clearInterval(timer);
@@ -97,6 +97,35 @@ function startTimer() {
         }
     }, 1000);
 }
+//時間がたつにつれて緑色から赤色にだんだん変わっていくようにする(#00ff00から#ff0000に)
+
+// 色をグラデーションさせる関数
+function getColorGradient(remainingTime, maxTime) {
+    // remainingTimeの割合を計算（0から1の範囲）
+    let ratio = remainingTime / maxTime;
+
+    // 緑（0, 255, 0）から赤（255, 0, 0）へ変化させる
+    let red = Math.floor((1 - ratio) * 255); // 赤色が増える
+    let green = Math.floor(ratio * 255);     // 緑色が減る
+
+    // RGBカラーコードを作成
+    return `rgb(${red}, ${green}, 0)`;
+}
+
+// 進行状況の値に基づいて色を更新する関数
+function updateProgressBarColor() {
+    // 色を計算して設定
+    let color = getColorGradient(remainingTime, maxTime);
+    document.getElementById('timeBar').style.setProperty('--progress-color', color);
+    document.getElementById('timeBarAnswer').style.setProperty('--progress-color', color);
+ 
+    // 進行状況を更新
+    document.querySelector("#timeBar").value = remainingTime;
+    document.querySelector("#timeBarAnswer").value = remainingTime;
+    
+}
+
+
 
 // シークバーの値が変わるたびに表示を更新
 crimeHour.addEventListener('input', () => {
@@ -118,29 +147,38 @@ document.getElementById('confirmHint').addEventListener('click', () => {
             let hintMessage = '';
             
             switch (hintValue) {
-                case '懐中電灯':
-                    hintMessage = '「懐中電灯は落ちてたやつなんだけど、中に電池が入ってなかったから、通常の使用目的ではなさそうなんだ」<br>「調べてみたら何かわかるかもしれないな」';
+                case '懐中電灯(ハンカチ)':
+                    hintMessage = '奈賀岡の指紋が検出された懐中電灯についた血を拭き取ったものだろう。しかし千田の体に打撲傷はない。<br>だとすると、奈賀岡が事件の犯人に抵抗するのに使ったにちがいない。懐中電灯（ハンカチ）には犯人の血がついているはずだ。';
                     break;
                 case '包丁':
-                    hintMessage = '「包丁はおそらく千田を殺すための凶器で使われたやつなんだがな」<br>「なんか妙なんだよな」<br>「とりあえず、調べてみてくれよ」';
+                    hintMessage = '千田の指紋が検出された包丁だ。この物品から指紋は検出されていない。<br>とっさに起こった喧嘩ならば、手袋の用意は無いだろう。他殺説を高める証拠だ。';
                     break;
                 case 'ロープ':
-                    hintMessage = '「あぁ、このロープか」<br>「ロープは天井の留め具につながるほうと奈賀岡の首に絡まっている方に千切れていたんだ」<br>「奈賀岡の死因は首元部分の圧迫死だったから、このロープで首を吊って死んだことにほぼ間違いないんだがな」';
+                    hintMessage = '奈賀岡が吊られていたロープ。<br>体の強い人間ならば、打撲等で被害者を気絶させた後にロープで吊るというのも可能だろうか。';
                     break;
                 case 'タバコ':
-                    hintMessage = '「窓際に落ちてたやつだな」<br>「一応補足しておくと、発見されたタバコは人の手によって火が消されたわけじゃなくて、勝手に燃えて火が消えたようなんだ」<br>「おそらくこのタバコを吸ってる最中に殺されたんだろうな」';
+                    hintMessage = '窓際に落ちていたタバコ。燃え後を見るに、タバコを吸っている最中に突然殺されたのだろう。<br>被害者が開けた窓から犯人が侵入した可能性は否定できない。';
                     break;
                 case '布団':
-                    hintMessage = '「敷きっぱなしになっている布団は、まあこれも当たり前だが奈賀岡のものだ」<br>「千田が来るというのに布団すら畳まないなんてな、まったく……」<br>「話がそれちまったな、布団にはおそらく何もないだろう」';
+                    hintMessage = '飛び血を被った安物の布団。ここに血が被っているということは、犯人がドアから侵入した可能性は低そうだ。<br>このあたりを少し捜査するといいかもしれない。';
                     break;
                 case '座布団':
-                    hintMessage = '「座布団には何もなかったよ...見たらわかるだろう？」<br>「探偵さんの推理力も衰えちまったか？」';
+                    hintMessage = 'よくある感じの座布団だ。<br>3つあるということは、奈賀岡宅を訪れていたのは千田だけではなかったのだろうか。';
+                    break;
+                case 'いちごパック':
+                    hintMessage = '福岡産のいちごのパック。お土産だろうか？資料によると宮路が福岡に出張してようだから彼がこの部屋を訪れていたのかもしれない。<br>何かでこれを立証できればいいが……。';
+                    break;
+                case 'ティーカップ':
+                    hintMessage = '酒ばかりのちゃぶ台に、ポツリとおかれたティーカップ。飲んだくれの被害者二人が使ったとは考えにくい。<br>千田の他に来客でもきていたのだろうか。唾液がついているはずだ。鑑定に掛けて確かめよう。';
                     break;
                 case '雑誌':
-                    hintMessage = '「棚に置いてあった雑誌は、奈賀岡が購入したもので間違いないだろう、クローゼットから同一シリーズの雑誌が多数出てきた」<br>「これはおそらく、何ら事件と関係はないだろうね」<br>「探偵さん、しっかりしてくれよな」';
+                    hintMessage = 'よくある感じの雑誌だ。特に事件に関係は無いだろう。';
+                    break;
+                case '窓ガラス':
+                    hintMessage = 'プランターに窓ガラスが飛び散っている。ガラスが外側に飛び散っているということは、窓は内側から割れたということだ。やはり喧嘩によるただの自殺事件なのか？....いや、犯人が事件の後に窓から脱出したという可能性は捨てきれない。';
                     break;
                 case '卒アル':
-                    hintMessage = '「この奈賀岡と千田は君の母校と同じ高校に通っていたようでね、だからいくらか見覚えがあるんじゃあないかな」 <br>「爆破予告といい卒業生の死といい、この高校はろくなことがないな」<br>「ああ、ごめん、君のことを言ったわけじゃないんだ」<br>「とりあえず、この卒アルの内容は詳しく見てないからわからないが、後で調べてみてもいいと思うぞ」';
+                    hintMessage = '「駒波高校の卒アル 2012 年度。奈賀岡、千田、宮路の名前が見て取れる。宮路の写真は後に合成された物のようだ。<br>不登校でもあったのだろうか。」';
                     break;
                 default:
                     hintMessage = 'ヒントが見つかりません。';
