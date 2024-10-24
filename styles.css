@@ -81,11 +81,12 @@ button {
 }
 
 ::-webkit-progress-bar {
-    background-color: #fff;
+    background-color: white;
 }
 
 ::-webkit-progress-value {
-    background-color: red;
+    /*background-color: #00ff00;*/
+    background-color: var(--progress-color);
 }
 
 .titleLogo {
@@ -270,6 +271,7 @@ button {
 #confirmHint {
     display: inline;
 }
+
 
 .align-right {
     text-align: right;
