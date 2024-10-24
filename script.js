@@ -80,7 +80,7 @@ function flipPage(toScreen) {
 function startTimer() {
     timer = setInterval(() => {
         const now = new Date().getTime();
-        const elapsed = Math.floor((now - startTime) / 1000) ;
+        const elapsed = Math.floor((now - startTime) / 1000);
         remainingTime = 1200 - elapsed;
 
         const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
@@ -95,37 +95,20 @@ function startTimer() {
             clearInterval(timer);
             showResult(false);
         }
-    }, 1000);
-}
-//時間がたつにつれて緑色から赤色にだんだん変わっていくようにする(#00ff00から#ff0000に)
-
-// 色をグラデーションさせる関数
-function getColorGradient(remainingTime, maxTime) {
-    // remainingTimeの割合を計算（0から1の範囲）
-    let ratio = remainingTime / maxTime;
-
-    // 緑（0, 255, 0）から赤（255, 0, 0）へ変化させる
-    let red = Math.floor((1 - ratio) * 255); // 赤色が増える
-    let green = Math.floor(ratio * 255);     // 緑色が減る
-
-    // RGBカラーコードを作成
-    return `rgb(${red}, ${green}, 0)`;
+    }, 10);
 }
 
 // 進行状況の値に基づいて色を更新する関数
 function updateProgressBarColor() {
     // 色を計算して設定
-    let color = getColorGradient(remainingTime, maxTime);
+    let color = `hsl(${Math.floor((remainingTime / maxTime) * 120)} 50% 50%)`;
     document.getElementById('timeBar').style.setProperty('--progress-color', color);
     document.getElementById('timeBarAnswer').style.setProperty('--progress-color', color);
  
     // 進行状況を更新
     document.querySelector("#timeBar").value = remainingTime;
     document.querySelector("#timeBarAnswer").value = remainingTime;
-    
 }
-
-
 
 // シークバーの値が変わるたびに表示を更新
 crimeHour.addEventListener('input', () => {
@@ -228,7 +211,7 @@ let answerStage = 0;
 
 // 解答の送信
 document.getElementById('submitAnswer').addEventListener('click', () => {
-    //if (answerDisabled) return; // 1分間解答不可
+    if (answerDisabled) return; // 1分間解答不可
 
     const selectedCulprit = document.getElementById('culpritSelect').value;
     const selectedHour = crimeHour.value;
