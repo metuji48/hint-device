@@ -142,6 +142,7 @@ button {
     background-color: rgb(255 255 255/0.8);
     padding: 15px;
     border-radius: 0 0 5px 5px;
+    height:420px;
 }
 
 .side-bar-button {
@@ -243,7 +244,7 @@ button {
 
 .sticky-note {
     background-color: #ffe600;
-    height: 200px;
+    height: 210px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 10px;
@@ -270,6 +271,7 @@ button {
 
 #confirmHint {
     display: inline;
+
 }
 
 
