@@ -228,7 +228,7 @@ let answerStage = 0;
 
 // 解答の送信
 document.getElementById('submitAnswer').addEventListener('click', () => {
-    //if (answerDisabled) return; // 1分間解答不可
+    if (answerDisabled) return; // 1分間解答不可
 
     const selectedCulprit = document.getElementById('culpritSelect').value;
     const selectedHour = crimeHour.value;
