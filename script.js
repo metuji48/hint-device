@@ -7,6 +7,7 @@ let hints = [];
 let currentHintIndex = 0;
 let answerDisabled = false;
 
+
 const allContent = document.querySelector('.all-content');
 
 const startButton = document.getElementById('startButton');
@@ -79,7 +80,7 @@ function flipPage(toScreen) {
 function updateTimer() {
     const now = new Date().getTime();
     const elapsed = Math.floor((now - startTime) / 1000) ;
-    remainingTime = 1200 - elapsed;
+    remainingTime = 12 - elapsed;//0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 
     const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
     const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
@@ -169,7 +170,7 @@ document.getElementById('confirmHint').addEventListener('click', () => {
                     hintMessage = 'よくある感じの座布団だ。<br>3つあるということは、奈賀岡宅を訪れていたのは千田だけではなかったのかもしれない。';
                     break;
                 case 'いちごパック':
-                    hintMessage = '福岡産のいちごのパック。お土産だろうか？資料によると宮路が福岡に出張してようだから彼がこの部屋を訪れていたのかもしれない。<br>何かでこれを立証できればいいが……。';
+                    hintMessage = '福岡産のいちごのパック。お土産だろうか？資料によると宮路が福岡に出張していたようだから彼はこの部屋を訪れていたのかもしれない。<br>何かでこれを立証できればいいが……。';
                     break;
                 case 'ティーカップ':
                     hintMessage = '酒ばかりのちゃぶ台に、ポツリとおかれたティーカップ。飲んだくれの被害者二人が使ったとは考えにくい。<br>千田の他にも来客がいたのだろう。唾液がついているはずだ。鑑定に掛けて確かめよう。';
@@ -231,22 +232,19 @@ let answerStage = 0;
 
 // 解答の送信
 document.getElementById('submitAnswer').addEventListener('click', () => {
-    //if (answerDisabled) return; // 1分間解答不可
-
+    if (answerDisabled) return; // 10秒間解答不可
     const selectedCulprit = document.getElementById('culpritSelect').value;
-    const selectedHour = crimeHour.value;
-    const selectedMinute = crimeMinute.value;
+    const selectedHour = parseInt(document.getElementById('crimeHour').value, 10);
+    const selectedMinute = parseInt(document.getElementById('crimeMinute').value, 10);
 
-    if(answerStage === 0) {
+    if (answerStage === 0) {
         if (selectedCulprit) { // 無効化チェック
-        
             displayConfirmAlert(`本当にこの解答でよろしいですか？<br>犯人: ${selectedCulprit}`, () => {
                 if (selectedCulprit === '宮路 凛人') {
                     answerStage = 1;
                     displayAlert("正解!!<br>次に、犯行時刻を選択してください。");
                     document.querySelector(".answer-first").classList.add("hidden");
                     document.querySelector(".answer-second").classList.remove("hidden");
-
                     confetti({
                         particleCount: 50,
                         spread: 80,
@@ -264,9 +262,10 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         } else {
             displayAlert('犯人を選択してください。');
         }
-    }else {
+    } else {
         displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${selectedHour}時${selectedMinute}分`, () => {
-            if (selectedHour === '0' && selectedMinute === '30') {
+            if ((selectedHour === 22 && selectedMinute >= 50) || 
+                (selectedHour === 23 && selectedMinute <= 10)) {
                 confetti({
                     particleCount: 200,
                     spread: 200,
@@ -288,8 +287,8 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
             }
         });
     }
-    
 });
+
 
 // 犯人正解者用の特別ヒント
 specialHintButton.addEventListener("click", () => {
@@ -336,9 +335,16 @@ function showResult(isCorrect) {
 
     wrongAnswerCountDisplay.textContent = wrongAnswerCount;
     wrongAnswerCountDisplayScore.textContent = wrongAnswerCount * -50;
+    let score;
 
-    const score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50); // スコア計算
+    if(isCorrect){score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50 + 1000); // スコア計算
+    }
+    else {score = -1}
     finalScore.textContent = "スコア: " + score;
+    if (score === -1) {
+        // 不正解の場合は正解ボーナスを非表示
+        document.getElementById('correctBonusScore').parentElement.style.display = 'none';
+    }
 
     if (score >= 800) {
         rank = "シャーロック・ホームズ級";
@@ -358,8 +364,12 @@ function showResult(isCorrect) {
         rank = "ラマヌジャン級";
     } else if (score >= 100) {
         rank = "ミジンコ級";
-    } else {
-        rank = "似非"
+    } else if (score ===-1){
+        rank = "惜しい"
+
+    }
+    else {
+        rank = "一般"
     }
     ;
 
