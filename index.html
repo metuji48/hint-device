@@ -115,11 +115,12 @@
                         <div class="centered-select">
                             <select id="culpritSelect">
                                 <option value="" disabled selected>犯人を選択</option>
-                                <option value="宮路 凛人">宮路 凛人</option>
                                 <option value="楠木 実">楠木 実</option>
-                                <option value="矢場 丈則">矢場 丈則</option>
-                                <option value="河伊 健二郎">河伊 健二郎</option>
                                 <option value="須賀 章">須賀 章</option>
+                                <option value="矢場 丈則">矢場 丈則</option>
+                                <option value="宮路 凛人">宮路 凛人</option>
+                                <option value="河伊 健二郎">河伊 健二郎</option>
+                                
                             </select>
                         </div>
                     </div>
@@ -152,7 +153,9 @@
                         <th>項目</th>
                         <th>結果</th>
                         <th>スコア</th>
+                        
                     </tr>
+                    
                     <tr class="slidein">
                         <td>残り時間</td>
                         <td id="finalTime" class="align-right">時間切れ</td>
@@ -167,6 +170,13 @@
                         <td>不正解回数</td>
                         <td id="wrongAnswerCount" class="align-right">0</td>
                         <td id="wrongAnswerCountScore" class="align-right">0</td>
+                    </tr>
+                    <tr class="slidein">
+                        <td>正解ボーナス</td>
+                        <td class="align-right">✓</td>
+                        <td id="correctBonusScore" class="align-right">1000</td>
+                    </tr>
+                    
                     </tr>
                 </table>
                 <h3 id="finalScore" class="fade-in-opacity"></h3>
