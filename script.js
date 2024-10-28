@@ -76,25 +76,31 @@ function flipPage(toScreen) {
     currentScreen = toScreen;
 }
 
+function updateTimer() {
+    const now = new Date().getTime();
+    const elapsed = Math.floor((now - startTime) / 1000) ;
+    remainingTime = 1200 - elapsed;
+
+    const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
+    const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
+    remainingTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    remainingTimeAnswerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+    updateProgressBarColor();
+
+
+    if (remainingTime <= 0) {
+        clearInterval(timer);
+        showResult(false);
+    }
+
+}
+
 // タイマー開始
 function startTimer() {
+    updateTimer();
     timer = setInterval(() => {
-        const now = new Date().getTime();
-        const elapsed = Math.floor((now - startTime) / 1000) ;
-        remainingTime = 1200 - elapsed;
-
-        const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
-        const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
-        remainingTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        remainingTimeAnswerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-
-        updateProgressBarColor();
-
-
-        if (remainingTime <= 0) {
-            clearInterval(timer);
-            showResult(false);
-        }
+        updateTimer();
     }, 1000);
 }
 //時間がたつにつれて緑色から赤色にだんだん変わっていくようにする(#00ff00から#ff0000に)
@@ -103,13 +109,10 @@ function startTimer() {
 function getColorGradient(remainingTime, maxTime) {
     // remainingTimeの割合を計算（0から1の範囲）
     let ratio = remainingTime / maxTime;
-
-    // 緑（0, 255, 0）から赤（255, 0, 0）へ変化させる
-    let red = Math.floor((1 - ratio) * 255); // 赤色が増える
-    let green = Math.floor(ratio * 255);     // 緑色が減る
+    let red = Math.floor(ratio * 120);
 
     // RGBカラーコードを作成
-    return `rgb(${red}, ${green}, 0)`;
+    return `hsl(${red}, 50%, 50%)`;
 }
 
 // 進行状況の値に基づいて色を更新する関数
