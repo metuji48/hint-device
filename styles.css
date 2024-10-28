@@ -49,9 +49,18 @@ progress {
     -webkit-appearance: none;
     -moz-appearance: none;
     background-color: #fff;
-    height: 12px;
-    width: 80%;
-    max-width: 200px;
+    height: 8px;
+    width: 90%;
+    max-width: 290px;
+    margin-bottom: 30px;
+}
+
+::-webkit-progress-bar {
+    background-color: white;
+}
+
+::-webkit-progress-value {
+    background-color: var(--progress-color);
 }
 
 button {
@@ -80,26 +89,18 @@ button {
     cursor: not-allowed;
 }
 
-::-webkit-progress-bar {
-    background-color: white;
-}
-
-::-webkit-progress-value {
-    /*background-color: #00ff00;*/
-    background-color: var(--progress-color);
-}
 
 .titleLogo {
     width: 50%;
-    
-    margin-top:1px ;
+    margin-top: 23px;
     text-align: center;
 }
-.titleLogo2{
-    width:100%;
-    margin:auto;
+
+.titleLogo2 {
+    width: 90%;
+    margin: auto;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 90px;
 }
 
 #startButton {
@@ -141,14 +142,13 @@ button {
     margin: 20px 0 0 0;
     display: flex;
     align-items: center;
-    background-color: #fff;
 }
 
 .side-bar-content {
-    background-color: rgb(255 255 255/0.8);
+    background: linear-gradient(180deg, rgb(255 255 255), rgb(255 255 255/0.8) 20%);
     padding: 15px;
     border-radius: 0 0 5px 5px;
-    height:420px;
+    height: 420px;
 }
 
 .side-bar-button {
@@ -177,7 +177,15 @@ button {
 
 .side-bar-button.current {
     border-top: 5px solid #2589d0;
-    background-color: transparent;
+    background-color: #fff;
+}
+
+.hint-button {
+    border-top-left-radius: 10px;
+}
+
+.answer-button {
+    border-top-right-radius: 10px;
 }
 
 #startButton {
@@ -239,13 +247,26 @@ button {
 }
 
 .timer-score {
-    font-size: 2.1em;
+    font-size: 1.3em;
     text-align: center;
-    background-color: rgb(255 255 255/0.3);
+    background-color: rgb(255 255 255/0.5);
+    height: 287px;
     color: #333;
     border-radius: 5px;
     padding: 10px;
+    padding-top: 50px;
     margin-top: 30px;
+}
+
+#remainingTime,
+#remainingTimeAnswer {
+    display: block;
+    font-size: 4.5em;
+    margin-bottom: -5px;
+}
+
+#hintCount, #hintCountAnswer {
+    font-size: 1.4em;
 }
 
 .sticky-note {
@@ -316,10 +337,11 @@ button {
     font-size: 1.2em;
 }
 
+
 .special-hint,
 .special-hint-button {
     width: 80%;
-    margin: 10px auto;
+    margin: 30px auto;
     border-radius: 5px;
     color: #000;
     background-color: #ffe600;
@@ -339,13 +361,6 @@ button {
 
 .centered-slider {
     width: 60%;
-}
-
-#remainingTime,
-#remainingTimeAnswer {
-    display: block;
-    font-size: 2.5em;
-    margin-bottom: -0.5em;
 }
 
 .finalRank {
@@ -545,7 +560,6 @@ button {
     display: block;
 }
 
-
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
@@ -647,6 +661,7 @@ input[type="range"]:focus::-webkit-slider-thumb {
     font-size: 1em;
     margin: 20px 10px 0 10px;
     color: white;
+    width: 120px;
 }
 
 .correct-label {
@@ -708,6 +723,7 @@ input[type="range"]:focus::-webkit-slider-thumb {
     left: 0;
     z-index: -100;
 }
+
 #resultScreen {
     background-image: url("image/bg-2.jpg");
     background-size: cover;
@@ -715,6 +731,7 @@ input[type="range"]:focus::-webkit-slider-thumb {
     z-index: -99;
     color: #ffffff;
 }
+
 #resultScreen::after {
     content: "";
     background: rgba(2, 2, 2, 0.5);
@@ -726,9 +743,11 @@ input[type="range"]:focus::-webkit-slider-thumb {
     z-index: -100;
 
 }
-#finalRank{
+
+#finalRank {
     color: #000;
 }
-.komoku{
+
+.komoku {
     color: #ccc;
 }
