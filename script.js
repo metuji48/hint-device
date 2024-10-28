@@ -169,7 +169,7 @@ document.getElementById('confirmHint').addEventListener('click', () => {
                     hintMessage = 'よくある感じの座布団だ。<br>3つあるということは、奈賀岡宅を訪れていたのは千田だけではなかったのかもしれない。';
                     break;
                 case 'いちごパック':
-                    hintMessage = '福岡産のいちごのパック。お土産だろうか？資料によると宮路が福岡に出張してようだから彼がこの部屋を訪れていたのかもしれない。<br>何かでこれを立証できればいいが……。';
+                    hintMessage = '福岡産のいちごのパック。お土産だろうか？資料によると宮路が福岡に出張していたようだから彼はこの部屋を訪れていたのかもしれない。<br>何かでこれを立証できればいいが……。';
                     break;
                 case 'ティーカップ':
                     hintMessage = '酒ばかりのちゃぶ台に、ポツリとおかれたティーカップ。飲んだくれの被害者二人が使ったとは考えにくい。<br>千田の他にも来客がいたのだろう。唾液がついているはずだ。鑑定に掛けて確かめよう。';
@@ -231,7 +231,7 @@ let answerStage = 0;
 
 // 解答の送信
 document.getElementById('submitAnswer').addEventListener('click', () => {
-    //if (answerDisabled) return; // 1分間解答不可
+    if (answerDisabled) return; // 10秒間解答不可
 
     const selectedCulprit = document.getElementById('culpritSelect').value;
     const selectedHour = crimeHour.value;
@@ -266,7 +266,7 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         }
     }else {
         displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${selectedHour}時${selectedMinute}分`, () => {
-            if (selectedHour === '0' && selectedMinute === '30') {
+            if (selectedHour === '23' && selectedMinute === '0') {
                 confetti({
                     particleCount: 200,
                     spread: 200,
