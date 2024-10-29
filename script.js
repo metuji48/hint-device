@@ -13,10 +13,12 @@ const allContent = document.querySelector('.all-content');
 const startButton = document.getElementById('startButton');
 const waitingScreen = document.getElementById('waitingScreen');
 const mainScreen = document.getElementById('mainScreen');
+const fixedTimeScreen = document.getElementById('fixedTimeScreen');
 const answerScreen = document.getElementById('answerScreen');
 const resultScreen = document.getElementById('resultScreen');
 const remainingTimeDisplay = document.getElementById('remainingTime');
 const remainingTimeAnswerDisplay = document.getElementById('remainingTimeAnswer');
+const remainingTimeFixedTimeDisplay = document.getElementById('remainingTimeFixedTime');
 const hintCountDisplay = document.getElementById('hintCount');
 const hintCountAnswerDisplay = document.getElementById('hintCountAnswer');
 const hintDisplay = document.getElementById('hintDisplay');
@@ -80,12 +82,13 @@ function flipPage(toScreen) {
 function updateTimer() {
     const now = new Date().getTime();
     const elapsed = Math.floor((now - startTime) / 1000) ;
-    remainingTime = 12 - elapsed;//0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    remainingTime = 1200 - elapsed;//0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 
     const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
     const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
     remainingTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     remainingTimeAnswerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    remainingTimeFixedTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
     updateProgressBarColor();
 
@@ -122,10 +125,12 @@ function updateProgressBarColor() {
     let color = getColorGradient(remainingTime, maxTime);
     document.getElementById('timeBar').style.setProperty('--progress-color', color);
     document.getElementById('timeBarAnswer').style.setProperty('--progress-color', color);
+    document.getElementById('timeBarFixedTime').style.setProperty('--progress-color', color);
  
     // 進行状況を更新
     document.querySelector("#timeBar").value = remainingTime;
     document.querySelector("#timeBarAnswer").value = remainingTime;
+    document.querySelector("#timeBarFixedTime").value = remainingTime;
     
 }
 
@@ -155,7 +160,7 @@ document.getElementById('confirmHint').addEventListener('click', () => {
                     hintMessage = '奈賀岡の指紋が検出された懐中電灯についた血を拭き取ったものだろう。しかし千田の体に打撲傷はない。<br>だとすると、奈賀岡が事件の犯人に抵抗するのに使ったにちがいない。懐中電灯（手袋）には犯人の血がついているはずだ。';
                     break;
                 case '包丁':
-                    hintMessage = '千田の血が検出された包丁だ。この物品から指紋は検出されていない。<br>とっさに起こった喧嘩ならば、手袋の用意は無いだろう。他殺説を高める証拠だ。';
+                    hintMessage = '千田の指紋が検出された包丁だ。この物品から指紋は検出されていない。<br>とっさに起こった喧嘩ならば、手袋の用意は無いだろう。他殺説を高める証拠だ。';
                     break;
                 case 'ロープ':
                     hintMessage = '奈賀岡が吊られていたロープ。<br>体の強い人間ならば、打撲等で被害者を気絶させた後にロープで吊るというのも可能だろう。';
@@ -170,7 +175,7 @@ document.getElementById('confirmHint').addEventListener('click', () => {
                     hintMessage = 'よくある感じの座布団だ。<br>3つあるということは、奈賀岡宅を訪れていたのは千田だけではなかったのかもしれない。';
                     break;
                 case 'いちごパック':
-                    hintMessage = '福岡産のいちごのパック。お土産だろうか？資料によると宮路が福岡に出張していたようだから彼はこの部屋を訪れていたのだろう。';
+                    hintMessage = '福岡産のいちごのパック。お土産だろうか？資料によると宮路が福岡に出張していたようだから彼はこの部屋を訪れていたのかもしれない。<br>何かでこれを立証できればいいが……。';
                     break;
                 case 'ティーカップ':
                     hintMessage = '酒ばかりのちゃぶ台に、ポツリとおかれたティーカップ。飲んだくれの被害者二人が使ったとは考えにくい。<br>千田の他にも来客がいたのだろう。唾液がついているはずだ。鑑定に掛けて確かめよう。';
@@ -179,7 +184,7 @@ document.getElementById('confirmHint').addEventListener('click', () => {
                     hintMessage = 'よくある感じの雑誌だ。特に事件に関係は無いだろう。';
                     break;
                 case '窓ガラス':
-                    hintMessage = 'プランターに窓ガラスが飛び散っている。ガラスが外側に飛び散っているということは、窓は内側から割れたということだ。やはり喧嘩によるただの自殺事件なのか？....いや、犯人が事件の後に窓から脱出したという可能性がある。';
+                    hintMessage = 'プランターに窓ガラスが飛び散っている。ガラスが外側に飛び散っているということは、窓は内側から割れたということだ。やはり喧嘩によるただの自殺事件なのか？....いや、犯人が事件の後に窓から脱出したという可能性は捨てきれない。';
                     break;
                 case '卒アル':
                     hintMessage = '駒波高校の卒アル 2012 年度。奈賀岡、千田、宮路の名前が見て取れる。宮路の写真は後に合成された物のようだ。<br>不登校だったのか...?';
@@ -346,7 +351,7 @@ function showResult(isCorrect) {
         document.getElementById('correctBonusScore').parentElement.style.display = 'none';
     }
 
-    if (score >= 800) {
+    if (score >= 1800) {
         rank = "シャーロック・ホームズ級";
     } else if (score === 777) {
         rank = "ラマヌジャン級";
@@ -377,7 +382,7 @@ function showResult(isCorrect) {
 }
 document.getElementById('endButton').addEventListener('click', () => {
     const password = prompt("リロード用:");
-    if (password === "1234") {
+    if (password === "1145141919810") {
         resultScreen.classList.add('hidden');
         waitingScreen.classList.remove('hidden');
         location.reload();
@@ -387,12 +392,27 @@ document.getElementById('endButton').addEventListener('click', () => {
 });
 
 // 「ヒントを求める」ボタン
-document.getElementById('goToHint').addEventListener('click', () => {
+
+document.getElementById('goToHint2').addEventListener('click', () => {
+    flipPage(mainScreen);
+});
+document.getElementById('goToHint3').addEventListener('click', () => {
     flipPage(mainScreen);
 });
 
+// 「定時ヒント」ボタン
+document.getElementById('goToFixedTime1').addEventListener('click', () => {
+    flipPage(fixedTimeScreen);
+});
+document.getElementById('goToFixedTime3').addEventListener('click', () => {
+    flipPage(fixedTimeScreen);
+});
+
 // 「解答する」ボタン
-document.getElementById('goToAnswer').addEventListener('click', () => {
+document.getElementById('goToAnswer1').addEventListener('click', () => {
+    flipPage(answerScreen);
+});
+document.getElementById('goToAnswer2').addEventListener('click', () => {
     flipPage(answerScreen);
 });
 
