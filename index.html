@@ -50,13 +50,15 @@
                 <div class="timer-score">
                     <p>残り時間: <span id="remainingTime">20:00</span></p>
                     <progress id="timeBar" value="1200" max="1200" min="0"></progress>
-                    <p class="hintCountLabel">ヒント使用回数: <span id="hintCount">0</span></p>
+                    <!--<p class="hintCountLabel">ヒント使用回数: <span id="hintCount">0</span></p>-->
                 </div>
             </div>
             <div class="right">
                 <div class="side-bar">
-                    <button class="button hint-button side-bar-button current">ヒントを求める</button>
-                    <button id="goToAnswer" class="button answer-button side-bar-button abled">解答する</button>
+                    <button class="button hint-button side-bar-button current">ヒント</button>
+                    <button id="goToFixedTime1" class="button fixedtime-button side-bar-button abled">定時</button>
+                    <button id="goToAnswer1" class="button answer-button side-bar-button abled">解答</button>
+                    <!-- <button id="goToAnswer">定時</button>-->
                 </div>
                 <div class="side-bar-content">
                     <div id="hintBox" class="hint-box">
@@ -92,6 +94,45 @@
             </div>
         </div>
 
+        <!-- 定時シーン -->
+        <div class="notebook open hidden" id="fixedTimeScreen">
+            <div class="left">
+                <div class="titleLogo">
+                    <img src="image/1-1_logo.png" width="80%">
+                </div>
+                <div class="timer-score">
+                    <p>残り時間: <span id="remainingTimeFixedTime">20:00</span></p>
+                    <progress id="timeBarFixedTime" value="1200" max="1200" min="0"></progress>
+                    <!--<p class="hintCountLabel">ヒント使用回数: <span id="hintCountAnswer">0</span></p>-->
+                </div>
+            </div>
+            <div class="right">
+                <div class="side-bar">
+                    <button id="goToHint2" class="button hint-button side-bar-button abled">ヒント</button>
+                    <button class="button fixedtime-button side-bar-button current">定時</button>
+                    <button id="goToAnswer2" class="button answer-button side-bar-button abled">解答</button>
+                </div>
+                <div class="side-bar-accordion">
+                    <details class="accordion">
+                        <summary>アコーディオンのデザイン</summary>
+                        <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
+                    </details>
+                    <details class="accordion">
+                        <summary>アコーディオンのデザイン</summary>
+                        <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
+                    </details>
+                    <details class="accordion">
+                        <summary>アコーディオンのデザイン</summary>
+                        <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
+                    </details>
+                    <details class="accordion">
+                        <summary>アコーディオンのデザイン</summary>
+                        <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
+                    </details>
+                </div>
+            </div>
+        </div>
+
         <!-- 解答シーン -->
         <div class="notebook open hidden" id="answerScreen">
             <div class="left">
@@ -101,13 +142,14 @@
                 <div class="timer-score">
                     <p>残り時間: <span id="remainingTimeAnswer">20:00</span></p>
                     <progress id="timeBarAnswer" value="1200" max="1200" min="0"></progress>
-                    <p class="hintCountLabel">ヒント使用回数: <span id="hintCountAnswer">0</span></p>
+                    <!--<p class="hintCountLabel">ヒント使用回数: <span id="hintCountAnswer">0</span></p>-->
                 </div>
             </div>
             <div class="right">
                 <div class="side-bar">
-                    <button id="goToHint" class="button hint-button side-bar-button abled">ヒントを求める</button>
-                    <button class="button answer-button side-bar-button current">解答する</button>
+                    <button id="goToHint3" class="button hint-button side-bar-button abled">ヒント</button>
+                    <button id="goToFixedTime3" class="button fixedtime-button side-bar-button abled">定時</button>
+                    <button class="button answer-button side-bar-button current">解答</button>
                 </div>
                 <div class="side-bar-content">
                     <div class="answer-first">
@@ -120,7 +162,7 @@
                                 <option value="矢場 丈則">矢場 丈則</option>
                                 <option value="宮路 凛人">宮路 凛人</option>
                                 <option value="河伊 健二郎">河伊 健二郎</option>
-                                
+
                             </select>
                         </div>
                     </div>
@@ -134,12 +176,12 @@
                             <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
                             <span id="minuteDisplay">00</span>分
                         </div>
-                        <button class="special-hint-button">特別ヒントを見る</button>
-                        <p class="special-hint hidden">ここに特別ヒントを書きます。</p>
+                        <button class="special-hint-button">追加情報(任意)を見る</button>
+                        <p class="special-hint hidden">追加情報:犯人は窓が破れた時間にアリバイがあります。<br>これは何を意味しているのでしょうか?</p>
                     </div>
                     <button id="submitAnswer" class="center-button default-btn">解答する</button>
                     <div id="errorMessage" class="error-message hidden">10秒間解答できません。</div>
-                </div> 
+                </div>
             </div>
         </div>
 
@@ -153,9 +195,9 @@
                         <th>項目</th>
                         <th>結果</th>
                         <th>スコア</th>
-                        
+
                     </tr>
-                    
+
                     <tr class="slidein">
                         <td>残り時間</td>
                         <td id="finalTime" class="align-right">時間切れ</td>
@@ -176,7 +218,7 @@
                         <td class="align-right">✓</td>
                         <td id="correctBonusScore" class="align-right">1000</td>
                     </tr>
-                    
+
                     </tr>
                 </table>
                 <h3 id="finalScore" class="fade-in-opacity"></h3>
