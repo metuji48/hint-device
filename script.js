@@ -46,7 +46,7 @@ let currentScreen = waitingScreen;
 
 // スタートボタンの処理
 startButton.addEventListener('click', () => {
-    if(displayConfirmAlert("ヒントデバイスの使用を開始しますか?\n（スタートした時点でタイマーがスタートします。）", () => {
+    if (displayConfirmAlert("ヒントデバイスの使用を開始しますか?\n（スタートした時点でタイマーがスタートします。）", () => {
         startTime = new Date().getTime();
         localStorage.setItem('startTime', startTime);
         flipPage(mainScreen);
@@ -73,16 +73,22 @@ function flipPage(toScreen) {
     }, 1000);
     */
 
-    
+
     currentScreen.classList.add('hidden');
     toScreen.classList.remove('hidden');
     currentScreen = toScreen;
 }
 
+function makeTimeKirei(time) {
+    const minutes = time <= 0 ? 0 : Math.floor(time / 60);
+    const seconds = time <= 0 ? 0 : time % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
 function updateTimer() {
     const now = new Date().getTime();
     const elapsed = Math.floor((now - startTime) / 1000) ;
-    remainingTime = 1200 - elapsed;//0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    remainingTime = 1200 - elapsed;
 
     const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
     const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
@@ -92,12 +98,33 @@ function updateTimer() {
 
     updateProgressBarColor();
 
+    const accordionTimes = [0, 4, 8, 12, 15, 17];
+    const accordions = document.getElementsByClassName("accordion");
+    const accordionSpans = document.getElementsByClassName("accordion-remain");
+    const accordionTitles = document.getElementsByClassName("accordion-title");
+
+    const titles = ["捜査開始", "DNA鑑定", "訪問者の痕跡", "いちごパック","パソコン" ,"LIEN"];
+
+    for (let i = 0; i < accordions.length; i++) {
+        if (accordionTimes[i] * 60 <= elapsed) {
+            if (accordions[i].classList.contains("closed")) {
+                accordions[i].classList.remove("closed");
+                accordionSpans[i].textContent = "";
+                accordionTitles[i].textContent = titles[i];
+                increaseFixedTimeBadgeCount();
+                if (accordionTimes[i] !== 0) {
+                    displayNoti(`新たなヒントが開放されました！`);
+                }
+            }
+        } else {
+            accordionSpans[i].textContent = "あと " + makeTimeKirei(accordionTimes[i] * 60 - elapsed);
+        }
+    }
 
     if (remainingTime <= 0) {
         clearInterval(timer);
         showResult(false);
     }
-
 }
 
 // タイマー開始
@@ -105,7 +132,7 @@ function startTimer() {
     updateTimer();
     timer = setInterval(() => {
         updateTimer();
-    }, 1000);
+    }, 10);
 }
 //時間がたつにつれて緑色から赤色にだんだん変わっていくようにする(#00ff00から#ff0000に)
 
@@ -126,19 +153,19 @@ function updateProgressBarColor() {
     document.getElementById('timeBar').style.setProperty('--progress-color', color);
     document.getElementById('timeBarAnswer').style.setProperty('--progress-color', color);
     document.getElementById('timeBarFixedTime').style.setProperty('--progress-color', color);
- 
+
     // 進行状況を更新
     document.querySelector("#timeBar").value = remainingTime;
     document.querySelector("#timeBarAnswer").value = remainingTime;
     document.querySelector("#timeBarFixedTime").value = remainingTime;
-    
+
 }
 
 
 
 // シークバーの値が変わるたびに表示を更新
 crimeHour.addEventListener('input', () => {
-    hourDisplay.textContent = crimeHour.value;
+    hourDisplay.textContent = (parseInt(crimeHour.value) + 12) % 24;
 });
 
 crimeMinute.addEventListener('input', () => {
@@ -154,9 +181,9 @@ document.getElementById('confirmHint').addEventListener('click', () => {
     if (hintValue && !selectedHint.options[selectedHint.selectedIndex].disabled) { // 無効化チェック
         displayConfirmAlert(`${hintText} についてのヒントでよろしいですか？`, () => {
             let hintMessage = '';
-            
+
             switch (hintValue) {
-                case '懐中電灯(手袋)':
+                case '懐中電灯':
                     hintMessage = '奈賀岡の指紋が検出された懐中電灯についた血を拭き取ったものだろう。しかし千田の体に打撲傷はない。<br>だとすると、奈賀岡が事件の犯人に抵抗するのに使ったにちがいない。懐中電灯（手袋）には犯人の血がついているはずだ。';
                     break;
                 case '包丁':
@@ -239,7 +266,7 @@ let answerStage = 0;
 document.getElementById('submitAnswer').addEventListener('click', () => {
     if (answerDisabled) return; // 10秒間解答不可
     const selectedCulprit = document.getElementById('culpritSelect').value;
-    const selectedHour = parseInt(document.getElementById('crimeHour').value, 10);
+    const selectedHour = (parseInt(document.getElementById('crimeHour').value, 10) + 12) % 24;
     const selectedMinute = parseInt(document.getElementById('crimeMinute').value, 10);
 
     if (answerStage === 0) {
@@ -269,7 +296,7 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         }
     } else {
         displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${selectedHour}時${selectedMinute}分`, () => {
-            if ((selectedHour === 22 && selectedMinute >= 50) || 
+            if ((selectedHour === 22 && selectedMinute >= 50) ||
                 (selectedHour === 23 && selectedMinute <= 10)) {
                 confetti({
                     particleCount: 200,
@@ -324,7 +351,7 @@ function lockoutAnswer() {
 
 // 結果表示
 function showResult(isCorrect) {
-    if(!isCorrect) {
+    if (!isCorrect) {
         document.querySelector(".correct-label").textContent = "時間切れ…";
     }
 
@@ -342,39 +369,40 @@ function showResult(isCorrect) {
     wrongAnswerCountDisplayScore.textContent = wrongAnswerCount * -50;
     let score;
 
-    if(isCorrect){score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50 + 1000); // スコア計算
+    if (isCorrect) {
+        score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50 + 1000); // スコア計算
     }
-    else {score = -1}
+    else { score = -1 }
     finalScore.textContent = "スコア: " + score;
     if (score === -1) {
         // 不正解の場合は正解ボーナスを非表示
         document.getElementById('correctBonusScore').parentElement.style.display = 'none';
     }
 
-    if (score >= 1800) {
+    if (score >= 1400) {
         rank = "シャーロック・ホームズ級";
     } else if (score === 777) {
-        rank = "ラマヌジャン級";
+        rank = "X級";
+    } else if (score >= 900) {
+        rank = "S級";
     } else if (score >= 600) {
-        rank = "レジェンド";
-    } else if (score >= 500) {
-        rank = "ウルトラ";
+        rank = "A+級";
     } else if (score >= 400) {
-        rank = "ハイパー";
+        rank = "A級";
     } else if (score >= 300) {
-        rank = "スーパー";
+        rank = "B+級";
     } else if (score >= 200) {
-        rank = "ノーマル";
+        rank = "B級";
     } else if (score === 77) {
-        rank = "ラマヌジャン級";
+        rank = "X級";
     } else if (score >= 100) {
-        rank = "ミジンコ級";
-    } else if (score ===-1){
+        rank = "C級";
+    } else if (score === -1) {
         rank = "惜しい"
 
     }
     else {
-        rank = "一般"
+        rank = "見習い"
     }
     ;
 
@@ -382,7 +410,7 @@ function showResult(isCorrect) {
 }
 document.getElementById('endButton').addEventListener('click', () => {
     const password = prompt("リロード用:");
-    if (password === "1145141919810") {
+    if (password === "diamondowall24") {
         resultScreen.classList.add('hidden');
         waitingScreen.classList.remove('hidden');
         location.reload();
@@ -392,9 +420,9 @@ document.getElementById('endButton').addEventListener('click', () => {
 });
 
 // 「ヒントを求める」ボタン
-
 document.getElementById('goToHint2').addEventListener('click', () => {
     flipPage(mainScreen);
+    resetFixedTimeBadge();
 });
 document.getElementById('goToHint3').addEventListener('click', () => {
     flipPage(mainScreen);
@@ -403,9 +431,11 @@ document.getElementById('goToHint3').addEventListener('click', () => {
 // 「定時ヒント」ボタン
 document.getElementById('goToFixedTime1').addEventListener('click', () => {
     flipPage(fixedTimeScreen);
+    resetFixedTimeBadge();
 });
 document.getElementById('goToFixedTime3').addEventListener('click', () => {
     flipPage(fixedTimeScreen);
+    resetFixedTimeBadge();
 });
 
 // 「解答する」ボタン
@@ -414,6 +444,7 @@ document.getElementById('goToAnswer1').addEventListener('click', () => {
 });
 document.getElementById('goToAnswer2').addEventListener('click', () => {
     flipPage(answerScreen);
+    resetFixedTimeBadge();
 });
 
 // ウィンドウを離れるときに警告をだす
@@ -424,7 +455,6 @@ window.addEventListener('beforeunload', (e) => {
 
 
 /* アラート */
-
 document.querySelectorAll(".alert-box").forEach((alertBox) => {
     alertBox.querySelectorAll(".alert-btn").forEach((e) => {
         e.addEventListener('click', () => {
@@ -442,7 +472,6 @@ function displayConfirmAlert(content, yesFunction) {
     confirmAlert.querySelector(".yes-btn").onclick = yesFunction;
 }
 
-
 const alertAlert = document.querySelector('#alertAlert');
 function displayAlert(content) {
     allContent.style.filter = 'brightness(50%)';
@@ -450,3 +479,46 @@ function displayAlert(content) {
     alertAlert.style.transform = 'translateY(100px)';
     alertAlert.querySelector("p").innerHTML = content;
 }
+
+let showAlertNotifications = true;
+const notiAlert = document.querySelector("#notiAlert");
+function displayNoti(content) {
+    if (!showAlertNotifications) return; // 通知を無効化している場合は表示しない
+
+    allContent.style.filter = 'brightness(50%)';
+    notiAlert.style.display = 'block';
+    notiAlert.style.transform = 'translateY(100px)';
+    notiAlert.querySelector("p").innerHTML = content;
+}
+
+// 定時ヒントの通知バッジ関連変数
+const fixedTimeBadge1 = document.getElementById('fixedTimeBadge1');
+const fixedTimeBadge3 = document.getElementById('fixedTimeBadge3');
+let fixedTimeBadgeCount = 0;
+
+
+// バッジのカウントを増加
+function increaseFixedTimeBadgeCount() {
+    fixedTimeBadgeCount++;
+    fixedTimeBadge1.textContent = fixedTimeBadgeCount;
+    fixedTimeBadge1.classList.remove('hidden');
+    fixedTimeBadge3.textContent = fixedTimeBadgeCount;
+    fixedTimeBadge3.classList.remove('hidden');
+}
+
+// バッジのカウントをリセット
+function resetFixedTimeBadge() {
+    fixedTimeBadgeCount = 0;
+    fixedTimeBadge1.classList.add('hidden');
+    fixedTimeBadge3.classList.add('hidden');
+}
+
+//チェックボックスの設定を保存
+document.getElementById('notiAlertButtonYes').addEventListener('click', () => {
+    const optOutCheckbox = document.getElementById('notiAlertCheckbox');
+    if (optOutCheckbox.checked) {
+        showAlertNotifications = false;
+    }
+    notiAlert.style.display = 'none';
+    allContent.style.filter = 'brightness(100%)';
+});
