@@ -17,6 +17,7 @@
             <button class="alert-btn close-btn" id="confirmAlertClose">&times;</button>
             <p>これはカスタム承認アラートです。</p>
             <button class="alert-btn yes-btn" id="confirmButtonYes">はい</button>
+
             <button class="alert-btn no-btn" id="confirmButtonNo">キャンセル</button>
         </div>
     </div>
@@ -29,6 +30,17 @@
         </div>
     </div>
 
+    <div class="alert-box" id="notiAlert">
+        <div class="alert-content">
+            <button class="alert-btn close-btn" id="notiAlertClose">&times;</button>
+            <p>これはカスタムノティフィケーションです。</p>
+            <button class="alert-btn yes-btn" id="notiAlertButtonYes">はい</button>
+            <label class="centered-select">
+                <input type="checkbox" id="notiAlertCheckbox">
+                今後この通知を表示しない
+            </label>
+        </div>
+    </div>
     <div class="all-content">
         <!-- 待機シーン -->
         <div class="notebook closed" id="waitingScreen">
@@ -37,8 +49,8 @@
             </div>
             <br>
             <br>
-            <h3 class="subtitle">ヒントデバイス　/　1-1 HR</h1>
-                <button id="startButton">スタート<span id="startButtonArrow"></span></button>
+            <h3 class="subtitle">ヒントデバイス　/　1-1 HR</h3>
+            <button id="startButton">スタート<span id="startButtonArrow"></span></button>
         </div>
 
         <!-- メインシーン -->
@@ -55,19 +67,21 @@
             </div>
             <div class="right">
                 <div class="side-bar">
-                    <button class="button hint-button side-bar-button current">ヒント</button>
-                    <button id="goToFixedTime1" class="button fixedtime-button side-bar-button abled">定時</button>
+                    <button class="button hint-button side-bar-button current">手がかり</button>
+                    <button id="goToFixedTime1" class="button fixedtime-button side-bar-button abled">捜査状況
+                        <span id="fixedTimeBadge1" class="notification-badge hidden">0</span>
+                    </button>
                     <button id="goToAnswer1" class="button answer-button side-bar-button abled">解答</button>
                     <!-- <button id="goToAnswer">定時</button>-->
                 </div>
                 <div class="side-bar-content">
                     <div id="hintBox" class="hint-box">
-                        <h2>ヒントを求める</h2>
+                        <h2>ヒントを見る</h2>
                         <!--<div id="hintLabel" class="select-label">手がかり：</div>-->
                         <div class="centered-select">
                             <select id="hintSelect">
                                 <option value="" disabled selected>手がかりを選択…</option>
-                                <option value="懐中電灯(手袋)">懐中電灯(手袋)</option>
+                                <option value="懐中電灯">懐中電灯</option>
                                 <option value="包丁">包丁</option>
                                 <option value="ロープ">ロープ</option>
                                 <option value="タバコ">タバコ</option>
@@ -108,27 +122,50 @@
             </div>
             <div class="right">
                 <div class="side-bar">
-                    <button id="goToHint2" class="button hint-button side-bar-button abled">ヒント</button>
-                    <button class="button fixedtime-button side-bar-button current">定時</button>
+                    <button id="goToHint2" class="button hint-button side-bar-button abled">手がかり</button>
+                    <button class="button fixedtime-button side-bar-button current">捜査状況</button>
                     <button id="goToAnswer2" class="button answer-button side-bar-button abled">解答</button>
                 </div>
-                <div class="side-bar-accordion">
-                    <details class="accordion">
-                        <summary>アコーディオンのデザイン</summary>
-                        <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
-                    </details>
-                    <details class="accordion">
-                        <summary>アコーディオンのデザイン</summary>
-                        <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
-                    </details>
-                    <details class="accordion">
-                        <summary>アコーディオンのデザイン</summary>
-                        <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
-                    </details>
-                    <details class="accordion">
-                        <summary>アコーディオンのデザイン</summary>
-                        <p>下線だけのシンプルなアコーディオンメニュー。クセがなくどんなサイトでも使いやすいのが特徴です。</p>
-                    </details>
+                <div class="side-bar-content">
+                    <h2>捜査のヒントを確認する</h2>
+                    <div class="side-bar-accordion">
+                        <details class="accordion closed">
+                            <summary><span class="accordion-title">捜査開始</span> <span class="accordion-remain">あと</span>
+                            </summary>
+                            <p>捜査開始だ。まずは手元のブラックライトを使い、手がかりを見つけてくれ。</p>
+                        </details>
+                        <details class="accordion closed">
+                            <summary><span class="accordion-title">残り16分で開放</span> <span
+                                    class="accordion-remain">あと</span>
+                            </summary>
+                            <p>被害者による抵抗に使われたものには犯人の痕跡が残っている事が多い。DNAを鑑定して探ってみたらどうだろう。</p>
+                        </details>
+                        <details class="accordion closed">
+                            <summary><span class="accordion-title">残り12分で開放</span> <span
+                                    class="accordion-remain">あと</span>
+                            </summary>
+                            <p>捜査資料には18時より前に2人が現場を訪れていたと書いてある。一体誰だ？　部屋に残された訪問者の痕跡をDNA鑑定することもできるだろう。</p>
+                        </details>
+                        <details class="accordion closed">
+                            <summary><span class="accordion-title">残り8分で開放</span> <span
+                                    class="accordion-remain">あと</span>
+                            </summary>
+                            <p>犯人が誰か示す証拠が欲しいな。いちごパック、福岡産のものか……。福岡？　何か聞き覚えがあるぞ。</p>
+                        </details>
+                        <details class="accordion closed">
+                            <summary><span class="accordion-title">残り5分で開放</span> <span
+                                    class="accordion-remain">あと</span>
+                            </summary>
+                            <p>部屋に残された奈賀岡のパソコンに目を向けてみよう。パスワードについての情報も、部屋のどこかにあるはずだ。</p>
+                        </details>
+                        <details class="accordion closed">
+                            <summary><span class="accordion-title">残り3分で開放</span> <span
+                                    class="accordion-remain">あと</span>
+                            </summary>
+                            <p>LIENに送られてきた音源。一体何に使われたのだろうか……。まさか犯人のトリックに使われた……？</p>
+                        </details>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -147,8 +184,10 @@
             </div>
             <div class="right">
                 <div class="side-bar">
-                    <button id="goToHint3" class="button hint-button side-bar-button abled">ヒント</button>
-                    <button id="goToFixedTime3" class="button fixedtime-button side-bar-button abled">定時</button>
+                    <button id="goToHint3" class="button hint-button side-bar-button abled">手がかり</button>
+                    <button id="goToFixedTime3" class="button fixedtime-button side-bar-button abled">捜査状況
+                        <span id="fixedTimeBadge3" class="notification-badge hidden">0</span>
+                    </button>
                     <button class="button answer-button side-bar-button current">解答</button>
                 </div>
                 <div class="side-bar-content">
@@ -169,15 +208,15 @@
                     <div class="answer-second hidden">
                         <h2>犯行時刻を選択</h2>
                         <div class="centered-slider">
-                            <input type="range" id="crimeHour" class="slider" min="0" max="23" value="0">
-                            <span id="hourDisplay">0</span>時
+                            <input type="range" id="crimeHour" class="slider" min="0" max="24" step="1" value="0">
+                            <span id="hourDisplay">12</span>時
                         </div>
                         <div class="centered-slider">
                             <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
                             <span id="minuteDisplay">00</span>分
                         </div>
                         <button class="special-hint-button">追加情報(任意)を見る</button>
-                        <p class="special-hint hidden">追加情報:犯人は窓が破れた時間にアリバイがあります。<br>これは何を意味しているのでしょうか?</p>
+                        <p class="special-hint hidden">追加情報:<br>犯人は窓が破れた時間にアリバイがある。<br>これは何を意味しているのだろう?</p>
                     </div>
                     <button id="submitAnswer" class="center-button default-btn">解答する</button>
                     <div id="errorMessage" class="error-message hidden">10秒間解答できません。</div>
@@ -195,9 +234,7 @@
                         <th>項目</th>
                         <th>結果</th>
                         <th>スコア</th>
-
                     </tr>
-
                     <tr class="slidein">
                         <td>残り時間</td>
                         <td id="finalTime" class="align-right">時間切れ</td>
@@ -227,7 +264,7 @@
             <div class="right fade-in-opacity">
                 <h3>プレイありがとうございました!</h3>
                 <p>この後は他の参加者の方々が終わり次第、EDムービーを見ていただく流れになります。</p>
-                <p class="qr-code">早く終わった方へ：<br>
+                <p class="qr-code">
                     もしお時間がないようでしたら以下のQRコードから先にEDムービーをご覧いただき、退出することも可能です。</p>
                 <img class="qr-code-img" src="qr-code.png">
                 <button id="endButton">スタッフ用ボタン</button>
