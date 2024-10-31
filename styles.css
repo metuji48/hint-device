@@ -470,6 +470,10 @@ button {
     animation-delay: 1.9s;
 }
 
+.slidein:nth-child(5) {
+    animation-delay: 2.2s;
+}
+
 
 .notebook.flip {
     animation: flipHalf 0.3s forwards;
@@ -934,7 +938,7 @@ input[type="range"]:focus::-webkit-slider-thumb {
 }
 
 #culpritPhoto {
-    width: 200px;
+    width: 140px;
     height: 200px;
     border-radius: 5px;
     object-fit: cover;
@@ -968,4 +972,11 @@ input[type="range"]:focus::-webkit-slider-thumb {
 
 .nav-btn:hover {
     background-color: #999;
+}
+
+/* プレイありがとうございました */
+
+#thankYou {
+    margin-top: 60px;
+    margin-bottom: 10px;
 }
