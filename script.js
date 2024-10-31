@@ -3,7 +3,7 @@ let hintCount = 0;
 let remainingTime = 1200, maxTime = remainingTime; // 20分 (1200秒)
 let wrongAnswerCount = 0;
 let timer;
-let hints = [];
+let hints = [], hintTitles = [];
 let currentHintIndex = 0;
 let answerDisabled = false;
 
@@ -87,7 +87,7 @@ function makeTimeKirei(time) {
 
 function updateTimer() {
     const now = new Date().getTime();
-    const elapsed = Math.floor((now - startTime) / 1000) ;
+    const elapsed = Math.floor((now - startTime) / 1000);
     remainingTime = 1200 - elapsed;
 
     const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
@@ -103,7 +103,7 @@ function updateTimer() {
     const accordionSpans = document.getElementsByClassName("accordion-remain");
     const accordionTitles = document.getElementsByClassName("accordion-title");
 
-    const titles = ["捜査開始", "DNA鑑定", "訪問者の痕跡", "いちごパック","パソコン" ,"LIEN"];
+    const titles = ["捜査開始", "DNA鑑定", "訪問者の痕跡", "いちごパック", "パソコン", "LIEN"];
 
     for (let i = 0; i < accordions.length; i++) {
         if (accordionTimes[i] * 60 <= elapsed) {
@@ -158,10 +158,7 @@ function updateProgressBarColor() {
     document.querySelector("#timeBar").value = remainingTime;
     document.querySelector("#timeBarAnswer").value = remainingTime;
     document.querySelector("#timeBarFixedTime").value = remainingTime;
-
 }
-
-
 
 /* シークバーの値が変わるたびに表示を更新
 crimeHour.addEventListener('input', () => {
@@ -177,7 +174,7 @@ document.getElementById('confirmHint').addEventListener('click', () => {
     const selectedHint = document.getElementById('hintSelect');
     const hintValue = selectedHint.value;
     const hintText = selectedHint.options[selectedHint.selectedIndex].text;
-    
+
 
     if (hintValue && !selectedHint.options[selectedHint.selectedIndex].disabled) { // 無効化チェック
         displayConfirmAlert(`${hintText} についてのヒントでよろしいですか？`, () => {
@@ -221,7 +218,8 @@ document.getElementById('confirmHint').addEventListener('click', () => {
                     hintMessage = 'ヒントが見つかりません。';
             }
 
-            hints.push(`${hintValue}: <br>${hintMessage}`); // 個別ヒントを配列に追加
+            hintTitles.push(hintValue);
+            hints.push(hintMessage);
             currentHintIndex = hints.length - 1;
             updateHintDisplay();
             hintCount++;
@@ -232,25 +230,26 @@ document.getElementById('confirmHint').addEventListener('click', () => {
             if (hints.length > 1) {
                 hintNavigation.classList.remove('hidden');
             }
-            
+
         });
     } else {
         displayAlert('ヒントを選択してください。');
     }
 });
+
 const culprits = [
-    { name: "楠木 実", photo: "image/culprit1.jpg" },
-    { name: "須賀 章", photo: "image/culprit2.jpg" },
-    { name: "矢場 丈則", photo: "image/culprit3.jpg" },
-    { name: "宮路 凛人", photo: "image/culprit4.jpg" },
-    { name: "河伊 健二郎", photo: "image/culprit5.jpg" }
+    { name: "楠木 実", photo: "image/culprit1.png" },
+    { name: "須賀 章", photo: "image/culprit2.png" },
+    { name: "矢場 丈則", photo: "image/culprit3.png" },
+    { name: "宮路 凛人", photo: "image/culprit4.png" },
+    { name: "河伊 健二郎", photo: "image/culprit5.png" }
 ];
 
 let currentCulpritIndex = 0;
 
 function updateCulpritDisplay() {
     const culprit = culprits[currentCulpritIndex];
-    document.getElementById('culpritPhoto').src = culprit.photo;
+    document.getElementById('culpritPhoto').setAttribute("src", culprit.photo);
     document.getElementById('culpritName').textContent = culprit.name;
 }
 
@@ -267,10 +266,10 @@ document.getElementById('nextCulprit').addEventListener('click', () => {
 // 初期表示の更新
 updateCulpritDisplay();
 
-
 // ヒントの表示を更新
 function updateHintDisplay() {
     if (hints.length > 0) {
+        document.querySelector("#hintTitle").innerHTML = hintTitles[currentHintIndex];
         hintDisplay.innerHTML = hints[currentHintIndex];
         document.getElementById('hintCounter').innerText = `${currentHintIndex + 1}/${hints.length}`;
     }
@@ -296,35 +295,30 @@ let answerStage = 0;
 // 解答の送信
 document.getElementById('submitAnswer').addEventListener('click', () => {
     if (answerDisabled) return; // 10秒間解答不可
-    const selectedCulprit = document.getElementById('culpritSelect').value;
-   // const selectedHour = (parseInt(document.getElementById('crimeHour').value, 10) + 12) % 24;
-   // const selectedMinute = parseInt(document.getElementById('crimeMinute').value, 10);
+    // const selectedHour = (parseInt(document.getElementById('crimeHour').value, 10) + 12) % 24;
+    // const selectedMinute = parseInt(document.getElementById('crimeMinute').value, 10);
 
     if (answerStage === 0) {
-        if (selectedCulprit) { // 無効化チェック
-            displayConfirmAlert(`本当にこの解答でよろしいですか？<br>犯人: ${selectedCulprit}`, () => {
-                if (selectedCulprit === '宮路 凛人') {
-                    answerStage = 1;
-                    displayAlert("正解!!<br>次に、犯行時刻を選択してください。");
-                    document.querySelector(".answer-first").classList.add("hidden");
-                    document.querySelector(".answer-second").classList.remove("hidden");
-                    confetti({
-                        particleCount: 50,
-                        spread: 80,
-                        origin: { x: 0.6, y: 0.6 }
-                    });
-                } else {
-                    wrongAnswerCount++;
-                    answerDisabled = true;
-                    displayAlert("不正解･･･");
-                    flipPage(mainScreen);
-                    errorMessage.classList.remove('hidden');
-                    lockoutAnswer();
-                }
-            });
-        } else {
-            displayAlert('犯人を選択してください。');
-        }
+        displayConfirmAlert(`本当にこの解答でよろしいですか？<br>犯人: ${culprits[currentCulpritIndex].name}`, () => {
+            if (currentCulpritIndex === 3) {
+                answerStage = 1;
+                displayAlert("正解!!<br>次に、犯行時刻を選択してください。");
+                document.querySelector(".answer-first").classList.add("hidden");
+                document.querySelector(".answer-second").classList.remove("hidden");
+                confetti({
+                    particleCount: 50,
+                    spread: 80,
+                    origin: { x: 0.6, y: 0.6 }
+                });
+            } else {
+                wrongAnswerCount++;
+                answerDisabled = true;
+                displayAlert("不正解･･･");
+                flipPage(mainScreen);
+                errorMessage.classList.remove('hidden');
+                lockoutAnswer();
+            }
+        });
     } else {
         displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${hour}時${minute}分`, () => {
             if ((hour === 23 && minute >= 0) ||
@@ -479,11 +473,12 @@ document.getElementById('goToAnswer2').addEventListener('click', () => {
 });
 
 // ウィンドウを離れるときに警告をだす
+/*
 window.addEventListener('beforeunload', (e) => {
     e.preventDefault();
     return message;
 });
-
+*/
 
 /* アラート */
 document.querySelectorAll(".alert-box").forEach((alertBox) => {
@@ -554,66 +549,65 @@ document.getElementById('notiAlertButtonYes').addEventListener('click', () => {
     allContent.style.filter = 'brightness(100%)';
 });
 let hour = 0;
-    let minute = 0;
+let minute = 0;
 
-    function updateDisplay() {
-      document.getElementById('hour').innerText = hour;
-      document.getElementById('minute').innerText = String(minute).padStart(2, '0');
-    }
+function updateDisplay() {
+    document.getElementById('hour').innerText = hour;
+    document.getElementById('minute').innerText = String(minute).padStart(2, '0');
+}
 
-    function increment(type) {
-      if (type === 'hour') {
+function increment(type) {
+    if (type === 'hour') {
         hour = (hour + 1) % 24;
-      } else if (type === 'minute') {
+    } else if (type === 'minute') {
         minute = (minute + 5) % 60;
-      }
-      updateDisplay();
     }
-
-    function decrement(type) {
-      if (type === 'hour') {
-        hour = (hour - 1 + 24) % 24;
-      } else if (type === 'minute') {
-        minute = (minute - 5 + 60) % 60;
-      }
-      updateDisplay();
-    }
-
-    function scrollChange(event, type) {
-      event.preventDefault();
-      if (event.deltaY < 0) {
-        increment(type);
-      } else {
-        decrement(type);
-      }
-    }
-
     updateDisplay();
-    let changeInterval;
+}
+
+function decrement(type) {
+    if (type === 'hour') {
+        hour = (hour - 1 + 24) % 24;
+    } else if (type === 'minute') {
+        minute = (minute - 5 + 60) % 60;
+    }
+    updateDisplay();
+}
+
+function scrollChange(event, type) {
+    event.preventDefault();
+    if (event.deltaY < 0) {
+        increment(type);
+    } else {
+        decrement(type);
+    }
+}
+
+updateDisplay();
+let changeInterval;
 
 function startChange(type, operation) {
     isLongPress = false;
 
     // 短いクリックを判定するためのタイマーを設定
     clickTimeout = setTimeout(() => {
-      isLongPress = true; // 200ms後に長押しと判定
-      if (operation === 'increment') {
-  
-    changeInterval = setInterval(() => increment(type), 200);
-  } else if (operation === 'decrement') {
-    changeInterval = setInterval(() => decrement(type), 200);
-  }
- }, 200);
+        isLongPress = true; // 200ms後に長押しと判定
+        if (operation === 'increment') {
+            changeInterval = setInterval(() => increment(type), 100);
+        } else if (operation === 'decrement') {
+            changeInterval = setInterval(() => decrement(type), 100);
+        }
+    }, 100);
 }
 
 function stopChange(type, operation) {
     clearTimeout(clickTimeout);
-  clearInterval(changeInterval);
-  // 長押しでなければ、1回だけ処理を行う
-  if (!isLongPress) {
-    if (operation === 'increment') {increment(type);}
-    else if(operation === 'decrement'){ decrement(type);}
-  }
-  
+    clearInterval(changeInterval);
+    // 長押しでなければ、1回だけ処理を行う
+    if (!isLongPress) {
+        if (operation === 'increment') { increment(type); }
+        else if (operation === 'decrement') { decrement(type); }
+    }
+
 }
 updateDisplay();
