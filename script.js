@@ -163,20 +163,21 @@ function updateProgressBarColor() {
 
 
 
-// シークバーの値が変わるたびに表示を更新
+/* シークバーの値が変わるたびに表示を更新
 crimeHour.addEventListener('input', () => {
     hourDisplay.textContent = (parseInt(crimeHour.value) + 12) % 24;
 });
 
 crimeMinute.addEventListener('input', () => {
     minuteDisplay.textContent = crimeMinute.value.padStart(2, '0');
-});
+});*/
 
 // ヒント確認
 document.getElementById('confirmHint').addEventListener('click', () => {
     const selectedHint = document.getElementById('hintSelect');
     const hintValue = selectedHint.value;
     const hintText = selectedHint.options[selectedHint.selectedIndex].text;
+    
 
     if (hintValue && !selectedHint.options[selectedHint.selectedIndex].disabled) { // 無効化チェック
         displayConfirmAlert(`${hintText} についてのヒントでよろしいですか？`, () => {
@@ -224,18 +225,48 @@ document.getElementById('confirmHint').addEventListener('click', () => {
             currentHintIndex = hints.length - 1;
             updateHintDisplay();
             hintCount++;
-            hintCountDisplay.textContent = hintCount;
-            hintCountAnswerDisplay.textContent = hintCount;
+            //hintCountDisplay.textContent = hintCount;
+            //hintCountAnswerDisplay.textContent = hintCount;
             selectedHint.options[selectedHint.selectedIndex].disabled = true; // 一度選んだヒントを無効化
             selectedHint.value = '';
             if (hints.length > 1) {
                 hintNavigation.classList.remove('hidden');
             }
+            
         });
     } else {
         displayAlert('ヒントを選択してください。');
     }
 });
+const culprits = [
+    { name: "楠木 実", photo: "image/culprit1.jpg" },
+    { name: "須賀 章", photo: "image/culprit2.jpg" },
+    { name: "矢場 丈則", photo: "image/culprit3.jpg" },
+    { name: "宮路 凛人", photo: "image/culprit4.jpg" },
+    { name: "河伊 健二郎", photo: "image/culprit5.jpg" }
+];
+
+let currentCulpritIndex = 0;
+
+function updateCulpritDisplay() {
+    const culprit = culprits[currentCulpritIndex];
+    document.getElementById('culpritPhoto').src = culprit.photo;
+    document.getElementById('culpritName').textContent = culprit.name;
+}
+
+document.getElementById('prevCulprit').addEventListener('click', () => {
+    currentCulpritIndex = (currentCulpritIndex === 0) ? culprits.length - 1 : currentCulpritIndex - 1;
+    updateCulpritDisplay();
+});
+
+document.getElementById('nextCulprit').addEventListener('click', () => {
+    currentCulpritIndex = (currentCulpritIndex === culprits.length - 1) ? 0 : currentCulpritIndex + 1;
+    updateCulpritDisplay();
+});
+
+// 初期表示の更新
+updateCulpritDisplay();
+
 
 // ヒントの表示を更新
 function updateHintDisplay() {
@@ -266,8 +297,8 @@ let answerStage = 0;
 document.getElementById('submitAnswer').addEventListener('click', () => {
     if (answerDisabled) return; // 10秒間解答不可
     const selectedCulprit = document.getElementById('culpritSelect').value;
-    const selectedHour = (parseInt(document.getElementById('crimeHour').value, 10) + 12) % 24;
-    const selectedMinute = parseInt(document.getElementById('crimeMinute').value, 10);
+   // const selectedHour = (parseInt(document.getElementById('crimeHour').value, 10) + 12) % 24;
+   // const selectedMinute = parseInt(document.getElementById('crimeMinute').value, 10);
 
     if (answerStage === 0) {
         if (selectedCulprit) { // 無効化チェック
@@ -295,9 +326,9 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
             displayAlert('犯人を選択してください。');
         }
     } else {
-        displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${selectedHour}時${selectedMinute}分`, () => {
-            if ((selectedHour === 22 && selectedMinute >= 50) ||
-                (selectedHour === 23 && selectedMinute <= 10)) {
+        displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${hour}時${minute}分`, () => {
+            if ((hour === 23 && minute >= 0) ||
+                (hour === 23 && minute <= 10)) {
                 confetti({
                     particleCount: 200,
                     spread: 200,
@@ -522,3 +553,67 @@ document.getElementById('notiAlertButtonYes').addEventListener('click', () => {
     notiAlert.style.display = 'none';
     allContent.style.filter = 'brightness(100%)';
 });
+let hour = 0;
+    let minute = 0;
+
+    function updateDisplay() {
+      document.getElementById('hour').innerText = hour;
+      document.getElementById('minute').innerText = String(minute).padStart(2, '0');
+    }
+
+    function increment(type) {
+      if (type === 'hour') {
+        hour = (hour + 1) % 24;
+      } else if (type === 'minute') {
+        minute = (minute + 5) % 60;
+      }
+      updateDisplay();
+    }
+
+    function decrement(type) {
+      if (type === 'hour') {
+        hour = (hour - 1 + 24) % 24;
+      } else if (type === 'minute') {
+        minute = (minute - 5 + 60) % 60;
+      }
+      updateDisplay();
+    }
+
+    function scrollChange(event, type) {
+      event.preventDefault();
+      if (event.deltaY < 0) {
+        increment(type);
+      } else {
+        decrement(type);
+      }
+    }
+
+    updateDisplay();
+    let changeInterval;
+
+function startChange(type, operation) {
+    isLongPress = false;
+
+    // 短いクリックを判定するためのタイマーを設定
+    clickTimeout = setTimeout(() => {
+      isLongPress = true; // 200ms後に長押しと判定
+      if (operation === 'increment') {
+  
+    changeInterval = setInterval(() => increment(type), 200);
+  } else if (operation === 'decrement') {
+    changeInterval = setInterval(() => decrement(type), 200);
+  }
+ }, 200);
+}
+
+function stopChange(type, operation) {
+    clearTimeout(clickTimeout);
+  clearInterval(changeInterval);
+  // 長押しでなければ、1回だけ処理を行う
+  if (!isLongPress) {
+    if (operation === 'increment') {increment(type);}
+    else if(operation === 'decrement'){ decrement(type);}
+  }
+  
+}
+updateDisplay();
