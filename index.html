@@ -96,15 +96,16 @@
                             <button id="confirmHint" class="default-btn">ヒントを求める</button>
                         </div>
                     </div>
-                    
-                    <div id="hintDisplay" class="sticky-note">
-                        <img src ="image/1-1_pin.png" class="pin ">
-                        <p>ヒントは未選択です</p>
-                    </div>
-                    <div id="hintNavigation" class="hint-navigation hidden">
-                        <span id="hintCounter">1/1</span>
-                        <button id="prevHint" class="default-btn">&larr;</button>
-                        <button id="nextHint" class="default-btn">&rarr;</button>
+
+                    <div class="sticky-note">
+                        <img src="image/1-1_pin.png" class="pin-image">
+                        <p id="hintTitle">ヒントは未選択です</p>
+                        <p id="hintDisplay"></p>
+                        <div id="hintNavigation" class="hint-navigation hidden">
+                            <span id="hintCounter">1/1</span>
+                            <button id="prevHint" class="default-btn">&larr;</button>
+                            <button id="nextHint" class="default-btn">&rarr;</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,31 +138,31 @@
                             <p>捜査開始だ。まずは手元のブラックライトを使い、手がかりを見つけてくれ。</p>
                         </details>
                         <details class="accordion closed">
-                            <summary><span class="accordion-title">残り16分で開放</span> <span
+                            <summary><span class="accordion-title">残り 16 分で開放</span> <span
                                     class="accordion-remain">あと</span>
                             </summary>
                             <p>被害者による抵抗に使われたものには犯人の痕跡が残っている事が多い。DNAを鑑定して探ってみたらどうだろう。</p>
                         </details>
                         <details class="accordion closed">
-                            <summary><span class="accordion-title">残り12分で開放</span> <span
+                            <summary><span class="accordion-title">残り 12 分で開放</span> <span
                                     class="accordion-remain">あと</span>
                             </summary>
                             <p>捜査資料には18時より前に2人が現場を訪れていたと書いてある。一体誰だ？　部屋に残された訪問者の痕跡をDNA鑑定することもできるだろう。</p>
                         </details>
                         <details class="accordion closed">
-                            <summary><span class="accordion-title">残り8分で開放</span> <span
+                            <summary><span class="accordion-title">残り 8 分で開放</span> <span
                                     class="accordion-remain">あと</span>
                             </summary>
                             <p>犯人が誰か示す証拠が欲しいな。いちごパック、福岡産のものか……。福岡？　何か聞き覚えがあるぞ。</p>
                         </details>
                         <details class="accordion closed">
-                            <summary><span class="accordion-title">残り5分で開放</span> <span
+                            <summary><span class="accordion-title">残り 5 分で開放</span> <span
                                     class="accordion-remain">あと</span>
                             </summary>
                             <p>部屋に残された奈賀岡のパソコンに目を向けてみよう。パスワードについての情報も、部屋のどこかにあるはずだ。</p>
                         </details>
                         <details class="accordion closed">
-                            <summary><span class="accordion-title">残り3分で開放</span> <span
+                            <summary><span class="accordion-title">残り 3 分で開放</span> <span
                                     class="accordion-remain">あと</span>
                             </summary>
                             <p>LIENに送られてきた音源。一体何に使われたのだろうか……。まさか犯人のトリックに使われた……？</p>
@@ -195,8 +196,8 @@
                 <div class="side-bar-content">
                     <div class="answer-first">
                         <h2>犯人を特定する</h2>
-                        <div class="centered-select">
-                           <!-- <select id="culpritSelect">
+                        <div class="centered-select" id="selectCulprit">
+                            <!-- <select id="culpritSelect">
                                 <option value="" disabled selected>犯人を選択</option>
                                 <option value="楠木 実">楠木 実</option>
                                 <option value="須賀 章">須賀 章</option>
@@ -205,12 +206,12 @@
                                 <option value="河伊 健二郎">河伊 健二郎</option>
 
                             </select>-->
-                            <button id="prevCulprit" class="nav-btn">&larr;</button>
-                             <div id="culpritDisplay" class="culprit-display">
-                              <img id="culpritPhoto" src="image/culprit1.jpg" alt="犯人の写真">
-                             <p id="culpritName">楠木 実</p>
-                             </div>
-                              <button id="nextCulprit" class="nav-btn">&rarr;</button>
+                            <button id="prevCulprit" class="nav-btn">&lt;</button>
+                            <div id="culpritDisplay" class="culprit-display">
+                                <img id="culpritPhoto" src="image/culprit1.jpg" alt="犯人の写真">
+                                <p id="culpritName">楠木 実</p>
+                            </div>
+                            <button id="nextCulprit" class="nav-btn">&gt;</button>
                         </div>
                     </div>
                     <div class="answer-second hidden">
@@ -225,17 +226,21 @@
                         </div>-->
                         <div class="time-selector">
                             <div class="selector" id="hour-selector">
-                              <button class="up-btn"  onmousedown="startChange('hour', 'decrement')" onmouseup="stopChange('hour','decrement')">▲</button>
-                              <div class="value number" id="hour" onwheel="scrollChange(event, 'hour')">0</div>
-                              <button class="down-btn"  onmousedown="startChange('hour', 'increment')" onmouseup="stopChange('hour','increment')" >▼</button>
+                                <button class="up-btn" onmousedown="startChange('hour', 'decrement')"
+                                    onmouseup="stopChange('hour','decrement')">▲</button>
+                                <div class="value number" id="hour" onwheel="scrollChange(event, 'hour')">0</div>
+                                <button class="down-btn" onmousedown="startChange('hour', 'increment')"
+                                    onmouseup="stopChange('hour','increment')">▼</button>
                             </div>
-                            :
+                            <span class="number">:</span>
                             <div class="selector" id="minute-selector">
-                              <button class="up-btn"  onmousedown="startChange('hour', 'decrement')" onmouseup="stopChange('minute','decrement')">▲</button>
-                              <div class="value number" id="minute" onwheel="scrollChange(event, 'minute')">00</div>
-                              <button class="down-btn" onmousedown="startChange('minute', 'increment')" onmouseup="stopChange('minute','increment')">▼</button>
+                                <button class="up-btn" onmousedown="startChange('hour', 'decrement')"
+                                    onmouseup="stopChange('minute','decrement')">▲</button>
+                                <div class="value number" id="minute" onwheel="scrollChange(event, 'minute')">00</div>
+                                <button class="down-btn" onmousedown="startChange('minute', 'increment')"
+                                    onmouseup="stopChange('minute','increment')">▼</button>
                             </div>
-                          </div>
+                        </div>
                         <button class="special-hint-button">追加情報を見る(任意)</button>
                         <p class="special-hint hidden">追加情報:<br>犯人は窓が破れた時間にアリバイがある。<br>これは何を意味しているのだろう?</p>
                     </div>
