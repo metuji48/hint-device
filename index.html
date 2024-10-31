@@ -167,6 +167,11 @@
                             </summary>
                             <p>LIENに送られてきた音源。一体何に使われたのだろうか……。まさか犯人のトリックに使われた……？</p>
                         </details>
+                        <details class="accordion closed">
+                            <summary><span class="accordion-title">犯人を正解で開放</span>
+                            </summary>
+                            <p>犯人は窓が破れた時間にアリバイがある。<br>これは何を意味しているのだろうか…？</p>
+                        </details>
 
                     </div>
                 </div>
@@ -234,15 +239,13 @@
                             </div>
                             <span class="number">:</span>
                             <div class="selector" id="minute-selector">
-                                <button class="up-btn" onmousedown="startChange('hour', 'decrement')"
+                                <button class="up-btn" onmousedown="startChange('minute', 'decrement')"
                                     onmouseup="stopChange('minute','decrement')">▲</button>
                                 <div class="value number" id="minute" onwheel="scrollChange(event, 'minute')">00</div>
                                 <button class="down-btn" onmousedown="startChange('minute', 'increment')"
                                     onmouseup="stopChange('minute','increment')">▼</button>
                             </div>
                         </div>
-                        <button class="special-hint-button">追加情報を見る(任意)</button>
-                        <p class="special-hint hidden">追加情報:<br>犯人は窓が破れた時間にアリバイがある。<br>これは何を意味しているのだろう?</p>
                     </div>
                     <button id="submitAnswer" class="center-button default-btn">解答する</button>
                     <div id="errorMessage" class="error-message hidden">10秒間解答できません。</div>
@@ -280,8 +283,6 @@
                         <td>正解ボーナス</td>
                         <td class="align-right">✓</td>
                         <td id="correctBonusScore" class="align-right">1000</td>
-                    </tr>
-
                     </tr>
                 </table>
                 <h3 id="finalScore" class="fade-in-opacity"></h3>
