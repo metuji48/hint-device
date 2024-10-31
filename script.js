@@ -312,7 +312,7 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         displayConfirmAlert(`本当にこの解答でよろしいですか？<br>犯人: ${culprits[currentCulpritIndex].name}`, () => {
             if (currentCulpritIndex === 3) {
                 answerStage = 1;
-                displayAlert("正解!!<br>次に、犯行時刻を選択してください。");
+                displayAlert("正解!!<br>次に、犯行時刻を選択してください。<br>(新たなヒントが見つかりました)");
                 document.querySelector(".answer-first").classList.add("hidden");
                 document.querySelector(".answer-second").classList.remove("hidden");
                 confetti({
@@ -330,7 +330,7 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
             }
         });
     } else {
-        displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${hour}時${minute}分`, () => {
+        displayConfirmAlert(`本当にこの解答でよろしいですか？<br>時刻: ${hour}時${minute.toString().padStart(2, '0')}分`, () => {
             if ((hour === 23 && minute >= 0) ||
                 (hour === 23 && minute <= 10)) {
                 confetti({
