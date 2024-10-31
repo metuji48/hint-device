@@ -96,7 +96,9 @@
                             <button id="confirmHint" class="default-btn">ヒントを求める</button>
                         </div>
                     </div>
+                    
                     <div id="hintDisplay" class="sticky-note">
+                        <img src ="image/1-1_pin.png" class="pin ">
                         <p>ヒントは未選択です</p>
                     </div>
                     <div id="hintNavigation" class="hint-navigation hidden">
@@ -194,7 +196,7 @@
                     <div class="answer-first">
                         <h2>犯人を特定する</h2>
                         <div class="centered-select">
-                            <select id="culpritSelect">
+                           <!-- <select id="culpritSelect">
                                 <option value="" disabled selected>犯人を選択</option>
                                 <option value="楠木 実">楠木 実</option>
                                 <option value="須賀 章">須賀 章</option>
@@ -202,20 +204,39 @@
                                 <option value="宮路 凛人">宮路 凛人</option>
                                 <option value="河伊 健二郎">河伊 健二郎</option>
 
-                            </select>
+                            </select>-->
+                            <button id="prevCulprit" class="nav-btn">&larr;</button>
+                             <div id="culpritDisplay" class="culprit-display">
+                              <img id="culpritPhoto" src="image/culprit1.jpg" alt="犯人の写真">
+                             <p id="culpritName">楠木 実</p>
+                             </div>
+                              <button id="nextCulprit" class="nav-btn">&rarr;</button>
                         </div>
                     </div>
                     <div class="answer-second hidden">
                         <h2>犯行時刻を選択</h2>
-                        <div class="centered-slider">
+                        <!--<div class="centered-slider">
                             <input type="range" id="crimeHour" class="slider" min="0" max="24" step="1" value="0">
                             <span id="hourDisplay">12</span>時
                         </div>
                         <div class="centered-slider">
                             <input type="range" id="crimeMinute" class="slider" min="0" max="55" step="5" value="0">
                             <span id="minuteDisplay">00</span>分
-                        </div>
-                        <button class="special-hint-button">追加情報(任意)を見る</button>
+                        </div>-->
+                        <div class="time-selector">
+                            <div class="selector" id="hour-selector">
+                              <button class="up-btn"  onmousedown="startChange('hour', 'decrement')" onmouseup="stopChange('hour','decrement')">▲</button>
+                              <div class="value number" id="hour" onwheel="scrollChange(event, 'hour')">0</div>
+                              <button class="down-btn"  onmousedown="startChange('hour', 'increment')" onmouseup="stopChange('hour','increment')" >▼</button>
+                            </div>
+                            :
+                            <div class="selector" id="minute-selector">
+                              <button class="up-btn"  onmousedown="startChange('hour', 'decrement')" onmouseup="stopChange('minute','decrement')">▲</button>
+                              <div class="value number" id="minute" onwheel="scrollChange(event, 'minute')">00</div>
+                              <button class="down-btn" onmousedown="startChange('minute', 'increment')" onmouseup="stopChange('minute','increment')">▼</button>
+                            </div>
+                          </div>
+                        <button class="special-hint-button">追加情報を見る(任意)</button>
                         <p class="special-hint hidden">追加情報:<br>犯人は窓が破れた時間にアリバイがある。<br>これは何を意味しているのだろう?</p>
                     </div>
                     <button id="submitAnswer" class="center-button default-btn">解答する</button>
