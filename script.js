@@ -19,8 +19,12 @@ const resultScreen = document.getElementById('resultScreen');
 const remainingTimeDisplay = document.getElementById('remainingTime');
 const remainingTimeAnswerDisplay = document.getElementById('remainingTimeAnswer');
 const remainingTimeFixedTimeDisplay = document.getElementById('remainingTimeFixedTime');
+
+/*
 const hintCountDisplay = document.getElementById('hintCount');
 const hintCountAnswerDisplay = document.getElementById('hintCountAnswer');
+*/
+
 const hintDisplay = document.getElementById('hintDisplay');
 const hintNavigation = document.getElementById('hintNavigation');
 const errorMessage = document.getElementById('errorMessage');
@@ -36,17 +40,20 @@ const wrongAnswerCountDisplayScore = document.getElementById('wrongAnswerCountSc
 const finalScore = document.getElementById('finalScore');
 const finalRank = document.getElementById('finalRank');
 
+/*
 const crimeHour = document.getElementById('crimeHour');
 const hourDisplay = document.getElementById('hourDisplay');
 const crimeMinute = document.getElementById('crimeMinute');
 const minuteDisplay = document.getElementById('minuteDisplay');
-const endButton = document.getElementById('endButton');
 const specialHintButton = document.querySelector(".special-hint-button");
+*/
+
+const endButton = document.getElementById('endButton');
 let currentScreen = waitingScreen;
 
 // スタートボタンの処理
 startButton.addEventListener('click', () => {
-    if (displayConfirmAlert("ヒントデバイスの使用を開始しますか?\n（スタートした時点でタイマーがスタートします。）", () => {
+    if (displayConfirmAlert("ヒントデバイスの使用を開始しますか?<br>※スタッフの指示に従ってください！", () => {
         startTime = new Date().getTime();
         localStorage.setItem('startTime', startTime);
         flipPage(mainScreen);
@@ -98,26 +105,30 @@ function updateTimer() {
 
     updateProgressBarColor();
 
-    const accordionTimes = [0, 4, 8, 12, 15, 17];
+    const accordionTimes = [0, -1, 4, 8, 12, 15, 17 ];
     const accordions = document.getElementsByClassName("accordion");
     const accordionSpans = document.getElementsByClassName("accordion-remain");
     const accordionTitles = document.getElementsByClassName("accordion-title");
 
-    const titles = ["捜査開始", "DNA鑑定", "訪問者の痕跡", "いちごパック", "パソコン", "LIEN"];
+    const titles = ["捜査開始", "アリバイ", "DNA鑑定", "訪問者の痕跡", "いちごパック", "パソコン", "LIEN" ];
 
     for (let i = 0; i < accordions.length; i++) {
-        if (accordionTimes[i] * 60 <= elapsed) {
+        if ((accordionTimes[i] === -1 && answerStage === 1) || (accordionTimes[i] != -1 && accordionTimes[i] * 60 <= elapsed)) {
             if (accordions[i].classList.contains("closed")) {
+                if(accordionTimes[i] != -1) accordionSpans[i].textContent = "";
+                else {
+                    const sideBarAccordion = document.querySelector(".side-bar-accordion");
+                    sideBarAccordion.scrollTop = sideBarAccordion.scrollHeight;
+                }
                 accordions[i].classList.remove("closed");
-                accordionSpans[i].textContent = "";
                 accordionTitles[i].textContent = titles[i];
                 increaseFixedTimeBadgeCount();
-                if (accordionTimes[i] !== 0) {
+                if (accordionTimes[i] > 0) {
                     displayNoti(`新たなヒントが開放されました！`);
                 }
             }
         } else {
-            accordionSpans[i].textContent = "あと " + makeTimeKirei(accordionTimes[i] * 60 - elapsed);
+            if(accordionTimes[i] != -1) accordionSpans[i].textContent = "あと " + makeTimeKirei(accordionTimes[i] * 60 - elapsed);
         }
     }
 
@@ -132,9 +143,8 @@ function startTimer() {
     updateTimer();
     timer = setInterval(() => {
         updateTimer();
-    }, 10);
+    }, 1000);
 }
-//時間がたつにつれて緑色から赤色にだんだん変わっていくようにする(#00ff00から#ff0000に)
 
 // 色をグラデーションさせる関数
 function getColorGradient(remainingTime, maxTime) {
@@ -238,11 +248,11 @@ document.getElementById('confirmHint').addEventListener('click', () => {
 });
 
 const culprits = [
-    { name: "楠木 実", photo: "image/culprit1.png" },
-    { name: "須賀 章", photo: "image/culprit2.png" },
-    { name: "矢場 丈則", photo: "image/culprit3.png" },
-    { name: "宮路 凛人", photo: "image/culprit4.png" },
-    { name: "河伊 健二郎", photo: "image/culprit5.png" }
+    { name: "楠木 実", photo: "image/culprit1.jpg" },
+    { name: "須賀 章", photo: "image/culprit2.jpg" },
+    { name: "矢場 丈則", photo: "image/culprit3.jpg" },
+    { name: "宮路 凛人", photo: "image/culprit4.jpg" },
+    { name: "河伊 健二郎", photo: "image/culprit5.jpg" }
 ];
 
 let currentCulpritIndex = 0;
@@ -346,13 +356,6 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
     }
 });
 
-
-// 犯人正解者用の特別ヒント
-specialHintButton.addEventListener("click", () => {
-    specialHintButton.classList.add("hidden");
-    document.querySelector(".special-hint").classList.remove("hidden");
-})
-
 // 解答ロック
 function lockoutAnswer() {
     answerDisabled = true;
@@ -392,47 +395,43 @@ function showResult(isCorrect) {
 
     wrongAnswerCountDisplay.textContent = wrongAnswerCount;
     wrongAnswerCountDisplayScore.textContent = wrongAnswerCount * -50;
-    let score;
+    let score, rank;
 
     if (isCorrect) {
-        score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount) * -50 + 1000); // スコア計算
+        score = Math.max(0, remainingTime + (hintCount * -100) + (wrongAnswerCount * -50) + 1000); // スコア計算
+
+        if (score >= 1400) {
+            rank = "シャーロック・ホームズ級";
+        } else if (score === 777) {
+            rank = "X級";
+        } else if (score >= 900) {
+            rank = "S級";
+        } else if (score >= 600) {
+            rank = "A+級";
+        } else if (score >= 400) {
+            rank = "A級";
+        } else if (score >= 300) {
+            rank = "B+級";
+        } else if (score >= 200) {
+            rank = "B級";
+        } else if (score === 77) {
+            rank = "X級";
+        } else if (score >= 100) {
+            rank = "C級";
+        } else if (score === -1) {
+            rank = "惜しい";
+        }
+    } else {
+        score = "ー";
+        rank = "見習い";
+        document.getElementById('correctBonusScore').parentElement.style.display = 'none'; // 不正解の場合は正解ボーナスを非表示
     }
-    else { score = -1 }
+
     finalScore.textContent = "スコア: " + score;
-    if (score === -1) {
-        // 不正解の場合は正解ボーナスを非表示
-        document.getElementById('correctBonusScore').parentElement.style.display = 'none';
-    }
-
-    if (score >= 1400) {
-        rank = "シャーロック・ホームズ級";
-    } else if (score === 777) {
-        rank = "X級";
-    } else if (score >= 900) {
-        rank = "S級";
-    } else if (score >= 600) {
-        rank = "A+級";
-    } else if (score >= 400) {
-        rank = "A級";
-    } else if (score >= 300) {
-        rank = "B+級";
-    } else if (score >= 200) {
-        rank = "B級";
-    } else if (score === 77) {
-        rank = "X級";
-    } else if (score >= 100) {
-        rank = "C級";
-    } else if (score === -1) {
-        rank = "惜しい"
-
-    }
-    else {
-        rank = "見習い"
-    }
-    ;
 
     finalRank.textContent = rank + "探偵";
 }
+
 document.getElementById('endButton').addEventListener('click', () => {
     const password = prompt("リロード用:");
     if (password === "diamondowall24") {
@@ -473,12 +472,12 @@ document.getElementById('goToAnswer2').addEventListener('click', () => {
 });
 
 // ウィンドウを離れるときに警告をだす
-/*
+
 window.addEventListener('beforeunload', (e) => {
     e.preventDefault();
     return message;
 });
-*/
+
 
 /* アラート */
 document.querySelectorAll(".alert-box").forEach((alertBox) => {
@@ -548,6 +547,7 @@ document.getElementById('notiAlertButtonYes').addEventListener('click', () => {
     notiAlert.style.display = 'none';
     allContent.style.filter = 'brightness(100%)';
 });
+
 let hour = 0;
 let minute = 0;
 
@@ -583,12 +583,10 @@ function scrollChange(event, type) {
     }
 }
 
-updateDisplay();
-let changeInterval;
+let changeInterval, clickTimeout;
 
 function startChange(type, operation) {
     isLongPress = false;
-
     // 短いクリックを判定するためのタイマーを設定
     clickTimeout = setTimeout(() => {
         isLongPress = true; // 200ms後に長押しと判定
@@ -597,7 +595,7 @@ function startChange(type, operation) {
         } else if (operation === 'decrement') {
             changeInterval = setInterval(() => decrement(type), 100);
         }
-    }, 100);
+    }, 200);
 }
 
 function stopChange(type, operation) {
@@ -608,6 +606,6 @@ function stopChange(type, operation) {
         if (operation === 'increment') { increment(type); }
         else if (operation === 'decrement') { decrement(type); }
     }
-
 }
+
 updateDisplay();
