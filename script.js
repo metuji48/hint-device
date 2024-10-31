@@ -41,7 +41,6 @@ const hourDisplay = document.getElementById('hourDisplay');
 const crimeMinute = document.getElementById('crimeMinute');
 const minuteDisplay = document.getElementById('minuteDisplay');
 const endButton = document.getElementById('endButton');
-const specialHintButton = document.querySelector(".special-hint-button");
 let currentScreen = waitingScreen;
 
 // スタートボタンの処理
@@ -92,32 +91,36 @@ function updateTimer() {
 
     const minutes = remainingTime <= 0 ? 0 : Math.floor(remainingTime / 60);
     const seconds = remainingTime <= 0 ? 0 : remainingTime % 60;
-    remainingTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    remainingTimeAnswerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    remainingTimeFixedTimeDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    const remainingTimeKirei = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    remainingTimeDisplay.textContent = remainingTimeKirei;
+    remainingTimeAnswerDisplay.textContent = remainingTimeKirei;
+    remainingTimeFixedTimeDisplay.textContent = remainingTimeKirei;
 
     updateProgressBarColor();
 
-    const accordionTimes = [0, 4, 8, 12, 15, 17];
+    const accordionTimes = [0, 4, 8, 12, 15, 17, -1];
     const accordions = document.getElementsByClassName("accordion");
     const accordionSpans = document.getElementsByClassName("accordion-remain");
     const accordionTitles = document.getElementsByClassName("accordion-title");
 
-    const titles = ["捜査開始", "DNA鑑定", "訪問者の痕跡", "いちごパック", "パソコン", "LIEN"];
+    const titles = ["捜査開始", "DNA鑑定", "訪問者の痕跡", "いちごパック", "パソコン", "LIEN", "アリバイ" ];
 
-    for (let i = 0; i < accordions.length; i++) {
-        if (accordionTimes[i] * 60 <= elapsed) {
+
+    for (let i = 0; i < 7; i++) {
+        if((accordionTimes[i] === -1 && answerStage === 1) || (accordionTimes[i] != -1 && accordionTimes[i] * 60 <= elapsed)) {
             if (accordions[i].classList.contains("closed")) {
                 accordions[i].classList.remove("closed");
-                accordionSpans[i].textContent = "";
+                if(accordionTimes[i] != -1) accordionSpans[i].textContent = "";
                 accordionTitles[i].textContent = titles[i];
                 increaseFixedTimeBadgeCount();
-                if (accordionTimes[i] !== 0) {
+                if (accordionTimes[i] > 0) {
                     displayNoti(`新たなヒントが開放されました！`);
                 }
             }
         } else {
-            accordionSpans[i].textContent = "あと " + makeTimeKirei(accordionTimes[i] * 60 - elapsed);
+            if(accordionTimes[i] != -1) {
+                accordionSpans[i].textContent = "あと " + makeTimeKirei(accordionTimes[i] * 60 - elapsed);
+            }
         }
     }
 
@@ -132,7 +135,7 @@ function startTimer() {
     updateTimer();
     timer = setInterval(() => {
         updateTimer();
-    }, 10);
+    }, 100);
 }
 //時間がたつにつれて緑色から赤色にだんだん変わっていくようにする(#00ff00から#ff0000に)
 
@@ -345,13 +348,6 @@ document.getElementById('submitAnswer').addEventListener('click', () => {
         });
     }
 });
-
-
-// 犯人正解者用の特別ヒント
-specialHintButton.addEventListener("click", () => {
-    specialHintButton.classList.add("hidden");
-    document.querySelector(".special-hint").classList.remove("hidden");
-})
 
 // 解答ロック
 function lockoutAnswer() {
