@@ -287,7 +287,8 @@ button {
 }
 
 .sticky-note {
-    background-color: #ffed46;
+    position: relative;
+    background-color: #fff066;
     height: 210px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -296,22 +297,16 @@ button {
     line-height: 30px;
 
     overflow-y: auto;
-    scrollbar-color: #fff #ffed46;
+    scrollbar-color: #fff #fff066;
 }
+.pin { position: absolute; 
+    top: 0px;
+    left: 10px;
+    width: 20px;
+    height: 20px;
+    z-index: 10; /* スティッキーノートの上に表示するための調整 */ }
 
-/*
-.sticky-note::before {
-    position: absolute;
-    bottom: -5px;
-    right: 7px;
-    z-index: -1;
-    transform: rotate(5deg);
-    width: 70%;
-    height: 50%;
-    background-color: #ddd;
-    content: '';
-    filter: blur(4px);
-}*/
+
 
 #confirmHint {
     display: inline;
@@ -874,4 +869,63 @@ input[type="range"]:focus::-webkit-slider-thumb {
 .alert-content input[type="checkbox"] {
     margin-right: 8px;
     transform: scale(1.2);
+}
+.time-selector {
+    display: flex;
+    align-items: center;
+    margin-left: 90px;
+  }
+  .selector {
+    text-align: center;
+    margin: 0 10px;
+  }
+  .up-btn, .down-btn {
+    display: block;
+    margin: 5px auto;
+    cursor: pointer;
+    border-radius: 50%;
+    background: transparent;
+  }
+  .value {
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .number{
+    font-size: 36px
+  }
+  .culprit-display {
+    display: inline-block;
+    text-align: center;
+    margin: 0 20px;
+}
+
+.culprit-display img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nav-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    
+    padding: 100px 3px; /* ボタンを薄く縦長に調整 */
+    cursor: pointer;
+    font-size: 1.5em;
+    border-radius: 5px;
+}
+
+.nav-btn:hover {
+    background-color: #555;
+}
+
+#prevCulprit {
+    margin-left: 20px;
+}
+
+#nextCulprit {
+    margin-right: 20px;
 }
