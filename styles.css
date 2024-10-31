@@ -301,6 +301,10 @@ button {
     scrollbar-color: #fff transparent;
 }
 
+#hintSelect {
+    size: 1;
+}
+
 #hintTitle {
     margin: 0;
     margin-left: 60px;
@@ -343,6 +347,7 @@ button {
 }
 
 #hintCounter {
+    letter-spacing: 3.75px;
     position: absolute;
     top: 15px;
     right: 70px;
@@ -370,10 +375,6 @@ button {
 .hint-navigation span {
     margin-right: 10px;
     font-size: 1.2em;
-}
-
-.special-hint-button:hover {
-    background-color: #e5d22b;
 }
 
 .centered-select,
